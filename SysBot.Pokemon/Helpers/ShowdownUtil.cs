@@ -37,11 +37,13 @@ namespace SysBot.Pokemon
         {
             "Ability:", "EVs:", "IVs:", "Shiny:", "Gigantamax:", "Ball:", "- ", "Level:",
             "Happiness:", "Language:", "OT:", "OTGender:", "TID:", "SID:", "Alpha:", "Tera Type:",
+            ".WeightScalar=", ".HeightScalar=", ".Scale=",
             "Adamant Nature", "Bashful Nature", "Brave Nature", "Bold Nature", "Calm Nature",
             "Careful Nature", "Docile Nature", "Gentle Nature", "Hardy Nature", "Hasty Nature",
             "Impish Nature", "Jolly Nature", "Lax Nature", "Lonely Nature", "Mild Nature",
             "Modest Nature", "Naive Nature", "Naughty Nature", "Quiet Nature", "Quirky Nature",
             "Rash Nature", "Relaxed Nature", "Sassy Nature", "Serious Nature", "Timid Nature",
+
         };
     }
 }

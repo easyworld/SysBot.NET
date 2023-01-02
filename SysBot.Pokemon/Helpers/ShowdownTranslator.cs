@@ -308,6 +308,44 @@ namespace SysBot.Pokemon
                 }
             }
 
+            // 添加体型
+            if (Regex.IsMatch(zh, "\\d{1,3}身高"))
+            {
+                string value = Regex.Match(zh, "(\\d{1,3})身高").Groups?[1]?.Value ?? "";
+                result += $"\n.HeightScalar= {value}";
+                zh = Regex.Replace(zh, "\\d{1,3}身高", "");
+            }
+            else if (Regex.IsMatch(zh, "\\d{1,3}HeightScalar"))
+            {
+                string value = Regex.Match(zh, "(\\d{1,3})HeightScalar").Groups?[1]?.Value ?? "";
+                result += $"\n.HeightScalar= {value}";
+                zh = Regex.Replace(zh, "\\d{1,3}HeightScalar", "");
+            }
+            if (Regex.IsMatch(zh, "\\d{1,3}体重"))
+            {
+                string value = Regex.Match(zh, "(\\d{1,3})体重").Groups?[1]?.Value ?? "";
+                result += $"\n.WeightScalar= {value}";
+                zh = Regex.Replace(zh, "\\d{1,3}体重", "");
+            }
+            else if (Regex.IsMatch(zh, "\\d{1,3}WeightScalar"))
+            {
+                string value = Regex.Match(zh, "(\\d{1,3})WeightScalar").Groups?[1]?.Value ?? "";
+                result += $"\n.WeightScalar= {value}";
+                zh = Regex.Replace(zh, "\\d{1,3}WeightScalar", "");
+            }
+            if (Regex.IsMatch(zh, "\\d{1,3}大小"))
+            {
+                string value = Regex.Match(zh, "(\\d{1,3})大小").Groups?[1]?.Value ?? "";
+                result += $"\n.Scale= {value}";
+                zh = Regex.Replace(zh, "\\d{1,3}大小", "");
+            }
+            else if (Regex.IsMatch(zh, "\\d{1,3}Scale"))
+            {
+                string value = Regex.Match(zh, "(\\d{1,3})Scale").Groups?[1]?.Value ?? "";
+                result += $"\n.Scale= {value}";
+                zh = Regex.Replace(zh, "\\d{1,3}WeScale", "");
+            }
+
             // 添加技能
             zh += "-";
             for (int moveCount = 0; moveCount < 4; moveCount++)
