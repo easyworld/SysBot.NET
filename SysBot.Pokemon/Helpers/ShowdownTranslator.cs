@@ -308,23 +308,43 @@ namespace SysBot.Pokemon
                 }
             }
 
-            //添加全回忆技能
-            if (typeof(T) == typeof(PA8) || typeof(T) == typeof(PK9) && zh.Contains("全技能"))
+            //添后加入的全奖章
+            if (typeof(T) == typeof(PK9) && zh.Contains("全技能"))
             {
                 result += "\n.RelearnMoves=$suggestAll";
                 zh = zh.Replace("全技能", "");
             }
-            else if (typeof(T) == typeof(PA8) || typeof(T) == typeof(PK9) && zh.Contains("全招式"))
+            //添加全回忆技能
+            if (typeof(T) == typeof(PK9) && zh.Contains("全技能"))
+            {
+                result += "\n.RelearnMoves=$suggestAll";
+                zh = zh.Replace("全技能", "");
+            }
+            else if (typeof(T) == typeof(PK9) && zh.Contains("全招式"))
             {
                 result += "\n.RelearnMoves=$suggestAll";
                 zh = zh.Replace("全招式", "");
             }
-            else if (typeof(T) == typeof(PA8) || typeof(T) == typeof(PK9) && zh.Contains("ALLTR"))
+            else if (typeof(T) == typeof(PK9) && zh.Contains("ALLTR"))
             {
                 result += "\n.RelearnMoves=$suggestAll";
                 zh = zh.Replace("ALLTR", "");
             }
-
+            if (typeof(T) == typeof(PA8) && zh.Contains("全技能"))
+            {
+                result += "\n.MoveMastery=$suggestAll";
+                zh = zh.Replace("全技能", "");
+            }
+            else if (typeof(T) == typeof(PA8) && zh.Contains("全招式"))
+            {
+                result += "\n.MoveMastery=$suggestAll";
+                zh = zh.Replace("全招式", "");
+            }
+            else if (typeof(T) == typeof(PA8) && zh.Contains("ALLMOVE"))
+            {
+                result += "\n.MoveMastery=$suggestAll";
+                zh = zh.Replace("ALLMOVE", "");
+            }
             // 添加体型
             if (Regex.IsMatch(zh, "\\d{1,3}身高"))
             {
