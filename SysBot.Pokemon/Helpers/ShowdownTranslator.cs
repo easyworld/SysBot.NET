@@ -189,37 +189,37 @@ namespace SysBot.Pokemon
             if (zh.ToUpper().Contains("6V"))//默认
             {
                 result += "\nIVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe";
-                zh = zh.Replace("6V", "");
+                zh = Regex.Replace(zh, "6V|6v", "");
             }
             else if (zh.ToUpper().Contains("5V0A"))
             {
                 result += "\nIVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe";
-                zh = zh.Replace("5V0A", "");
+                zh = Regex.Replace(zh, "5V0A|5v0a", "");
             }
             else if (zh.ToUpper().Contains("5V0攻"))
             {
                 result += "\nIVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe";
-                zh = zh.Replace("5V0攻", "");
+                zh = Regex.Replace(zh, "5V0攻|5v0攻", "");
             }
             else if (zh.ToUpper().Contains("5V0S"))
             {
                 result += "\nIVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe";
-                zh = zh.Replace("5V0S", "");
+                zh = Regex.Replace(zh, "5V0S|5v0s", "");
             }
             else if (zh.ToUpper().Contains("5V0速"))
             {
                 result += "\nIVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe";
-                zh = zh.Replace("5V0速", "");
+                zh = Regex.Replace(zh, "5V0速|5v0速", "");
             }
             else if (zh.ToUpper().Contains("4V0A0S"))
             {
                 result += "\nIVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe";
-                zh = zh.Replace("4V0A0S", "");
+                zh = Regex.Replace(zh, "4V0A0S|4v0a0s", "");
             }
             else if (zh.ToUpper().Contains("4V0攻0速"))
             {
                 result += "\nIVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe";
-                zh = zh.Replace("4V0攻0速", "");
+                zh = Regex.Replace(zh, "4V0攻0速|4v0攻0速", "");
             }
 
             // 添加努力值
@@ -370,6 +370,7 @@ namespace SysBot.Pokemon
                     result += $"\n.Scale=0\n.RibbonMarkMini=True";
                     zh = zh.Replace("XXXS", "");
                 }
+                zh = zh.Replace("体型", "");
             }
             //补充后天获得的全奖章
             if (typeof(T) == typeof(PK9) && zh.Contains("全奖章"))
@@ -381,9 +382,9 @@ namespace SysBot.Pokemon
             //if (typeof(T) == typeof(PK9) && zh.Contains("野生"))（此条为其他大佬加入野生宝可梦功能时启用）
             if (typeof(T) == typeof(PK9))
             {
-                if(zh.Contains("未知之证")) { result += "\n.RibbonMarkRare=True"; }
+                if (zh.Contains("未知之证")) { result += "\n.RibbonMarkRare=True"; }
                 else if (zh.Contains("大个子之证")) { result += "\n.Scale=255\n.RibbonMarkJumbo=True"; }
-                else if (zh.Contains("小个子之证")) { result += "\n.Scale=0\n.RibbonMarkMini=True"; }
+                else if (zh.Contains("小不点之证")) { result += "\n.Scale=0\n.RibbonMarkMini=True"; }
                 else if (zh.Contains("命运之证")) { result += "\n.RibbonMarkDestiny=True"; }
                 else if (zh.Contains("暴雪之证")) { result += "\n.RibbonMarkBlizzard=True"; }
                 else if (zh.Contains("阴云之证")) { result += "\n.RibbonMarkCloudy=True"; }
@@ -431,17 +432,17 @@ namespace SysBot.Pokemon
                 else if (zh.Contains("倦怠之证")) { result += "\n.RibbonMarkZeroEnergy=True"; }
                 else if (zh.Contains("疏忽之证")) { result += "\n.RibbonMarkZonedOut=True"; }
             }
-            
+
             //添加全回忆技能
             if (typeof(T) == typeof(PK9) || typeof(T) == typeof(PK8))
             {
-                if(zh.Contains("全技能"))
+                if (zh.Contains("全技能"))
                 {
                     result += "\n.RelearnMoves=$suggestAll";
                     zh = zh.Replace("全技能", "");
 
                 }
-                else if(zh.Contains("全招式"))
+                else if (zh.Contains("全招式"))
                 {
                     result += "\n.RelearnMoves=$suggestAll";
                     zh = zh.Replace("全招式", "");
@@ -449,32 +450,30 @@ namespace SysBot.Pokemon
             }
             if (typeof(T) == typeof(PA8))
             {
-                if (zh.Contains("全技能") || zh.Contains("全招式"))
+                if (zh.Contains("全技能"))
                 {
                     result += "\n.MoveMastery=$suggestAll";
                     zh = zh.Replace("全技能", "");
                 }
-                else if(zh.Contains("全招式"))
+                else if (zh.Contains("全招式"))
                 {
                     result += "\n.MoveMastery=$suggestAll";
                     zh = zh.Replace("全招式", "");
                 }
             }
-            
+
             // 添加技能
-            zh += "-";
             for (int moveCount = 0; moveCount < 4; moveCount++)
             {
                 for (int i = 0; i < GameStringsZh.Move.Count; i++)
                 {
                     if (GameStringsZh.Move[i].Length == 0) continue;
-                    if (!zh.Contains("-" + GameStringsZh.Move[i] + "-")) continue;
+                    if (!zh.Contains("-" + GameStringsZh.Move[i])) continue;
                     result += $"\n-{GameStringsEn.Move[i]}";
                     zh = zh.Replace("-" + GameStringsZh.Move[i], "");
                     break;
                 }
             }
-            zh = zh.Replace("-", "");
 
             return result;
         }
