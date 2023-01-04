@@ -382,8 +382,8 @@ namespace SysBot.Pokemon
             if (typeof(T) == typeof(PK9))
             {
                 if(zh.Contains("未知之证")) { result += "\n.RibbonMarkRare=True"; }
-                else if (zh.Contains("小个子之证")) { result += "\n.Scale=255\n.RibbonMarkJumbo=True"; }
-                else if (zh.Contains("大个子之证")) { result += "\n.Scale=0\n.RibbonMarkMini=True"; }
+                else if (zh.Contains("大个子之证")) { result += "\n.Scale=255\n.RibbonMarkJumbo=True"; }
+                else if (zh.Contains("小个子之证")) { result += "\n.Scale=0\n.RibbonMarkMini=True"; }
                 else if (zh.Contains("命运之证")) { result += "\n.RibbonMarkDestiny=True"; }
                 else if (zh.Contains("暴雪之证")) { result += "\n.RibbonMarkBlizzard=True"; }
                 else if (zh.Contains("阴云之证")) { result += "\n.RibbonMarkCloudy=True"; }
