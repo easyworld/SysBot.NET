@@ -433,37 +433,34 @@ namespace SysBot.Pokemon
             }
             
             //添加全回忆技能
-            if (typeof(T) == typeof(PK9) && zh.Contains("全技能"))
+            if (typeof(T) == typeof(PK9) || typeof(T) == typeof(PK8))
             {
-                result += "\n.RelearnMoves=$suggestAll";
-                zh = zh.Replace("全技能", "");
-            }
-            else if (typeof(T) == typeof(PK9) && zh.Contains("全招式"))
-            {
-                result += "\n.RelearnMoves=$suggestAll";
-                zh = zh.Replace("全招式", "");
-            }
-            else if (typeof(T) == typeof(PK9) && zh.Contains("ALLTR"))
-            {
-                result += "\n.RelearnMoves=$suggestAll";
-                zh = zh.Replace("ALLTR", "");
-            }
-            if (typeof(T) == typeof(PA8) && zh.Contains("全技能"))
-            {
-                result += "\n.MoveMastery=$suggestAll";
-                zh = zh.Replace("全技能", "");
-            }
-            else if (typeof(T) == typeof(PA8) && zh.Contains("全招式"))
-            {
-                result += "\n.MoveMastery=$suggestAll";
-                zh = zh.Replace("全招式", "");
-            }
-            else if (typeof(T) == typeof(PA8) && zh.Contains("ALLMOVE"))
-            {
-                result += "\n.MoveMastery=$suggestAll";
-                zh = zh.Replace("ALLMOVE", "");
-            }
+                if(zh.Contains("全技能"))
+                {
+                    result += "\n.RelearnMoves=$suggestAll";
+                    zh = zh.Replace("全技能", "");
 
+                }
+                else if(zh.Contains("全招式"))
+                {
+                    result += "\n.RelearnMoves=$suggestAll";
+                    zh = zh.Replace("全招式", "");
+                }
+            }
+            if (typeof(T) == typeof(PA8))
+            {
+                if (zh.Contains("全技能") || zh.Contains("全招式"))
+                {
+                    result += "\n.MoveMastery=$suggestAll";
+                    zh = zh.Replace("全技能", "");
+                }
+                else if(zh.Contains("全招式"))
+                {
+                    result += "\n.MoveMastery=$suggestAll";
+                    zh = zh.Replace("全招式", "");
+                }
+            }
+            
             // 添加技能
             zh += "-";
             for (int moveCount = 0; moveCount < 4; moveCount++)
