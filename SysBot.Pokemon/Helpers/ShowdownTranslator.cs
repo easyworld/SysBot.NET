@@ -55,12 +55,12 @@ namespace SysBot.Pokemon
             {
                 result += $"-Paldea-Fire";
                 zh = zh.Replace("帕底亚的样子（火）形态", "");
-            } 
+            }
             else if (zh.Contains("帕底亚的样子（水）形态"))
             {
                 result += $"-Paldea-Water";
                 zh = zh.Replace("帕底亚的样子（水）形态", "");
-            } 
+            }
             else
             {
                 for (int i = 0; i < GameStringsZh.forms.Length; i++)
@@ -72,7 +72,6 @@ namespace SysBot.Pokemon
                     break;
                 }
             }
-            
 
             // 添加性别
             if (zh.Contains("公"))
@@ -187,7 +186,7 @@ namespace SysBot.Pokemon
             }
 
             // 添加个体值
-            if (zh.ToUpper().Contains("6V"))
+            if (zh.ToUpper().Contains("6V"))//默认
             {
                 result += "\nIVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe";
                 zh = zh.Replace("6V", "");
@@ -197,15 +196,30 @@ namespace SysBot.Pokemon
                 result += "\nIVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe";
                 zh = zh.Replace("5V0A", "");
             }
+            else if (zh.ToUpper().Contains("5V0攻"))
+            {
+                result += "\nIVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe";
+                zh = zh.Replace("5V0攻", "");
+            }
             else if (zh.ToUpper().Contains("5V0S"))
             {
                 result += "\nIVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe";
                 zh = zh.Replace("5V0S", "");
             }
+            else if (zh.ToUpper().Contains("5V0速"))
+            {
+                result += "\nIVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe";
+                zh = zh.Replace("5V0速", "");
+            }
             else if (zh.ToUpper().Contains("4V0A0S"))
             {
                 result += "\nIVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe";
                 zh = zh.Replace("4V0A0S", "");
+            }
+            else if (zh.ToUpper().Contains("4V0攻0速"))
+            {
+                result += "\nIVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe";
+                zh = zh.Replace("4V0攻0速", "");
             }
 
             // 添加努力值
@@ -308,12 +322,116 @@ namespace SysBot.Pokemon
                 }
             }
 
-            //添后加入的全奖章
-            if (typeof(T) == typeof(PK9) && zh.Contains("全技能"))
+            //体型大小并添加证章
+            if (typeof(T) == typeof(PK9) && zh.Contains("体型"))
             {
-                result += "\n.RelearnMoves=$suggestAll";
-                zh = zh.Replace("全技能", "");
+                if (zh.Contains("XXXL"))//255
+                {
+                    result += $"\n.Scale=255\n.RibbonMarkJumbo=True";
+                    zh = zh.Replace("XXXL", "");
+                }
+                else if (zh.Contains("XXL"))//242-254
+                {
+                    result += $"\n.Scale=$242,254";
+                    zh = zh.Replace("XXL", "");
+                }
+                else if (zh.Contains("XL"))//196-241
+                {
+                    result += $"\n.Scale=$196,241";
+                    zh = zh.Replace("XL", "");
+                }
+                else if (zh.Contains("L"))//161-195
+                {
+                    result += $"\n.Scale=$161,195";
+                    zh = zh.Replace("L", "");
+                }
+                else if (zh.Contains("AV"))//100-160
+                {
+                    result += $"\n.Scale=$100,160";
+                    zh = zh.Replace("AV", "");
+                }
+                else if (zh.Contains("S"))//61-99
+                {
+                    result += $"\n.Scale=$61,99";
+                    zh = zh.Replace("S", "");
+                }
+                else if (zh.Contains("XS"))//31-60
+                {
+                    result += $"\n.Scale=$31,60";
+                    zh = zh.Replace("XS", "");
+                }
+                else if (zh.Contains("XXS"))//1-30
+                {
+                    result += $"\n.Scale=$1,30";
+                    zh = zh.Replace("XXS", "");
+                }
+                else if (zh.Contains("XXXS"))//0
+                {
+                    result += $"\n.Scale=0\n.RibbonMarkMini=True";
+                    zh = zh.Replace("XXXS", "");
+                }
             }
+            //补充后天获得的全奖章
+            if (typeof(T) == typeof(PK9) && zh.Contains("全奖章"))
+            {
+                result += "\n.Ribbons=$suggestAll\n.RibbonMarkPartner=True\n.RibbonMarkGourmand=True";
+                zh = zh.Replace("全奖章", "");
+            }
+            //为野生宝可梦添加证章
+            //if (typeof(T) == typeof(PK9) && zh.Contains("野生"))（此条为其他大佬加入野生宝可梦功能时启用）
+            if (typeof(T) == typeof(PK9))
+            {
+                if(zh.Contains("未知之证")) { result += "\n.RibbonMarkRare=True"; }
+                else if (zh.Contains("小个子之证")) { result += "\n.Scale=255\n.RibbonMarkJumbo=True"; }
+                else if (zh.Contains("大个子之证")) { result += "\n.Scale=0\n.RibbonMarkMini=True"; }
+                else if (zh.Contains("命运之证")) { result += "\n.RibbonMarkDestiny=True"; }
+                else if (zh.Contains("暴雪之证")) { result += "\n.RibbonMarkBlizzard=True"; }
+                else if (zh.Contains("阴云之证")) { result += "\n.RibbonMarkCloudy=True"; }
+                else if (zh.Contains("正午之证")) { result += "\n.RibbonMarkLunchtime=True"; }
+                else if (zh.Contains("浓雾之证")) { result += "\n.RibbonMarkMisty=True"; }
+                else if (zh.Contains("降雨之证")) { result += "\n.RibbonMarkRainy=True"; }
+                else if (zh.Contains("沙尘之证")) { result += "\n.RibbonMarkSandstorm=True"; }
+                else if (zh.Contains("午夜之证")) { result += "\n.RibbonMarkSleepyTime=True"; }
+                else if (zh.Contains("降雪之证")) { result += "\n.RibbonMarkSnowy=True"; }
+                else if (zh.Contains("落雷之证")) { result += "\n.RibbonMarkStormy=True"; }
+                else if (zh.Contains("干燥之证")) { result += "\n.RibbonMarkDry=True"; }
+                else if (zh.Contains("黄昏之证")) { result += "\n.RibbonMarkDusk=True"; }
+                else if (zh.Contains("拂晓之证")) { result += "\n.RibbonMarkDawn=True"; }
+                else if (zh.Contains("上钩之证")) { result += "\n.RibbonMarkFishing=True"; }
+                else if (zh.Contains("咖喱之证")) { result += "\n.RibbonMarkCurry=True"; }
+                else if (zh.Contains("无虑之证")) { result += "\n.RibbonMarkAbsentMinded=True"; }
+                else if (zh.Contains("愤怒之证")) { result += "\n.RibbonMarkAngry=True"; }
+                else if (zh.Contains("冷静之证")) { result += "\n.RibbonMarkCalmness=True"; }
+                else if (zh.Contains("领袖之证")) { result += "\n.RibbonMarkCharismatic=True"; }
+                else if (zh.Contains("狡猾之证")) { result += "\n.RibbonMarkCrafty=True"; }
+                else if (zh.Contains("期待之证")) { result += "\n.RibbonMarkExcited=True"; }
+                else if (zh.Contains("本能之证")) { result += "\n.RibbonMarkFerocious=True"; }
+                else if (zh.Contains("动摇之证")) { result += "\n.RibbonMarkFlustered=True"; }
+                else if (zh.Contains("木讷之证")) { result += "\n.RibbonMarkHumble=True"; }
+                else if (zh.Contains("理性之证")) { result += "\n.RibbonMarkIntellectual=True"; }
+                else if (zh.Contains("热情之证")) { result += "\n.RibbonMarkIntense=True"; }
+                else if (zh.Contains("捡拾之证")) { result += "\n.RibbonMarkItemfinder=True"; }
+                else if (zh.Contains("紧张之证")) { result += "\n.RibbonMarkJittery=True"; }
+                else if (zh.Contains("幸福之证")) { result += "\n.RibbonMarkJoyful=True"; }
+                else if (zh.Contains("优雅之证")) { result += "\n.RibbonMarkKindly=True"; }
+                else if (zh.Contains("激动之证")) { result += "\n.RibbonMarkPeeved=True"; }
+                else if (zh.Contains("自信之证")) { result += "\n.RibbonMarkPrideful=True"; }
+                else if (zh.Contains("昂扬之证")) { result += "\n.RibbonMarkPumpedUp=True"; }
+                else if (zh.Contains("未知之证")) { result += "\n.RibbonMarkRare=True"; }
+                else if (zh.Contains("淘气之证")) { result += "\n.RibbonMarkRowdy=True"; }
+                else if (zh.Contains("凶悍之证")) { result += "\n.RibbonMarkScowling=True"; }
+                else if (zh.Contains("不振之证")) { result += "\n.RibbonMarkSlump=True"; }
+                else if (zh.Contains("微笑之证")) { result += "\n.RibbonMarkSmiley=True"; }
+                else if (zh.Contains("悲伤之证")) { result += "\n.RibbonMarkTeary=True"; }
+                else if (zh.Contains("不纯之证")) { result += "\n.RibbonMarkThorny=True"; }
+                else if (zh.Contains("偶遇之证")) { result += "\n.RibbonMarkUncommon=True"; }
+                else if (zh.Contains("自卑之证")) { result += "\n.RibbonMarkUnsure=True"; }
+                else if (zh.Contains("爽快之证")) { result += "\n.RibbonMarkUpbeat=True"; }
+                else if (zh.Contains("活力之证")) { result += "\n.RibbonMarkVigor=True"; }
+                else if (zh.Contains("倦怠之证")) { result += "\n.RibbonMarkZeroEnergy=True"; }
+                else if (zh.Contains("疏忽之证")) { result += "\n.RibbonMarkZonedOut=True"; }
+            }
+            
             //添加全回忆技能
             if (typeof(T) == typeof(PK9) && zh.Contains("全技能"))
             {
@@ -344,43 +462,6 @@ namespace SysBot.Pokemon
             {
                 result += "\n.MoveMastery=$suggestAll";
                 zh = zh.Replace("ALLMOVE", "");
-            }
-            // 添加体型
-            if (Regex.IsMatch(zh, "\\d{1,3}身高"))
-            {
-                string value = Regex.Match(zh, "(\\d{1,3})身高").Groups?[1]?.Value ?? "";
-                result += $"\n.HeightScalar= {value}";
-                zh = Regex.Replace(zh, "\\d{1,3}身高", "");
-            }
-            else if (Regex.IsMatch(zh, "\\d{1,3}HeightScalar"))
-            {
-                string value = Regex.Match(zh, "(\\d{1,3})HeightScalar").Groups?[1]?.Value ?? "";
-                result += $"\n.HeightScalar= {value}";
-                zh = Regex.Replace(zh, "\\d{1,3}HeightScalar", "");
-            }
-            if (Regex.IsMatch(zh, "\\d{1,3}体重"))
-            {
-                string value = Regex.Match(zh, "(\\d{1,3})体重").Groups?[1]?.Value ?? "";
-                result += $"\n.WeightScalar= {value}";
-                zh = Regex.Replace(zh, "\\d{1,3}体重", "");
-            }
-            else if (Regex.IsMatch(zh, "\\d{1,3}WeightScalar"))
-            {
-                string value = Regex.Match(zh, "(\\d{1,3})WeightScalar").Groups?[1]?.Value ?? "";
-                result += $"\n.WeightScalar= {value}";
-                zh = Regex.Replace(zh, "\\d{1,3}WeightScalar", "");
-            }
-            if (Regex.IsMatch(zh, "\\d{1,3}大小"))
-            {
-                string value = Regex.Match(zh, "(\\d{1,3})大小").Groups?[1]?.Value ?? "";
-                result += $"\n.Scale= {value}";
-                zh = Regex.Replace(zh, "\\d{1,3}大小", "");
-            }
-            else if (Regex.IsMatch(zh, "\\d{1,3}Scale"))
-            {
-                string value = Regex.Match(zh, "(\\d{1,3})Scale").Groups?[1]?.Value ?? "";
-                result += $"\n.Scale= {value}";
-                zh = Regex.Replace(zh, "\\d{1,3}WeScale", "");
             }
 
             // 添加技能
