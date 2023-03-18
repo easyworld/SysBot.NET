@@ -70,6 +70,15 @@ namespace SysBot.Pokemon
         [Category(Generate), Description("Maximum time in seconds to spend when generating a set before canceling. This prevents difficult sets from freezing the bot.")]
         public int Timeout { get; set; } = 15;
 
+        [Category(Generate), Description("允许指令非法开关\ntrue=非法模式，false=合法模式")]
+        public bool CommandillegalMod { get; set; } = false;
+
+        [Category(Generate), Description("允许文件非法开关\ntrue=非法模式，false=合法模式")]
+        public bool FileillegalMod { get; set; } = false;
+
+        [Category(Generate), Description("派送文件合法检测开关\ntrue=非法模式，false=合法模式")]
+        public bool PokemonPoolillegalMod { get; set; } = false;
+
         // Misc
 
         [Category(Misc), Description("Zero out HOME tracker regardless of current tracker value. Applies to user requested PKM files as well.")]

@@ -167,7 +167,7 @@ namespace SysBot.Pokemon.Dodo
                 if (pkm is T pk)
                 {
                     var valid = new LegalityAnalysis(pkm).Valid;
-                    if (valid)
+                    if (valid || DodoBot<T>.Info.Hub.Config.Legality.FileillegalMod)
                     {
                         msg =
                             $"<@!{username}> - 已加入等待队列. 如果你选宝可梦的速度太慢，你的派送请求将被取消!";
@@ -234,7 +234,7 @@ namespace SysBot.Pokemon.Dodo
                 if (pkm is T pk)
                 {
                     var valid = new LegalityAnalysis(pkm).Valid;
-                    if (valid)
+                    if (valid || DodoBot<T>.Info.Hub.Config.Legality.CommandillegalMod)
                     {
                         outPkm = pk;
 

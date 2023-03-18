@@ -89,8 +89,8 @@ namespace SysBot.Pokemon
                     LogUtil.LogInfo("SKIPPED: Provided file cannot be traded: " + dest.FileName, nameof(PokemonPool<T>));
                     continue;
                 }
-
-                var la = new LegalityAnalysis(dest);
+                if (!Settings.Legality.PokemonPoolillegalMod)
+                { var la = new LegalityAnalysis(dest);
                 if (!la.Valid)
                 {
                     var reason = la.Report();
@@ -102,6 +102,7 @@ namespace SysBot.Pokemon
                 {
                     LogUtil.LogInfo("Provided file was loaded but can't be Surprise Traded: " + dest.FileName, nameof(PokemonPool<T>));
                     surpriseBlocked++;
+                }
                 }
 
                 if (Settings.Legality.ResetHOMETracker && dest is IHomeTrack h)
