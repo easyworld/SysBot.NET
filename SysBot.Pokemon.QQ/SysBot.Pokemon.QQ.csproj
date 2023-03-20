@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Mirai.Net" Version="2.3.8" />
+		<PackageReference Include="Mirai.Net" Version="2.4.8" />
 	</ItemGroup>
 
 	<ItemGroup>

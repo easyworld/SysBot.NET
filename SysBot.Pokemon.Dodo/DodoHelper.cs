@@ -182,7 +182,7 @@ namespace SysBot.Pokemon.Dodo
             catch (Exception ex)
 #pragma warning restore CA1031 // Do not catch general exception types
             {
-                LogUtil.LogSafe(ex, nameof(DodoBot<T>));
+                LogUtil.LogSafe(ex, nameof(DodoHelper<T>));
                 msg = $"取消派送, <@!{username}>: 发生了一个错误";
             }
 
