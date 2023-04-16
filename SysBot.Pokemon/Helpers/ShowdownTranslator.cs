@@ -19,31 +19,54 @@ namespace SysBot.Pokemon
                 .Where(s => zh.Contains(s.Species)).OrderByDescending(s => s.Species.Length).FirstOrDefault()?.Index ?? -1;
 
             if (specieNo <= 0) return result;
-            result = specieNo switch
-            {
-                (int)Species.NidoranF => "Nidoran-F",
-                (int)Species.NidoranM => "Nidoran-M",
-                _ => GameStringsEn.Species[specieNo],
-            };
 
             zh = zh.Replace(GameStringsZh.Species[specieNo], "");
-
-            // 特殊性别差异
-            // 29-尼多兰F，32-尼多朗M，678-超能妙喵F，876-爱管侍F，902-幽尾玄鱼F, 916-飘香豚
-            if (((Species)specieNo is Species.Meowstic or Species.Indeedee or Species.Basculegion or Species.Oinkologne)
-                && zh.Contains("母")) result += "-F";
-
-
-            // 识别地区形态
-            foreach (var s in ShowdownTranslatorDictionary.formDict)
+            // 处理蛋宝可梦
+            if (zh.Contains("的蛋"))
             {
-                var searchKey = s.Key.EndsWith("形态") ? s.Key : s.Key + "形态";
-                if (!zh.Contains(searchKey)) continue;
-                result += $"-{s.Value}";
-                zh = zh.Replace(searchKey, "");
-                break;
-            }
+                result += "Egg ";
+                zh = zh.Replace("的蛋", "");
+            
+                // 特殊性别差异
+                // 29-尼多兰F，32-尼多朗M，678-超能妙喵F，876-爱管侍F，902-幽尾玄鱼F, 916-飘香豚
+                if (((Species)specieNo is Species.Meowstic or Species.Indeedee or Species.Basculegion or Species.Oinkologne)
+                    && zh.Contains("母")) result += "({GameStringsEn.Species[specieNo]}-F)";
 
+                else if (zh.Contains("形态"))
+                {
+                    // 识别地区形态
+                    foreach (var s in ShowdownTranslatorDictionary.formDict)
+                    {
+                        var searchKey = s.Key.EndsWith("形态") ? s.Key : s.Key + "形态";
+                        if (!zh.Contains(searchKey)) continue;
+                        result += $"({GameStringsEn.Species[specieNo]}-{s.Value})";
+                        zh = zh.Replace(searchKey, "");
+                        break;
+                    }
+                }
+                else result += $"({GameStringsEn.Species[specieNo]})";
+            }
+            else 
+            {
+                result = specieNo switch
+                {
+                    (int)Species.NidoranF => "Nidoran-F",
+                    (int)Species.NidoranM => "Nidoran-M",
+                    _ => GameStringsEn.Species[specieNo],
+                };
+                if (((Species)specieNo is Species.Meowstic or Species.Indeedee or Species.Basculegion or Species.Oinkologne)
+                    && zh.Contains("母")) result += "-F";
+
+                    // 识别地区形态
+                    foreach (var s in ShowdownTranslatorDictionary.formDict)
+                    {
+                        var searchKey = s.Key.EndsWith("形态") ? s.Key : s.Key + "形态";
+                        if (!zh.Contains(searchKey)) continue;
+                        result += $"-{s.Value}";
+                        zh = zh.Replace(searchKey, "");
+                        break;
+                    }
+            }
             // 添加性别
             if (zh.Contains("公"))
             {
