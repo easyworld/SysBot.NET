@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static SysBot.Base.SwitchButton;
 using static SysBot.Pokemon.PokeDataOffsetsLA;
+using System.Collections.Generic;
 
 namespace SysBot.Pokemon
 {
@@ -46,6 +47,7 @@ namespace SysBot.Pokemon
             TradeSettings = hub.Config.Trade;
             AbuseSettings = hub.Config.TradeAbuse;
             DumpSetting = hub.Config.Folder;
+            lastOffered = new byte[8];
         }
 
         // Cached offsets that stay the same per session.
@@ -56,6 +58,7 @@ namespace SysBot.Pokemon
 
         // Cached offsets that stay the same per trade.
         private ulong TradePartnerOfferedOffset;
+        private byte[] lastOffered;
 
         public override async Task MainLoop(CancellationToken token)
         {
@@ -305,74 +308,104 @@ namespace SysBot.Pokemon
                 await ExitTrade(false, token).ConfigureAwait(false);
                 return result;
             }
-
-            // Watch their status to indicate they have offered a Pokémon as well.
-            var offering = await ReadUntilChanged(TradePartnerOfferedOffset, new byte[] { 0x3 }, 25_000, 1_000, true, true, token).ConfigureAwait(false);
-            if (!offering)
+            List<PA8> batchPA8s = (List<PA8>)poke.Context.GetValueOrDefault("batch", new List<PA8> { toSend });
+            List<bool> skipAutoOTList = (List<bool>)poke.Context.GetValueOrDefault("skipAutoOTList", new List<bool> { false });
+            PA8 received = default!;
+            LogUtil.LogInfo($"count:{batchPA8s.Count}, skipAutoOTList:{String.Join(',', skipAutoOTList)}", nameof(PokeTradeBotLA));
+            for (var i = 0; i < batchPA8s.Count; i++)
             {
-                await ExitTrade(false, token).ConfigureAwait(false);
-                return PokeTradeResult.TrainerTooSlow;
+                var pa8 = batchPA8s[i];
+                if (i > 0 && pa8.Species != 0)
+                {
+                    await SetBoxPokemonAbsolute(BoxStartOffset, pa8, token, sav).ConfigureAwait(false);
+                }
+                if (batchPA8s.Count > 1) poke.SendNotification(this, $"批量:等待交换第{i + 1}个宝可梦{ShowdownTranslator<PA8>.GameStringsZh.Species[pa8.Species]}");
+
+                var needUseTradePartnerInfo = !skipAutoOTList[i];
+                if (Hub.Config.Legality.UseTradePartnerInfo && needUseTradePartnerInfo)
+                {
+                    await SetBoxPkmWithSwappedIDDetailsPLA(pa8, tradePartner, sav, token);
+                }
+
+                if (i > 0)
+                {
+                    partnerCheck = CheckPartnerReputation(poke, trainerNID, tradePartner.TrainerName);
+                    if (partnerCheck != PokeTradeResult.Success)
+                    {
+                        await ExitTrade(false, token).ConfigureAwait(false);
+                        return partnerCheck;
+                    }
+
+                }
+                // Watch their status to indicate they have offered a Pokémon as well.
+                var offering = await ReadUntilChanged(TradePartnerOfferedOffset, new byte[] { 0x3 }, 25_000, 1_000, true, true, token).ConfigureAwait(false);
+                if (!offering)
+                {
+                    await ExitTrade(false, token).ConfigureAwait(false);
+                    return PokeTradeResult.TrainerTooSlow;
+                }
+
+                Log("Checking offered Pokémon.");
+                // If we got to here, we can read their offered Pokémon.
+
+                // Wait for user input... Needs to be different from the previously offered Pokémon.
+                var offered = await ReadUntilPresentPointer(Offsets.LinkTradePartnerPokemonPointer, 3_000, 0_050, BoxFormatSlotSize, token).ConfigureAwait(false);
+                if (offered == null || offered.Species < 1 || !offered.ChecksumValid)
+                {
+                    Log("Trade ended because trainer offer was rescinded too quickly.");
+                    await ExitTrade(false, token).ConfigureAwait(false);
+                    return PokeTradeResult.TrainerOfferCanceledQuick;
+                }
+
+                PokeTradeResult update;
+                var trainer = new PartnerDataHolder(0, tradePartner.TrainerName, tradePartner.TID7);
+                (toSend, update) = await GetEntityToSend(sav, poke, offered, toSend, trainer, token).ConfigureAwait(false);
+                if (update != PokeTradeResult.Success)
+                {
+                    await ExitTrade(false, token).ConfigureAwait(false);
+                    return update;
+                }
+
+                if (Hub.Config.Legality.UseTradePartnerInfo)
+                {
+                    await SetBoxPkmWithSwappedIDDetailsPLA(toSend, tradePartner, sav, token);
+                }
+
+                Log("Confirming trade.");
+                var tradeResult = await ConfirmAndStartTrading(poke, token).ConfigureAwait(false);
+                if (tradeResult != PokeTradeResult.Success)
+                {
+                    if (tradeResult == PokeTradeResult.TrainerLeft)
+                        Log("Trade canceled because trainer left the trade.");
+                    await ExitTrade(false, token).ConfigureAwait(false);
+                    return tradeResult;
+                }
+
+                if (batchPA8s.Count > 1) poke.SendNotification(this, $"批量:第{i + 1}个宝可梦{ShowdownTranslator<PA8>.GameStringsZh.Species[pa8.Species]}交换完成");
+
+                if (token.IsCancellationRequested)
+                {
+                    await ExitTrade(false, token).ConfigureAwait(false);
+                    return PokeTradeResult.RoutineCancel;
+                }
+
+                // Trade was Successful!
+                received = await ReadPokemon(BoxStartOffset, BoxFormatSlotSize, token).ConfigureAwait(false);
+                // Pokémon in b1s1 is same as the one they were supposed to receive (was never sent).
+                if (SearchUtil.HashByDetails(received) == SearchUtil.HashByDetails(toSend) && received.Checksum == toSend.Checksum)
+                {
+                    Log("User did not complete the trade.");
+                    await ExitTrade(false, token).ConfigureAwait(false);
+                    return PokeTradeResult.TrainerTooSlow;
+                }
+                // Only log if we completed the trade.
+                UpdateCountsAndExport(poke, received, toSend);
+                lastOffered = await SwitchConnection.ReadBytesAbsoluteAsync(TradePartnerOfferedOffset, 8, token).ConfigureAwait(false);
             }
-
-            Log("Checking offered Pokémon.");
-            // If we got to here, we can read their offered Pokémon.
-
-            // Wait for user input... Needs to be different from the previously offered Pokémon.
-            var offered = await ReadUntilPresentPointer(Offsets.LinkTradePartnerPokemonPointer, 3_000, 0_050, BoxFormatSlotSize, token).ConfigureAwait(false);
-            if (offered == null || offered.Species < 1 || !offered.ChecksumValid)
-            {
-                Log("Trade ended because trainer offer was rescinded too quickly.");
-                await ExitTrade(false, token).ConfigureAwait(false);
-                return PokeTradeResult.TrainerOfferCanceledQuick;
-            }
-
-            PokeTradeResult update;
-            var trainer = new PartnerDataHolder(0, tradePartner.TrainerName, tradePartner.TID7);
-            (toSend, update) = await GetEntityToSend(sav, poke, offered, toSend, trainer, token).ConfigureAwait(false);
-            if (update != PokeTradeResult.Success)
-            {
-                await ExitTrade(false, token).ConfigureAwait(false);
-                return update;
-            }
-
-            if (Hub.Config.Legality.UseTradePartnerInfo)
-            {
-                await SetBoxPkmWithSwappedIDDetailsPLA(toSend, tradePartner, sav, token);
-            }
-
-            Log("Confirming trade.");
-            var tradeResult = await ConfirmAndStartTrading(poke, token).ConfigureAwait(false);
-            if (tradeResult != PokeTradeResult.Success)
-            {
-                if (tradeResult == PokeTradeResult.TrainerLeft)
-                    Log("Trade canceled because trainer left the trade.");
-                await ExitTrade(false, token).ConfigureAwait(false);
-                return tradeResult;
-            }
-
-            if (token.IsCancellationRequested)
-            {
-                await ExitTrade(false, token).ConfigureAwait(false);
-                return PokeTradeResult.RoutineCancel;
-            }
-
-            // Trade was Successful!
-            var received = await ReadPokemon(BoxStartOffset, BoxFormatSlotSize, token).ConfigureAwait(false);
-            // Pokémon in b1s1 is same as the one they were supposed to receive (was never sent).
-            if (SearchUtil.HashByDetails(received) == SearchUtil.HashByDetails(toSend) && received.Checksum == toSend.Checksum)
-            {
-                Log("User did not complete the trade.");
-                await ExitTrade(false, token).ConfigureAwait(false);
-                return PokeTradeResult.TrainerTooSlow;
-            }
-
             // As long as we got rid of our inject in b1s1, assume the trade went through.
             Log("User completed the trade.");
             poke.TradeFinished(this, received);
-
-            // Only log if we completed the trade.
-            UpdateCountsAndExport(poke, received, toSend);
-
+            lastOffered = await SwitchConnection.ReadBytesAbsoluteAsync(TradePartnerOfferedOffset, 8, token).ConfigureAwait(false);
             await ExitTrade(false, token).ConfigureAwait(false);
             return PokeTradeResult.Success;
         }
