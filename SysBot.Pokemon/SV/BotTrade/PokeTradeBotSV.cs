@@ -1111,21 +1111,41 @@ namespace SysBot.Pokemon
             cln.OT_Name = tradePartner.OT;
             
             // copied from https://github.com/Wanghaoran86/TransFireBot/commit/f7c5b39ce2952818177a97babb8b3df027e673fb
-            if (toSend.Species == (ushort)Species.Koraidon)
+            if (toSend.IsEgg == false)
             {
-                cln.Version = (int)GameVersion.SL;
-                Log("故勒顿，强制修改版本为朱");
+                if (toSend.Species == (ushort)Species.Koraidon)
+                {
+                    cln.Version = (int)GameVersion.SL;
+                    Log("故勒顿，强制修改版本为朱");
+                }
+                else if (toSend.Species == (ushort)Species.Miraidon)
+                {
+                    cln.Version = (int)GameVersion.VL;
+                    Log("密勒顿，强制修改版本为紫");
+                }
+                else
+                {
+                    cln.Version = tradePartner.Game;
+                }
+                cln.ClearNickname();
             }
-            else if (toSend.Species == (ushort)Species.Miraidon)
-            {
-                cln.Version = (int)GameVersion.VL;
-                Log("密勒顿，强制修改版本为紫");
-            } 
             else
             {
-                cln.Version = tradePartner.Game;
+                cln.IsNicknamed = true;
+                cln.Nickname = tradePartner.Language switch
+                {
+                    1 => "タマゴ",
+                    3 => "Œuf",
+                    4 => "Uovo",
+                    5 => "Ei",
+                    7 => "Huevo",
+                    8 => "알",
+                    9 or 10 => "蛋",
+                    _ => "Egg",
+                };
+                Log($"是蛋，修改昵称");
             }
-            cln.ClearNickname();
+            
 
             // thanks @Wanghaoran86
             if (toSend.Met_Location == Locations.TeraCavern9 && toSend.IsShiny)
