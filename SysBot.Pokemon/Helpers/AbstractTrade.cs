@@ -1,4 +1,4 @@
-﻿using PKHeX.Core;
+using PKHeX.Core;
 using PKHeX.Core.AutoMod;
 using SysBot.Base;
 using System;
@@ -445,7 +445,7 @@ namespace SysBot.Pokemon.Helpers
             pk.Move1_PPUps = pk.Move2_PPUps = pk.Move3_PPUps = pk.Move4_PPUps = 0;
             pk.SetMaximumPPCurrent(pk.Moves);
             pk.SetSuggestedHyperTrainingData();
-            pk.SetSuggestedRibbons(template, enc, true, APILegality.TracebackHandlerType.GetTracebackHandler());
+            pk.SetSuggestedRibbons(template, enc, true);
         }
 
     }
