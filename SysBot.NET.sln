@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SysBot.Pokemon.WinForms", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SysBot.Pokemon.ConsoleApp", "SysBot.Pokemon.ConsoleApp\SysBot.Pokemon.ConsoleApp.csproj", "{C0525606-4ED4-4998-9AF3-31E2DE65717A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SysBot.Pokemon.Z3", "SysBot.Pokemon.Z3\SysBot.Pokemon.Z3.csproj", "{DCC41103-1303-4CAB-AE01-5EA68317410D}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SysBot.Pokemon.QQ", "SysBot.Pokemon.QQ\SysBot.Pokemon.QQ.csproj", "{2CD212D9-FF32-4434-9E19-D9CCB99E6817}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SysBot.Pokemon.Bilibili", "SysBot.Pokemon.Bilibili\SysBot.Pokemon.Bilibili.csproj", "{310FFBCD-05DA-4CA3-B785-08B2158ABEBC}"
@@ -47,6 +49,10 @@ Global
 		{C0525606-4ED4-4998-9AF3-31E2DE65717A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0525606-4ED4-4998-9AF3-31E2DE65717A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0525606-4ED4-4998-9AF3-31E2DE65717A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCC41103-1303-4CAB-AE01-5EA68317410D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCC41103-1303-4CAB-AE01-5EA68317410D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCC41103-1303-4CAB-AE01-5EA68317410D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCC41103-1303-4CAB-AE01-5EA68317410D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2CD212D9-FF32-4434-9E19-D9CCB99E6817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2CD212D9-FF32-4434-9E19-D9CCB99E6817}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CD212D9-FF32-4434-9E19-D9CCB99E6817}.Release|Any CPU.ActiveCfg = Release|Any CPU

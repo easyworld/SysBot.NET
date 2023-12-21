@@ -1,4 +1,4 @@
-﻿using PKHeX.Core;
+using PKHeX.Core;
 using System.Threading;
 using System.Threading.Tasks;
 using SysBot.Pokemon.Bilibili;
@@ -45,7 +45,7 @@ public class PokeBotRunnerImpl<T> : PokeBotRunner<T> where T : PKM, new()
     private void AddDodoBot(DodoSettings config)
     {
         if (string.IsNullOrWhiteSpace(config.BaseApi) || string.IsNullOrWhiteSpace(config.ClientId) || string.IsNullOrWhiteSpace(config.Token)) return;
-        if (DodoBot != null) return;
-        DodoBot = new DodoBot<T>(config, Hub);
+        if (Dodo != null) return;
+        Dodo = new DodoBot<T>(config, Hub);
     }
 }
