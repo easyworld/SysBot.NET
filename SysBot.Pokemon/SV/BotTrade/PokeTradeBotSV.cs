@@ -996,20 +996,28 @@ public class PokeTradeBotSV(PokeTradeHub<PK9> Hub, PokeBotState Config) : PokeRo
         cln.OT_Name = tradePartner.OT;
         
         // copied from https://github.com/Wanghaoran86/TransFireBot/commit/f7c5b39ce2952818177a97babb8b3df027e673fb
-        if (toSend.Species == (ushort)Species.Koraidon)
+        ushort species = toSend.Species;
+        GameVersion version;
+        switch (species)
         {
-            cln.Version = (int)GameVersion.SL;
-            Log("故勒顿，强制修改版本为朱");
+            case (ushort)Species.Koraidon:
+            case (ushort)Species.GougingFire:
+            case (ushort)Species.RagingBolt:
+                version = GameVersion.SL;
+                Log("朱版本限定宝可梦，强制修改版本为朱");
+                break;
+            case (ushort)Species.Miraidon:
+            case (ushort)Species.IronCrown:
+            case (ushort)Species.IronBoulder:
+                version = GameVersion.VL;
+                Log("紫版本限定宝可梦，强制修改版本为紫");
+                break;
+            default:
+                version = tradePartner.Game;
+                break;
         }
-        else if (toSend.Species == (ushort)Species.Miraidon)
-        {
-            cln.Version = (int)GameVersion.VL;
-            Log("密勒顿，强制修改版本为紫");
-        } 
-        else
-        {
-            cln.Version = tradePartner.Game;
-        }
+        cln.Version = (int)version;
+
         cln.ClearNickname();
 
         // thanks @Wanghaoran86
