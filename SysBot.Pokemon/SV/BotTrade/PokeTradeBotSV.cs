@@ -1013,7 +1013,7 @@ public class PokeTradeBotSV(PokeTradeHub<PK9> Hub, PokeBotState Config) : PokeRo
                 Log("紫版本限定宝可梦，强制修改版本为紫");
                 break;
             default:
-                version = tradePartner.Game;
+                version = (GameVersion)tradePartner.Game;
                 break;
         }
         cln.Version = (int)version;
