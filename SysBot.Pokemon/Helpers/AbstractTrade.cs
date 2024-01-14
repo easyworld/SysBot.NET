@@ -392,12 +392,7 @@ namespace SysBot.Pokemon.Helpers
             pk.StatNature = pk.Nature;
             pk.SetEVs(new int[] { 0, 0, 0, 0, 0, 0 });
 
-            pk.SetMarking(0, 0);
-            pk.SetMarking(1, 0);
-            pk.SetMarking(2, 0);
-            pk.SetMarking(3, 0);
-            pk.SetMarking(4, 0);
-            pk.SetMarking(5, 0);
+            MarkingApplicator.SetMarkings(pk);
 
             pk.ClearRelearnMoves();
 
