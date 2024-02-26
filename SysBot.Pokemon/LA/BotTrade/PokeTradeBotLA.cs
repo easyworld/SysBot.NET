@@ -719,11 +719,11 @@ public class PokeTradeBotLA(PokeTradeHub<PA8> Hub, PokeBotState Config) : PokeRo
     private async Task<bool> SetBoxPkmWithSwappedIDDetailsPLA(PA8 toSend, TradePartnerLA tradePartner, SAV8LA sav, CancellationToken token)
     {
         var cln = (PA8)toSend.Clone();
-        cln.OT_Gender = tradePartner.Gender;
+        cln.OriginalTrainerGender = tradePartner.Gender;
         cln.TrainerTID7 = uint.Parse(tradePartner.TID7);
         cln.TrainerSID7 = uint.Parse(tradePartner.SID7);
         cln.Language = tradePartner.Language;
-        cln.OT_Name = tradePartner.TrainerName;
+        cln.OriginalTrainerName = tradePartner.TrainerName;
         cln.ClearNickname();
 
         if (toSend.IsShiny)

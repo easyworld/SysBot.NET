@@ -366,7 +366,7 @@ namespace SysBot.Pokemon.Helpers
             };
 
             pk.IsEgg = true;
-            pk.Egg_Location = pk switch
+            pk.EggLocation = pk switch
             {
                 PB8 => 60010,
                 PK9 => 30023,
@@ -376,8 +376,8 @@ namespace SysBot.Pokemon.Helpers
             pk.HeldItem = 0;
             pk.CurrentLevel = 1;
             pk.EXP = 0;
-            pk.Met_Level = 1;
-            pk.Met_Location = pk switch
+            pk.MetLevel = 1;
+            pk.MetLocation = pk switch
             {
                 PB8 => 65535,
                 PK9 => 0,
@@ -385,9 +385,9 @@ namespace SysBot.Pokemon.Helpers
             };
 
             pk.CurrentHandler = 0;
-            pk.OT_Friendship = 1;
-            pk.HT_Name = "";
-            pk.HT_Friendship = 0;
+            pk.OriginalTrainerFriendship = 1;
+            pk.HandlingTrainerName = "";
+            pk.HandlingTrainerFriendship = 0;
             pk.ClearMemories();
             pk.StatNature = pk.Nature;
             pk.SetEVs(new int[] { 0, 0, 0, 0, 0, 0 });
@@ -398,29 +398,29 @@ namespace SysBot.Pokemon.Helpers
 
             if (pk is PK8 pk8)
             {
-                pk8.HT_Language = 0;
-                pk8.HT_Gender = 0;
-                pk8.HT_Memory = 0;
-                pk8.HT_Feeling = 0;
-                pk8.HT_Intensity = 0;
+                pk8.HandlingTrainerLanguage = 0;
+                pk8.HandlingTrainerGender = 0;
+                pk8.HandlingTrainerMemory = 0;
+                pk8.HandlingTrainerMemoryFeeling = 0;
+                pk8.HandlingTrainerMemoryIntensity = 0;
                 pk8.DynamaxLevel = pk8.GetSuggestedDynamaxLevel(pk8, 0);
             }
             else if (pk is PB8 pb8)
             {
-                pb8.HT_Language = 0;
-                pb8.HT_Gender = 0;
-                pb8.HT_Memory = 0;
-                pb8.HT_Feeling = 0;
-                pb8.HT_Intensity = 0;
+                pb8.HandlingTrainerLanguage = 0;
+                pb8.HandlingTrainerGender = 0;
+                pb8.HandlingTrainerMemory = 0;
+                pb8.HandlingTrainerMemoryFeeling = 0;
+                pb8.HandlingTrainerMemoryIntensity = 0;
                 pb8.DynamaxLevel = pb8.GetSuggestedDynamaxLevel(pb8, 0);
             }
             else if (pk is PK9 pk9)
             {
-                pk9.HT_Language = 0;
-                pk9.HT_Gender = 0;
-                pk9.HT_Memory = 0;
-                pk9.HT_Feeling = 0;
-                pk9.HT_Intensity = 0;
+                pk9.HandlingTrainerLanguage = 0;
+                pk9.HandlingTrainerGender = 0;
+                pk9.HandlingTrainerMemory = 0;
+                pk9.HandlingTrainerMemoryFeeling = 0;
+                pk9.HandlingTrainerMemoryIntensity = 0;
                 pk9.Obedience_Level = 1;
                 pk9.Version = 0;
                 pk9.BattleVersion = 0;

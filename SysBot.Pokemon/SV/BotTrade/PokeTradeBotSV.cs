@@ -989,11 +989,11 @@ public class PokeTradeBotSV(PokeTradeHub<PK9> Hub, PokeBotState Config) : PokeRo
             return false;
         }
         var cln = toSend.Clone();
-        cln.OT_Gender = tradePartner.Gender;
+        cln.OriginalTrainerGender = (byte)tradePartner.Gender;
         cln.TrainerTID7 = (uint)Math.Abs(tradePartner.DisplayTID);
         cln.TrainerSID7 = (uint)Math.Abs(tradePartner.DisplaySID);
         cln.Language = tradePartner.Language;
-        cln.OT_Name = tradePartner.OT;
+        cln.OriginalTrainerName = tradePartner.OT;
         
         // copied from https://github.com/Wanghaoran86/TransFireBot/commit/f7c5b39ce2952818177a97babb8b3df027e673fb
         ushort species = toSend.Species;
@@ -1016,12 +1016,12 @@ public class PokeTradeBotSV(PokeTradeHub<PK9> Hub, PokeBotState Config) : PokeRo
                 version = (GameVersion)tradePartner.Game;
                 break;
         }
-        cln.Version = (int)version;
+        cln.Version = version;
 
         cln.ClearNickname();
 
         // thanks @Wanghaoran86
-        if (toSend.Met_Location == Locations.TeraCavern9 && toSend.IsShiny)
+        if (toSend.MetLocation == Locations.TeraCavern9 && toSend.IsShiny)
         {
             cln.PID = (((uint)(cln.TID16 ^ cln.SID16) ^ (cln.PID & 0xFFFF) ^ 1u) << 16) | (cln.PID & 0xFFFF);
         }
