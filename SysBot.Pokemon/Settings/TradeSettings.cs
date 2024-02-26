@@ -1,4 +1,4 @@
-﻿using PKHeX.Core;
+using PKHeX.Core;
 using SysBot.Base;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,6 +40,13 @@ public class TradeSettings : IBotStateSettings, ICountSettings
 
     [Category(TradeCode), Description("Maximum pokemons of single trade. Batch mode will be closed if this configuration is less than 1")]
     public int MaxPkmsPerTrade { get; set; } = 1;
+    
+    [Category(TradeConfig), Description("When enabled, disallows requesting Pokémon from outside of their original context.")]
+    public bool DisallowNonNatives { get; set; } = true;
+
+    [Category(TradeConfig), Description("When enabled, disallows requesting Pokémon if they have a HOME Tracker.")]
+    public bool DisallowTracked { get; set; } = true;
+
     /// <summary>
     /// Gets a random trade code based on the range settings.
     /// </summary>
