@@ -274,7 +274,6 @@ namespace SysBot.Pokemon.Helpers
             try
             {
                 var sav = AutoLegalityWrapper.GetTrainerInfo<T>();
-                GenerationFix(sav);
                 var pkm = sav.GetLegal(template, out var result);
                 if (pkm.Nickname.ToLower() == "egg" && Breeding.CanHatchAsEgg(pkm.Species)) EggTrade(pkm, template);
                 if (Check((T)pkm, out msg))
@@ -290,11 +289,6 @@ namespace SysBot.Pokemon.Helpers
             }
 
             return false;
-        }
-
-        private static void GenerationFix(ITrainerInfo sav)
-        {
-            if (typeof(T) == typeof(PK8) || typeof(T) == typeof(PB8) || typeof(T) == typeof(PA8)) sav.GetType().GetProperty("Generation")?.SetValue(sav, 8);
         }
 
         private bool AddToTradeQueue(T pk, int code, bool skipAutoOT,
