@@ -1,0 +1,622 @@
+Ability
+Hardy Nature
+Lonely Nature
+Brave Nature
+Adamant Nature
+Naughty Nature
+Bold Nature
+Docile Nature
+Relaxed Nature
+Impish Nature
+Lax Nature
+Timid Nature
+Hasty Nature
+Serious Nature
+Jolly Nature
+Naive Nature
+Modest Nature
+Mild Nature
+Quiet Nature
+Bashful Nature
+Rash Nature
+Calm Nature
+Gentle Nature
+Sassy Nature
+Careful Nature
+Quirky Nature
+Hardy Nature
+Lonely Nature
+Brave Nature
+Adamant Nature
+Naughty Nature
+Bold Nature
+Docile Nature
+Relaxed Nature
+Impish Nature
+Lax Nature
+Timid Nature
+Hasty Nature
+Serious Nature
+Jolly Nature
+Naive Nature
+Modest Nature
+Mild Nature
+Quiet Nature
+Bashful Nature
+Rash Nature
+Calm Nature
+Gentle Nature
+Sassy Nature
+Careful Nature
+Quirky Nature
+Hardy Nature
+Lonely Nature
+Adamant Nature
+Naughty Nature
+Brave Nature
+Brave Nature
+Bold Nature
+Impish Nature
+Lax Nature
+Relaxed Nature
+Relaxed Nature
+Modest Nature
+Mild Nature
+Rash Nature
+Quiet Nature
+Quiet Nature
+Calm Nature
+Gentle Nature
+Careful Nature
+Sassy Nature
+Sassy Nature
+Timid Nature
+Hasty Nature
+Jolly Nature
+Naive Nature
+Timid Nature
+Hasty Nature
+Jolly Nature
+Naive Nature
+Hardy Nature
+Lonely Nature
+Adamant Nature
+Naughty Nature
+Brave Nature
+Brave Nature
+Bold Nature
+Impish Nature
+Lax Nature
+Relaxed Nature
+Relaxed Nature
+Modest Nature
+Mild Nature
+Rash Nature
+Quiet Nature
+Quiet Nature
+Calm Nature
+Gentle Nature
+Careful Nature
+Sassy Nature
+Sassy Nature
+Timid Nature
+Hasty Nature
+Jolly Nature
+Naive Nature
+Timid Nature
+Hasty Nature
+Jolly Nature
+Naive Nature
+Nature
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=255
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+.OriginalTrainerFriendship=
+Friendship: 255
+Friendship: 255
+Friendship: 255
+Friendship: 255
+Friendship: 
+Friendship: 
+Friendship: 
+Friendship: 
+Friendship: 255
+Friendship: 255
+Friendship: 255
+Friendship: 255
+Friendship: 
+Friendship: 
+Friendship: 
+Friendship: 
+Language: 
+Language: 
+Language: 
+Level: 
+Level: 
+Level: 
+Shiny: Yes
+Shiny: Yes
+Shiny: Yes
+Shiny: Yes
+Shiny: Yes
+Shiny: Yes
+Shiny: Yes
+Shiny: Yes
+Shiny: Yes
+Shiny: Yes
+Shiny: Yes
+Shiny: Yes
+Ball: 
+Ball: 
+Ball: 
+Ball: 
+Ball: 
+Tera Type: 
+Tera Type: 
+Tera Type: 
+Tera Type: 
+Tera Type: 
+Tera Type: 
+Tera Type: 
+Tera Type: 
+Tera Type: 
+.Scale=
+.Scale=
+.Scale=
+.Scale=
+.Scale=
+.Scale=
+Japanese
+Japanese
+English
+English
+French
+French
+Italian
+Italian
+German
+German
+Spanish
+Spanish
+Korean
+Korean
+ChineseS
+ChineseS
+ChineseT
+ChineseT
+.RibbonMarkMightiest=true
+.RibbonMarkMightiest=true
+.RibbonMarkMightiest=true
+Alpha: Yes
+Alpha: Yes
+Alpha: Yes
+.Ribbons=$SuggestAll
+.Ribbons=$SuggestAll
+.Ribbons=$SuggestAll
+.Ribbons=$SuggestAll
+.Ribbons=$SuggestAll
+.Ribbons=$SuggestAll
+.MetDate=
+.MetDate=
+.MetDate=
+.MetDate=
+.MetDate=
+.MetDate=
+.MetDate=
+.MetDate=
+Gigantamax: Yes
+Gigantamax: Yes
+Gigantamax: Yes
+Gigantamax: Yes
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+Dynamax Level: 
+=Generation=
+=Generation=
+=Generation=
+.MetLocation=
+.MetLocation=
+.MetLocation=
+.MetLocation=
+.MetLocation=
+.MetLocation=
+.MetLocation=
+.MetLocation=
+.Ribbons=$suggestAll
+.Ribbons=$suggestAll
+.Ribbons=$suggestAll
+.Ribbons=$suggestAll
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+OTGender: Male
+OTGender: Male
+OTGender: Female
+OTGender: Female
+OT: 
+OT: 
+OT: 
+OT: 
+OT: 
+OT: 
+OT: 
+OT: 
+OT: 
+.Version=1
+.Version=2
+.Version=3
+.Version=4
+.Version=5
+.Version=7
+.Version=8
+.Version=10
+.Version=11
+.Version=12
+.Version=15
+.Version=15
+.Version=15
+.Version=20
+.Version=21
+.Version=22
+.Version=22
+.Version=23
+.Version=23
+.Version=24
+.Version=25
+.Version=26
+.Version=27
+.Version=30
+.Version=31
+.Version=32
+.Version=33
+.Version=34
+.Version=42
+.Version=42
+.Version=43
+.Version=43
+.Version=44
+.Version=45
+.Version=47
+.Version=47
+.Version=47
+.Version=48
+.Version=49
+.Version=50
+.Version=51
+.Version=1
+.Version=2
+.Version=3
+.Version=4
+.Version=5
+.Version=7
+.Version=8
+.Version=10
+.Version=11
+.Version=12
+.Version=15
+.Version=15
+.Version=15
+.Version=20
+.Version=21
+.Version=22
+.Version=22
+.Version=23
+.Version=23
+.Version=24
+.Version=25
+.Version=26
+.Version=27
+.Version=30
+.Version=31
+.Version=32
+.Version=33
+.Version=34
+.Version=42
+.Version=42
+.Version=43
+.Version=43
+.Version=44
+.Version=45
+.Version=47
+.Version=47
+.Version=47
+.Version=48
+.Version=49
+.Version=50
+.Version=51
+.Version=1
+.Version=2
+.Version=3
+.Version=4
+.Version=5
+.Version=7
+.Version=8
+.Version=10
+.Version=11
+.Version=12
+.Version=15
+.Version=15
+.Version=15
+.Version=20
+.Version=21
+.Version=22
+.Version=22
+.Version=23
+.Version=23
+.Version=24
+.Version=25
+.Version=26
+.Version=27
+.Version=30
+.Version=31
+.Version=32
+.Version=33
+.Version=34
+.Version=42
+.Version=42
+.Version=43
+.Version=43
+.Version=44
+.Version=45
+.Version=47
+.Version=47
+.Version=47
+.Version=48
+.Version=49
+.Version=50
+.Version=51
+.Version=1
+.Version=2
+.Version=3
+.Version=4
+.Version=5
+.Version=7
+.Version=8
+.Version=10
+.Version=11
+.Version=12
+.Version=15
+.Version=15
+.Version=15
+.Version=20
+.Version=21
+.Version=22
+.Version=22
+.Version=23
+.Version=23
+.Version=24
+.Version=25
+.Version=26
+.Version=27
+.Version=30
+.Version=31
+.Version=32
+.Version=33
+.Version=34
+.Version=42
+.Version=42
+.Version=43
+.Version=43
+.Version=44
+.Version=45
+.Version=47
+.Version=47
+.Version=47
+.Version=48
+.Version=49
+.Version=50
+.Version=51
+.Version=1
+.Version=2
+.Version=3
+.Version=4
+.Version=5
+.Version=7
+.Version=8
+.Version=10
+.Version=11
+.Version=12
+.Version=15
+.Version=15
+.Version=15
+.Version=20
+.Version=21
+.Version=22
+.Version=22
+.Version=23
+.Version=23
+.Version=24
+.Version=25
+.Version=26
+.Version=27
+.Version=30
+.Version=31
+.Version=32
+.Version=33
+.Version=34
+.Version=42
+.Version=42
+.Version=43
+.Version=43
+.Version=44
+.Version=45
+.Version=47
+.Version=47
+.Version=47
+.Version=48
+.Version=49
+.Version=50
+.Version=51
+.Version=1
+.Version=2
+.Version=3
+.Version=4
+.Version=5
+.Version=7
+.Version=8
+.Version=10
+.Version=11
+.Version=12
+.Version=15
+.Version=15
+.Version=15
+.Version=20
+.Version=21
+.Version=22
+.Version=22
+.Version=23
+.Version=23
+.Version=24
+.Version=25
+.Version=26
+.Version=27
+.Version=30
+.Version=31
+.Version=32
+.Version=33
+.Version=34
+.Version=42
+.Version=42
+.Version=43
+.Version=43
+.Version=44
+.Version=45
+.Version=47
+.Version=47
+.Version=47
+.Version=48
+.Version=49
+.Version=50
+.Version=51
+EVs: 
+EVs: 
+IVs: 
+IVs: 
+EVs: 
+EVs: 
+IVs: 
+IVs: 
+EVs: 
+EVs: 
+IVs: 
+IVs: 
+HP
+HP
+Atk
+Atk
+Def
+Def
+SpA
+SpA
+SpD
+SpD
+Spe
+Spe
+SID: 
+SID: 
+TID: 
+TID: 
+M
+M
+F
+F

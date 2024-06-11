@@ -1,5 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Google.Apis" Version="1.67.0" />
     <PackageReference Include="Google.Apis.Auth" Version="1.67.0" />

@@ -21,7 +21,7 @@ public sealed partial class Main : Form
     public Main()
     {
         InitializeComponent();
-
+        PmDataNameWinForms.initialization();//載入本地化文件
         PokeTradeBotSWSH.SeedChecker = new Z3SeedSearchHandler<PK8>();
         if (File.Exists(Program.ConfigPath))
         {

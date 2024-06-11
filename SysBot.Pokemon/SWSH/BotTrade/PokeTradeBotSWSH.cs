@@ -978,6 +978,8 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
         cln.TrainerSID7 = tidsid / 1_000_000;
         cln.Language = data[5];
         cln.OriginalTrainerName = trainerName;
+        PkmCalculation.ClearOTTrash(cln, trainerName);//清除多餘字元
+        
         cln.ClearNickname();
 
         if (toSend.IsShiny)

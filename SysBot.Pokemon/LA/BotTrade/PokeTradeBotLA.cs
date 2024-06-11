@@ -726,6 +726,7 @@ public class PokeTradeBotLA(PokeTradeHub<PA8> Hub, PokeBotState Config) : PokeRo
         cln.TrainerSID7 = uint.Parse(tradePartner.SID7);
         cln.Language = tradePartner.Language;
         cln.OriginalTrainerName = tradePartner.TrainerName;
+        PkmCalculation.ClearOTTrash(cln, tradePartner.TrainerName);//清除多餘字元
         cln.ClearNickname();
 
         if (toSend.IsShiny)

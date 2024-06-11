@@ -1,5 +1,123 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="localization\Abilities\text_Abilities_en.txt" />
+    <None Remove="localization\Abilities\text_Abilities_zh.txt" />
+    <None Remove="localization\Abilities\text_Abilities_zh2.txt" />
+    <None Remove="localization\Ball\text_Ball_en.txt" />
+    <None Remove="localization\Ball\text_Ball_zh.txt" />
+    <None Remove="localization\Ball\text_Ball_zh2.txt" />
+    <None Remove="localization\Forms\text_Forms_en.txt" />
+    <None Remove="localization\Forms\text_Forms_zh.txt" />
+    <None Remove="localization\Forms\text_Forms_zh2.txt" />
+    <None Remove="localization\Items\text_Items_en.txt" />
+    <None Remove="localization\Items\text_Items_zh.txt" />
+    <None Remove="localization\Items\text_Items_zh2.txt" />
+    <None Remove="localization\Moves\text_Moves_en.txt" />
+    <None Remove="localization\Moves\text_Moves_zh.txt" />
+    <None Remove="localization\Moves\text_Moves_zh2.txt" />
+    <None Remove="localization\Natures\text_Natures_en.txt" />
+    <None Remove="localization\Natures\text_Natures_zh.txt" />
+    <None Remove="localization\Natures\text_Natures_zh2.txt" />
+    <None Remove="localization\Other\text_Other_en.txt" />
+    <None Remove="localization\Other\text_Other_zh.txt" />
+    <None Remove="localization\Other\text_Other_zh2.txt" />
+    <None Remove="localization\Species\text_Species_en.txt" />
+    <None Remove="localization\Species\text_Species_zh.txt" />
+    <None Remove="localization\Species\text_Species_zh2.txt" />
+    <None Remove="localization\Types\text_Types_en.txt" />
+    <None Remove="localization\Types\text_Types_zh.txt" />
+    <None Remove="localization\Types\text_Types_zh2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\Abilities\text_Abilities_en.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Abilities\text_Abilities_zh.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Abilities\text_Abilities_zh2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Ball\text_Ball_en.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Ball\text_Ball_zh.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Ball\text_Ball_zh2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Forms\text_Forms_en.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Forms\text_Forms_zh.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Forms\text_Forms_zh2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Items\text_Items_en.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Items\text_Items_zh.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Items\text_Items_zh2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Moves\text_Moves_en.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Moves\text_Moves_zh.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Moves\text_Moves_zh2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Natures\text_Natures_en.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Natures\text_Natures_zh.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Natures\text_Natures_zh2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Other\text_Other_en.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Other\text_Other_zh.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Other\text_Other_zh2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Species\text_Species_en.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Species\text_Species_zh.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Species\text_Species_zh2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Types\text_Types_en.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Types\text_Types_zh.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="localization\Types\text_Types_zh2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="3.13.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />

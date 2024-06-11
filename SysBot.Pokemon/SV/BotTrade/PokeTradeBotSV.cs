@@ -996,6 +996,7 @@ public class PokeTradeBotSV(PokeTradeHub<PK9> Hub, PokeBotState Config) : PokeRo
         cln.TrainerSID7 = (uint)Math.Abs(tradePartner.DisplaySID);
         cln.Language = tradePartner.Language;
         cln.OriginalTrainerName = tradePartner.OT;
+        PkmCalculation.ClearOTTrash(cln, tradePartner.OT);//清除多餘字元
         
         // copied from https://github.com/Wanghaoran86/TransFireBot/commit/f7c5b39ce2952818177a97babb8b3df027e673fb
         ushort species = toSend.Species;

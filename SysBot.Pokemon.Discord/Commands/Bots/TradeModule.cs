@@ -31,6 +31,16 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
         await ReplyAsync("These are the users who are currently waiting:", embed: embed.Build()).ConfigureAwait(false);
     }
 
+    [Command("交易")]
+    [Alias("交易")]
+    [Summary("Makes the bot trade you the provided Pokémon file.")]
+    [RequireQueueRole(nameof(DiscordManager.RolesTrade))]
+    public Task TradeAsyncAttach_1([Summary("Trade Code")] int code)
+    {
+        var sig = Context.User.GetFavor();
+        return TradeAsyncAttach(code, sig, Context.User);
+    }
+    
     [Command("trade")]
     [Alias("t")]
     [Summary("Makes the bot trade you the provided Pokémon file.")]
@@ -48,6 +58,7 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
     public async Task TradeAsync([Summary("Trade Code")] int code, [Summary("Showdown Set")][Remainder] string content)
     {
         content = ReusableActions.StripCodeBlock(content);
+        content = PmDataNameDiscord.PmConvert(content);//中文化
         var set = new ShowdownSet(content);
         var template = AutoLegalityWrapper.GetTemplate(set);
         if (set.InvalidLines.Count != 0)
@@ -66,8 +77,9 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
             pkm = EntityConverter.ConvertToType(pkm, typeof(T), out _) ?? pkm;
             if (pkm is not T pk || !la.Valid)
             {
-                var reason = result == "Timeout" ? $"That {spec} set took too long to generate." : result == "VersionMismatch" ? "Request refused: PKHeX and Auto-Legality Mod version mismatch." : $"I wasn't able to create a {spec} from that set.";
-                var imsg = $"Oops! {reason}";
+				var reason = result == "超時" ? $"該 {spec} 集生成時間太長." : result == "版本不匹配" ? "請求被拒絕：PKHeX和ALM版本不匹配，請暫時使用PKHeX生成寶可夢." : $"我無法從該合集創建 {spec} .";
+                //var reason = result == "Timeout" ? $"That {spec} set took too long to generate." : result == "VersionMismatch" ? "Request refused: PKHeX and Auto-Legality Mod version mismatch." : $"I wasn't able to create a {spec} from that set.";
+                var imsg = $"完了! {reason}";
                 if (result == "Failed")
                     imsg += $"\n{AutoLegalityWrapper.GetLegalizationHint(template, sav, pkm)}";
                 await ReplyAsync(imsg).ConfigureAwait(false);
@@ -81,11 +93,21 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
         catch (Exception ex)
         {
             LogUtil.LogSafe(ex, nameof(TradeModule<T>));
-            var msg = $"Oops! An unexpected problem happened with this Showdown Set:\n```{string.Join("\n", set.GetSetLines())}```";
+            var msg = $"完了! 發生意外故障:\n```{string.Join("\n", set.GetSetLines())}```";
             await ReplyAsync(msg).ConfigureAwait(false);
         }
     }
 
+    [Command("交易")]
+    [Alias("交易")]
+    [Summary("Makes the bot trade you a Pokémon converted from the provided Showdown Set.")]
+    [RequireQueueRole(nameof(DiscordManager.RolesTrade))]
+    public Task TradeAsync_1([Summary("Showdown Set")][Remainder] string content)
+    {
+        var code = Info.GetRandomTradeCode();
+        return TradeAsync(code, content);
+    }
+    
     [Command("trade")]
     [Alias("t")]
     [Summary("Makes the bot trade you a Pokémon converted from the provided Showdown Set.")]
@@ -160,7 +182,7 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
         var attachment = Context.Message.Attachments.FirstOrDefault();
         if (attachment == default)
         {
-            await ReplyAsync("No attachment provided!").ConfigureAwait(false);
+            await ReplyAsync("您沒有提供附件！或者您可以使用指令進行交換！").ConfigureAwait(false);
             return;
         }
 
@@ -168,10 +190,22 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
         var pk = GetRequest(att);
         if (pk == null)
         {
-            await ReplyAsync("Attachment provided is not compatible with this module!").ConfigureAwait(false);
+            await ReplyAsync("提供的附件與該模組不相容！").ConfigureAwait(false);
             return;
         }
-
+        var la = new LegalityAnalysis(pk);//審核玩家檔案 初始訓練家字元 並協助自動清除多餘字元
+        if (!la.Valid)
+        {
+            PKM checking_PM = pk.Clone();
+            PkmCalculation.ClearOTTrash(checking_PM, checking_PM.OriginalTrainerName);
+            var checking_PM_la = new LegalityAnalysis(checking_PM);
+            if (checking_PM_la.Valid)
+            {
+                string speciesName = GameInfo.GetStrings(8).specieslist[pk.Species];
+                pk = (T)checking_PM;
+                await ReplyAsync($"偵測到, {speciesName} 寶可夢存在垃圾位元組，已自動清除垃圾位元組。").ConfigureAwait(false);
+            }
+        }
         await AddTradeToQueueAsync(code, usr.Username, pk, sig, usr).ConfigureAwait(false);
     }
 
@@ -192,7 +226,7 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
         if (!pk.CanBeTraded())
         {
             // Disallow anything that cannot be traded from the game (e.g. Fusions).
-            await ReplyAsync("Provided Pokémon content is blocked from trading!").ConfigureAwait(false);
+            await ReplyAsync("所提供的寶可夢將被禁止交易！").ConfigureAwait(false);
             return;
         }
 
@@ -201,19 +235,19 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
         if (!la.Valid)
         {
             // Disallow trading illegal Pokémon.
-            await ReplyAsync($"{typeof(T).Name} attachment is not legal, and cannot be traded!").ConfigureAwait(false);
+            await ReplyAsync($"{typeof(T).Name} 附件不合法，不能交易！").ConfigureAwait(false);
             return;
         }
         if (cfg.DisallowNonNatives && (la.EncounterOriginal.Context != pk.Context || pk.GO))
         {
             // Allow the owner to prevent trading entities that require a HOME Tracker even if the file has one already.
-            await ReplyAsync($"{typeof(T).Name} attachment is not native, and cannot be traded!").ConfigureAwait(false);
+            await ReplyAsync($"{typeof(T).Name} 附件不是原生的，不能交易！").ConfigureAwait(false);
             return;
         }
         if (cfg.DisallowTracked && pk is IHomeTrack { HasTracker: true })
         {
             // Allow the owner to prevent trading entities that already have a HOME Tracker.
-            await ReplyAsync($"{typeof(T).Name} attachment is tracked by HOME, and cannot be traded!").ConfigureAwait(false);
+            await ReplyAsync($"{typeof(T).Name} 寶可夢來源自Pokemon Home，為確保安全無法進行此交換").ConfigureAwait(false);
             return;
         }
 

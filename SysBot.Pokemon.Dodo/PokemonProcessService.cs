@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using DoDo.Open.Sdk.Models.Bots;
 using DoDo.Open.Sdk.Models.ChannelMessages;
@@ -15,7 +15,7 @@ namespace SysBot.Pokemon.Dodo
     {
         private readonly OpenApiService _openApiService;
         private static readonly string LogIdentity = "DodoBot";
-        private static readonly string Welcome = "at我并尝试对我说：\n皮卡丘\nps代码\n或者直接拖一个文件进来";
+        private static readonly string Welcome = "不能识别的指令！\n1.请使用**简体中文**/英文指令交换\n2.直接拖入PKHeX生成的.pk文件交换\n3.取消排队请输入:取消\n4.查询位置请输入:位置\n5.使用帮助请输入:帮助";
         private readonly string _channelId;
         private DodoSettings _dodoSettings;
         private string _botDodoSourceId = default!;
@@ -97,7 +97,9 @@ namespace SysBot.Pokemon.Dodo
             if (!content.Contains($"<@!{_botDodoSourceId}>")) return;
 
             content = content.Substring(content.IndexOf('>') + 1);
-            if (typeof(TP) == typeof(PK9) && content.Contains("\n\n") && ShowdownTranslator<TP>.IsPS(content))// 仅SV支持批量，其他偷懒还没写
+            //if ((typeof(TP) == typeof(PK9) || (typeof(TP) == typeof(PK8)) && content.Contains("\n\n") && ShowdownTranslator<TP>.IsPS(content)))// 仅SV支持批量，其他偷懒还没写
+            //if (typeof(TP) == typeof(PK9) && content.Contains("\n\n") && ShowdownTranslator<TP>.IsPS(content))// 仅SV支持批量，其他偷懒还没写
+			if (content.Contains("\n\n") && ShowdownTranslator<TP>.IsPS(content))// 已开启批量
             {
                 ProcessWithdraw(eventBody.MessageId);
                 new DodoTrade<TP>(ulong.Parse(eventBody.DodoSourceId), eventBody.Personal.NickName, eventBody.ChannelId, eventBody.IslandSourceId).StartTradeMultiPs(content.Trim());
@@ -115,7 +117,9 @@ namespace SysBot.Pokemon.Dodo
                 new DodoTrade<TP>(ulong.Parse(eventBody.DodoSourceId), eventBody.Personal.NickName, eventBody.ChannelId, eventBody.IslandSourceId).StartDump();
                 return;
             }
-            else if (typeof(TP) == typeof(PK9) && content.Trim().Contains('+'))// 仅SV支持批量，其他偷懒还没写
+			//else if ((typeof(TP) == typeof(PK9) || (typeof(TP) == typeof(PK8)) && content.Trim().Contains('+')))// 仅SV支持批量，其他偷懒还没写
+			//else if (typeof(TP) == typeof(PK9) && content.Trim().Contains('+'))// 仅SV支持批量，其他偷懒还没写
+			else if (content.Trim().Contains('+'))// 已开启批量
             {
                 ProcessWithdraw(eventBody.MessageId);
                 new DodoTrade<TP>(ulong.Parse(eventBody.DodoSourceId), eventBody.Personal.NickName, eventBody.ChannelId, eventBody.IslandSourceId).StartTradeMultiChinesePs(content.Trim());
@@ -140,6 +144,13 @@ namespace SysBot.Pokemon.Dodo
                 var result = DodoBot<TP>.Info.CheckPosition(ulong.Parse(eventBody.DodoSourceId));
                 DodoBot<TP>.SendChannelAtMessage(ulong.Parse(eventBody.DodoSourceId),
                     $" {GetQueueCheckResultMessage(result)}",
+                    eventBody.ChannelId);
+            }
+            else if (content.Contains("帮助"))
+            {
+                var result = DodoBot<TP>.Info.CheckPosition(ulong.Parse(eventBody.DodoSourceId));
+                DodoBot<TP>.SendChannelAtMessage(ulong.Parse(eventBody.DodoSourceId),
+                    $"\n1.PKHeX使用教学：https://imdodo.com/p/499922403934482432 \n2.中文指令模板：https://imdodo.com/p/499915195851087872 \n3.英文指令在线生成：https://easyworld.github.io/ps/ \n4.中英文形态字典：https://docs.qq.com/sheet/DZWNRbEN5a1JsT0F0",
                     eventBody.ChannelId);
             }
             else

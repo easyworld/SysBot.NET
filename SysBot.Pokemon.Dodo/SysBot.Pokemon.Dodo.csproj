@@ -1,11 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<PropertyGroup>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<LangVersion>11</LangVersion>
+	</PropertyGroup>
+
 	<ItemGroup>
-		<PackageReference Include="DoDo.Open.Sdk" Version="1.7.0" />
+		<PackageReference Include="DoDo.Open.Sdk" Version="1.8.7" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\SysBot.Base\SysBot.Base.csproj" />
 		<ProjectReference Include="..\SysBot.Pokemon\SysBot.Pokemon.csproj" />
+		<Reference Include="PKHeX.Core">
+			<HintPath>..\SysBot.Pokemon\deps\PKHeX.Core.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 </Project>

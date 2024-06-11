@@ -1,5 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="PKHeX.Core" Version="24.6.3" />
     <ProjectReference Include="..\SysBot.Base\SysBot.Base.csproj" />

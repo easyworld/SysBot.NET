@@ -2,26 +2,15 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <PackageId>SysBot.Pokemon.WinForms</PackageId>
-    <AssemblyName>SysBot</AssemblyName>
-    <Description>Nintendo Switch Pokémon Bot Manager</Description>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject>SysBot.Pokemon.WinForms.Program</StartupObject>
-    <Version>01.00.00</Version>
-    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <DebugType>portable</DebugType>
-    <EmbedAllSources>true</EmbedAllSources>
-    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-    <PublishTrimmed>false</PublishTrimmed>
-    <SelfContained>false</SelfContained>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <AssemblyName>SysBot</AssemblyName>
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
+	<Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
