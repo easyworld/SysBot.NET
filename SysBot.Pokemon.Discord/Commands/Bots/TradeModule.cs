@@ -66,7 +66,12 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
             pkm = EntityConverter.ConvertToType(pkm, typeof(T), out _) ?? pkm;
             if (pkm is not T pk || !la.Valid)
             {
-                var reason = result == "Timeout" ? $"That {spec} set took too long to generate." : result == "VersionMismatch" ? "Request refused: PKHeX and Auto-Legality Mod version mismatch." : $"I wasn't able to create a {spec} from that set.";
+                var reason = result switch
+                {
+                    "Timeout" => $"That {spec} set took too long to generate.",
+                    "VersionMismatch" => "Request refused: PKHeX and Auto-Legality Mod version mismatch.",
+                    _ => $"I wasn't able to create a {spec} from that set.",
+                };
                 var imsg = $"Oops! {reason}";
                 if (result == "Failed")
                     imsg += $"\n{AutoLegalityWrapper.GetLegalizationHint(template, sav, pkm)}";
@@ -111,7 +116,7 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
     [RequireSudo]
     public async Task BanTradeAsync([Summary("Online ID")] ulong nnid, string comment)
     {
-        SysCordSettings.HubConfig.TradeAbuse.BannedIDs.AddIfNew(new[] { GetReference(nnid, comment) });
+        SysCordSettings.HubConfig.TradeAbuse.BannedIDs.AddIfNew([GetReference(nnid, comment)]);
         await ReplyAsync("Done.").ConfigureAwait(false);
     }
 

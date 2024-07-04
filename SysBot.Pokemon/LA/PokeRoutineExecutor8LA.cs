@@ -10,12 +10,9 @@ using static SysBot.Pokemon.PokeDataOffsetsLA;
 
 namespace SysBot.Pokemon;
 
-public abstract class PokeRoutineExecutor8LA : PokeRoutineExecutor<PA8>
+public abstract class PokeRoutineExecutor8LA(PokeBotState Config) : PokeRoutineExecutor<PA8>(Config)
 {
     protected PokeDataOffsetsLA Offsets { get; } = new();
-    protected PokeRoutineExecutor8LA(PokeBotState Config) : base(Config)
-    {
-    }
 
     public override Task<PA8> ReadPokemon(ulong offset, CancellationToken token) => ReadPokemon(offset, BoxFormatSlotSize, token);
 
@@ -51,7 +48,7 @@ public abstract class PokeRoutineExecutor8LA : PokeRoutineExecutor<PA8>
         if (sav != null)
         {
             // Update PKM to the current save's handler data
-            pkm.Trade(sav);
+            pkm.UpdateHandler(sav);
             pkm.RefreshChecksum();
         }
 
@@ -105,7 +102,7 @@ public abstract class PokeRoutineExecutor8LA : PokeRoutineExecutor<PA8>
         var sav = new SAV8LA();
         var info = sav.MyStatus;
         var read = await SwitchConnection.PointerPeek(info.Data.Length, Offsets.MyStatusPointer, token).ConfigureAwait(false);
-        read.CopyTo(info.Data, 0);
+        read.CopyTo(info.Data);
         return sav;
     }
 

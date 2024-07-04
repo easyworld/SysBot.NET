@@ -10,12 +10,9 @@ using static SysBot.Pokemon.BasePokeDataOffsetsBS;
 
 namespace SysBot.Pokemon;
 
-public abstract class PokeRoutineExecutor8BS : PokeRoutineExecutor<PB8>
+public abstract class PokeRoutineExecutor8BS(PokeBotState Config) : PokeRoutineExecutor<PB8>(Config)
 {
     protected IPokeDataOffsetsBS Offsets { get; private set; } = new PokeDataOffsetsBS_BD();
-    protected PokeRoutineExecutor8BS(PokeBotState Config) : base(Config)
-    {
-    }
 
     public override Task<PB8> ReadPokemon(ulong offset, CancellationToken token) => ReadPokemon(offset, BoxFormatSlotSize, token);
 
@@ -51,8 +48,7 @@ public abstract class PokeRoutineExecutor8BS : PokeRoutineExecutor<PB8>
         if (sav != null)
         {
             // Update PKM to the current save's handler data
-            DateTime Date = DateTime.Now;
-            pkm.Trade(sav, Date.Day, Date.Month, Date.Year);
+            pkm.UpdateHandler(sav);
             pkm.RefreshChecksum();
         }
 

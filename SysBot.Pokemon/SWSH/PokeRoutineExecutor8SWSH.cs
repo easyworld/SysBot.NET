@@ -46,8 +46,7 @@ public abstract class PokeRoutineExecutor8SWSH(PokeBotState Config) : PokeRoutin
         if (sav != null)
         {
             // Update PKM to the current save's handler data
-            DateTime Date = DateTime.Now;
-            pkm.Trade(sav, Date.Day, Date.Month, Date.Year);
+            pkm.UpdateHandler(sav);
             pkm.RefreshChecksum();
         }
         var ofs = GetBoxSlotOffset(box, slot);
@@ -135,7 +134,7 @@ public abstract class PokeRoutineExecutor8SWSH(PokeBotState Config) : PokeRoutin
         var sav = new SAV8SWSH();
         var info = sav.MyStatus;
         var read = await Connection.ReadBytesAsync(TrainerDataOffset, TrainerDataLength, token).ConfigureAwait(false);
-        read.CopyTo(info.Data, 0);
+        read.CopyTo(info.Data);
         return sav;
     }
 
@@ -316,6 +315,14 @@ public abstract class PokeRoutineExecutor8SWSH(PokeBotState Config) : PokeRoutin
     {
         var data = await SwitchConnection.ReadBytesAbsoluteAsync(offset, 1, token).ConfigureAwait(false);
         return data[0] == 1;
+    }
+
+    // Used to check if the battle menu has loaded, so we can attempt to flee.
+    // This value starts at 1 and goes up each time a menu is opened.
+    public async Task<bool> IsOnBattleMenu(CancellationToken token)
+    {
+        var data = await Connection.ReadBytesAsync(BattleMenuOffset, 1, token).ConfigureAwait(false);
+        return data[0] >= 1;
     }
 
     public async Task<TextSpeedOption> GetTextSpeed(CancellationToken token)

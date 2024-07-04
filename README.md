@@ -64,7 +64,7 @@ Uses [dodo-open-net](https://github.com/dodo-open/dodo-open-net) as a dependency
 Document: [搭建指南](https://docs.qq.com/doc/DSVVZZk9saUNTeHNn), [命令指南](https://docs.qq.com/doc/DSVlldkxMSW92VXZF)
 
 ## Other Dependencies
-Pokémon API logic is provided by [PKHeX](https://github.com/kwsch/PKHeX/), and template generation is provided by [AutoMod](https://github.com/architdate/PKHeX-Plugins/).
+Pokémon API logic is provided by [PKHeX](https://github.com/kwsch/PKHeX/), and template generation is provided by [Auto-Legality Mod](https://github.com/architdate/PKHeX-Plugins/). Current template generation uses [@santacrab2](https://www.github.com/santacrab2)'s [Auto-Legality Mod fork](https://github.com/santacrab2/PKHeX-Plugins).
 
 # License
 Refer to the `License.md` for details regarding licensing.
