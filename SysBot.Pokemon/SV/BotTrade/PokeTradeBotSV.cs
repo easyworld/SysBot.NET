@@ -993,6 +993,7 @@ public class PokeTradeBotSV(PokeTradeHub<PK9> Hub, PokeBotState Config) : PokeRo
         cln.TrainerTID7 = (uint)Math.Abs(tradePartner.DisplayTID);
         cln.TrainerSID7 = (uint)Math.Abs(tradePartner.DisplaySID);
         cln.Language = tradePartner.Language;
+        cln.OriginalTrainerTrash.Clear();
         cln.OriginalTrainerName = tradePartner.OT;
         
         // copied from https://github.com/Wanghaoran86/TransFireBot/commit/f7c5b39ce2952818177a97babb8b3df027e673fb

@@ -347,6 +347,7 @@ namespace SysBot.Pokemon.Helpers
         public static void EggTrade(PKM pk, IBattleTemplate template)
         {
             pk.IsNicknamed = true;
+            pk.NicknameTrash.Clear();
             pk.Nickname = pk.Language switch
             {
                 1 => "タマゴ",
@@ -415,7 +416,7 @@ namespace SysBot.Pokemon.Helpers
                 pk9.HandlingTrainerMemory = 0;
                 pk9.HandlingTrainerMemoryFeeling = 0;
                 pk9.HandlingTrainerMemoryIntensity = 0;
-                pk9.Obedience_Level = 1;
+                pk9.ObedienceLevel = 1;
                 pk9.Version = 0;
                 pk9.BattleVersion = 0;
                 pk9.TeraTypeOverride = (MoveType)19;
