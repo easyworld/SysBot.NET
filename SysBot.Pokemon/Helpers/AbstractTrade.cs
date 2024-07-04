@@ -347,6 +347,7 @@ namespace SysBot.Pokemon.Helpers
         public static void EggTrade(PKM pk, IBattleTemplate template)
         {
             pk.IsNicknamed = true;
+            pk.NicknameTrash.Clear();
             pk.Nickname = pk.Language switch
             {
                 1 => "タマゴ",
