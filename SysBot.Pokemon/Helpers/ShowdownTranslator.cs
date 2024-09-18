@@ -8,7 +8,7 @@ namespace SysBot.Pokemon
 {
     public class ShowdownTranslator<T> where T : PKM
     {
-        public static GameStrings GameStringsZh = GameInfo.GetStrings("zh");
+        public static GameStrings GameStringsZh = GameInfo.GetStrings("zh-Hans");
         public static GameStrings GameStringsEn = GameInfo.GetStrings("en");
         public static string Chinese2Showdown(string zh)
         {

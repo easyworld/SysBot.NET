@@ -106,7 +106,7 @@ namespace SysBot.Pokemon.Helpers
                 }
                 else
                 {
-                    LogUtil.LogInfo($"批量第{i + 1}只:{GameInfo.GetStrings("zh").Species[rawPkms[i].Species]}", nameof(AbstractTrade<T>));
+                    LogUtil.LogInfo($"批量第{i + 1}只:{GameInfo.GetStrings("zh-Hans").Species[rawPkms[i].Species]}", nameof(AbstractTrade<T>));
                     skipAutoOTList.Add(false);
                     pkms.Add(rawPkms[i]);
                 }

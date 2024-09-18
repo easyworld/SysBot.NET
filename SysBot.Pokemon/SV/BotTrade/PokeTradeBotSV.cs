@@ -1019,8 +1019,12 @@ public class PokeTradeBotSV(PokeTradeHub<PK9> Hub, PokeBotState Config) : PokeRo
         }
         cln.Version = version;
 
-        cln.ClearNickname();
-
+        // egg needs to retain the nickname
+        if (!cln.IsEgg)
+        {
+            cln.ClearNickname();
+        }
+        
         // thanks @Wanghaoran86
         if (toSend.MetLocation == Locations.TeraCavern9 && toSend.IsShiny)
         {
