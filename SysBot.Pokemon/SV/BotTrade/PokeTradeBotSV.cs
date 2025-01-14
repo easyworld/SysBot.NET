@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using static SysBot.Base.SwitchButton;
 using static SysBot.Pokemon.PokeDataOffsetsSV;
 using System.Collections.Generic;
+using SysBot.Pokemon.Helpers;
 
 namespace SysBot.Pokemon;
 
@@ -356,8 +357,8 @@ public class PokeTradeBotSV(PokeTradeHub<PK9> Hub, PokeBotState Config) : PokeRo
             await ExitTradeToPortal(false, token).ConfigureAwait(false);
             return result;
 }
-        List<PK9> batchPK9s = (List<PK9>)poke.Context.GetValueOrDefault("batch", new List<PK9> { toSend });
-        List<bool> skipAutoOTList = (List<bool>)poke.Context.GetValueOrDefault("skipAutoOTList", new List<bool> { false });
+        List<PK9> batchPK9s = AbstractTrade<PK9>.GetPKMsFromPokeTradeDetail(poke);
+        List<bool> skipAutoOTList = AbstractTrade<PK9>.GetSkipAutoOTListFromPokeTradeDetail(poke);
         PK9 received = default!;
         LogUtil.LogInfo($"count:{batchPK9s.Count}, skipAutoOTList:{String.Join(',', skipAutoOTList)}", nameof(PokeTradeBotSV));
         for (var i = 0; i < batchPK9s.Count; i++)

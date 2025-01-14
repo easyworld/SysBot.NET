@@ -290,10 +290,28 @@ public abstract class AbstractTrade<T> where T : PKM, new()
         return false;
     }
 
+    public static List<T> GetPKMsFromPokeTradeDetail(PokeTradeDetail<T> detail)
+    {
+        if (detail.Context.TryGetValue("batch", out object? value))
+        {
+            return (List<T>)value;
+        }
+        return [detail.TradeData];
+    }
+
+    public static List<bool> GetSkipAutoOTListFromPokeTradeDetail(PokeTradeDetail<T> detail)
+    {
+        if (detail.Context.TryGetValue("skipAutoOTList", out object? value))
+        {
+            return (List<bool>)value;
+        }
+        return [false];
+    }
+
     private bool AddToTradeQueue(T pk, int code, bool skipAutoOT,
         PokeRoutineType type, out string msg)
     {
-        return AddToTradeQueue(new List<T> { pk }, code, new List<bool> { skipAutoOT }, type, out msg);
+        return AddToTradeQueue([pk], code, [skipAutoOT], type, out msg);
     }
 
     private bool AddToTradeQueue(List<T> pks, int code, List<bool> skipAutoOTList,
@@ -384,7 +402,7 @@ public abstract class AbstractTrade<T> where T : PKM, new()
         pk.HandlingTrainerFriendship = 0;
         pk.ClearMemories();
         pk.StatNature = pk.Nature;
-        pk.SetEVs(new int[] { 0, 0, 0, 0, 0, 0 });
+        pk.SetEVs([0, 0, 0, 0, 0, 0]);
 
         MarkingApplicator.SetMarkings(pk);
 

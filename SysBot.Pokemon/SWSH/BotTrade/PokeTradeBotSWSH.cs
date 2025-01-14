@@ -1,7 +1,9 @@
 using PKHeX.Core;
 using PKHeX.Core.Searching;
 using SysBot.Base;
+using SysBot.Pokemon.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -321,7 +323,7 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
             return PokeTradeResult.RecoverOpenBox;
         }
 
-        if (hub.Config.Legality.UseTradePartnerInfo)
+        if (hub.Config.Legality.UseTradePartnerInfo && !AbstractTrade<PK8>.GetSkipAutoOTListFromPokeTradeDetail(poke).First())
         {
             await SetPkmWithSwappedIDDetails(toSend, trainerName, sav, token);
         }
@@ -384,6 +386,9 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
             await ExitTrade(false, token).ConfigureAwait(false);
             return PokeTradeResult.TrainerTooSlow;
         }
+        var batchTradeResult = await PerformRemainingLinkCodeTrades(trainer, sav, poke, token);
+        if (batchTradeResult != PokeTradeResult.Success)
+            return batchTradeResult;
 
         // As long as we got rid of our inject in b1s1, assume the trade went through.
         Log("User completed the trade.");
@@ -997,5 +1002,73 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
         }
 
         return tradeswsh.Valid;
+    }
+
+    /// <summary>
+    /// Processes the remaining Pokémon in a batch Link Code trade, starting from the second Pokémon.
+    /// The first Pokémon is assumed to have already been handled separately.
+    /// </summary>
+    private async Task<PokeTradeResult> PerformRemainingLinkCodeTrades(PartnerDataHolder trainer, SAV8SWSH sav, PokeTradeDetail<PK8> poke, CancellationToken token)
+    {
+        var pkms = AbstractTrade<PK8>.GetPKMsFromPokeTradeDetail(poke).Skip(1);
+        var skipAutoOTList = AbstractTrade<PK8>.GetSkipAutoOTListFromPokeTradeDetail(poke).Skip(1).ToList();
+        foreach (var (toSend, index) in pkms.Select((value, i) => (value, i)))
+        {
+            Log($"Processing remaining Pokémon {index + 1} of {pkms.Count()} in batch trade.");
+            if (toSend.Species != 0 && hub.Config.Legality.UseTradePartnerInfo && !skipAutoOTList[index])
+            {
+                await SetPkmWithSwappedIDDetails(toSend, trainer.TrainerName, sav, token);
+            }
+            else if (toSend.Species != 0)
+            {
+                await SetBoxPokemon(toSend, 0, 0, token, sav).ConfigureAwait(false);
+            }
+            // Wait for User Input...
+            var offered = await ReadUntilPresent(LinkTradePartnerPokemonOffset, 25_000, 1_000, BoxFormatSlotSize, token).ConfigureAwait(false);
+            var oldEC = await Connection.ReadBytesAsync(LinkTradePartnerPokemonOffset, 4, token).ConfigureAwait(false);
+            if (offered is null)
+            {
+                await ExitSeedCheckTrade(token).ConfigureAwait(false);
+                return PokeTradeResult.TrainerTooSlow;
+            }
+
+            // Confirm Box 1 Slot 1
+            if (poke.Type == PokeTradeType.Specific)
+            {
+                for (int i = 0; i < 5; i++)
+                    await Click(A, 0_500, token).ConfigureAwait(false);
+            }
+
+            if (poke.Type == PokeTradeType.Seed)
+            {
+                // Immediately exit, we aren't trading anything.
+                return await EndSeedCheckTradeAsync(poke, offered, token).ConfigureAwait(false);
+            }
+
+            var tradeResult = await ConfirmAndStartTrading(poke, token).ConfigureAwait(false);
+            if (tradeResult != PokeTradeResult.Success)
+            {
+                await ExitTrade(false, token).ConfigureAwait(false);
+                return tradeResult;
+            }
+
+            if (token.IsCancellationRequested)
+            {
+                await ExitTrade(false, token).ConfigureAwait(false);
+                return PokeTradeResult.RoutineCancel;
+            }
+
+            // Trade was Successful!
+            var received = await ReadBoxPokemon(0, 0, token).ConfigureAwait(false);
+            // Pokémon in b1s1 is same as the one they were supposed to receive (was never sent).
+            if (SearchUtil.HashByDetails(received) == SearchUtil.HashByDetails(toSend) && received.Checksum == toSend.Checksum)
+            {
+                Log("User did not complete the trade.");
+                RecordUtil<PokeTradeBotSWSH>.Record($"Cancelled\t{trainer.TrainerOnlineID:X16}\t{trainer.TrainerName}\t{poke.Trainer.TrainerName}\\t{poke.ID}\t{toSend.EncryptionConstant:X8}\t{offered.EncryptionConstant:X8}");
+                await ExitTrade(false, token).ConfigureAwait(false);
+                return PokeTradeResult.TrainerTooSlow;
+            }
+        }
+        return PokeTradeResult.Success;
     }
 }
