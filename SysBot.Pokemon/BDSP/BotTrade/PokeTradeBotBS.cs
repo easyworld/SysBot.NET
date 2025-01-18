@@ -853,13 +853,6 @@ public class PokeTradeBotBS(PokeTradeHub<PB8> Hub, PokeBotState Config) : PokeRo
             else
                 await SetBoxPokemonAbsolute(BoxStartOffset, toSend, token, sav).ConfigureAwait(false);
 
-            // Confirm Box 1 Slot 1
-            if (poke.Type == PokeTradeType.Specific)
-            {
-                for (int i = 0; i < 5; i++)
-                    await Click(A, 0_500, token).ConfigureAwait(false);
-            }
-
             var tradeResult = await ConfirmAndStartTrading(poke, token).ConfigureAwait(false);
             if (tradeResult != PokeTradeResult.Success)
                 return tradeResult;

@@ -179,7 +179,7 @@ public abstract class AbstractTrade<T> where T : PKM, new()
     {
         if (invalidCount == totalCount)
         {
-            SendMessage("一个都不合法，换个屁");
+            SendMessage("一个都不合法，请检查");
             return false;
         }
         else if (invalidCount != 0)
