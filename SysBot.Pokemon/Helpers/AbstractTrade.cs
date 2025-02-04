@@ -305,7 +305,8 @@ public abstract class AbstractTrade<T> where T : PKM, new()
         {
             return (List<bool>)value;
         }
-        return [false];
+        int count = GetPKMsFromPokeTradeDetail(detail).Count;
+        return Enumerable.Repeat(false, count).ToList();
     }
 
     private bool AddToTradeQueue(T pk, int code, bool skipAutoOT,
