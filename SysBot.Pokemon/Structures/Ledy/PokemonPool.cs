@@ -121,14 +121,6 @@ public class PokemonPool<T>(BaseConfig Settings) : List<T>
             loadedAny = true;
         }
 
-        // Anti-spam: Same trainer names.
-        if (Files.Count != 1 && Files.Select(z => z.Value.RequestInfo.OriginalTrainerName).Distinct().Count() == 1)
-        {
-            LogUtil.LogInfo("Provided pool to distribute has the same OT for all loaded. Pool is not valid; please distribute from a variety of trainers.", nameof(PokemonPool<T>));
-            surpriseBlocked = Count;
-            Files.Clear();
-        }
-
         if (surpriseBlocked == Count)
             LogUtil.LogInfo("Surprise trading will fail; failed to load any compatible files.", nameof(PokemonPool<T>));
 
@@ -138,14 +130,24 @@ public class PokemonPool<T>(BaseConfig Settings) : List<T>
     private static bool DisallowRandomRecipientTrade(T pk, IEncounterTemplate enc)
     {
         // Anti-spam
-        if (pk.IsNicknamed && enc is not IFixedNickname { IsFixedNickname: true } && pk.Nickname.Length > 6)
-            return true;
+        if (pk.IsNicknamed)
+        {
+            Span<char> nick = stackalloc char[pk.TrashCharCountNickname];
+            int len = pk.LoadString(pk.NicknameTrash, nick);
+            if (len > 6 && enc is not IFixedNickname { IsFixedNickname: true })
+                return true;
+            nick = nick[..len];
+            if (StringsUtil.IsSpammyString(nick))
+                return true;
+        }
+        {
+            Span<char> ot = stackalloc char[pk.TrashCharCountTrainer];
+            int len = pk.LoadString(pk.OriginalTrainerTrash, ot);
+            ot = ot[..len];
+            if (StringsUtil.IsSpammyString(ot) && !AutoLegalityWrapper.IsFixedOT(enc, pk))
+                return true;
+        }
 
-        // Anti-spam
-        if (pk.IsNicknamed && StringsUtil.IsSpammyString(pk.Nickname))
-            return true;
-        if (StringsUtil.IsSpammyString(pk.OriginalTrainerName) && !AutoLegalityWrapper.IsFixedOT(enc, pk))
-            return true;
         return DisallowRandomRecipientTrade(pk);
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Windows.Forms;
 using SysBot.Base;
 
@@ -12,7 +13,7 @@ public sealed class TextBoxForwarder(TextBoxBase Box) : ILogForwarder
     /// <summary>
     /// Synchronize access to the TextBox. Only the GUI thread should be writing to it.
     /// </summary>
-    private readonly object _logLock = new();
+    private readonly Lock _logLock = new();
 
     public void Forward(string message, string identity)
     {
@@ -29,13 +30,17 @@ public sealed class TextBoxForwarder(TextBoxBase Box) : ILogForwarder
 
     private void UpdateLog(string line)
     {
-        // ghetto truncate
+        // If we exceed the MaxLength, remove the top 1/4 of the lines.
+        // Don't change .Text directly; truncating to the middle of a line distorts the log formatting.
         var text = Box.Text;
         var max = Box.MaxLength;
         if (text.Length + line.Length + 2 >= max)
-            Box.Text = text[(max / 4)..];
+        {
+            var lines = Box.Lines;
+            Box.Lines = lines[(lines.Length / 4)..];
+            Box.Refresh();
+        }
 
         Box.AppendText(line);
-        Box.ScrollToCaret();
     }
 }
