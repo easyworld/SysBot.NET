@@ -1,21 +1,18 @@
-﻿using System;
 using System.ComponentModel;
-using System.Linq;
 
-namespace SysBot.Pokemon
+namespace SysBot.Pokemon;
+
+public class BilibiliSettings
 {
-    public class BilibiliSettings
-    {
-        private const string Startup = nameof(Startup);
+    private const string Startup = nameof(Startup);
 
-        public override string ToString() => "Bilibili Integration Settings";
+    public override string ToString() => "Bilibili Integration Settings";
 
-        // Startup
+    // Startup
 
-        [Category(Startup), Description("B站彈幕姬日志目录")]
-        public string LogUrl { get; set; } = string.Empty;
+    [Category(Startup), Description("B站彈幕姬日志目录")]
+    public string LogUrl { get; set; } = string.Empty;
 
-        [Category(Startup), Description("直播间ID")]
-        public int RoomId { get; set; } = 0;
-    }
+    [Category(Startup), Description("直播间ID")]
+    public int RoomId { get; set; } = 0;
 }

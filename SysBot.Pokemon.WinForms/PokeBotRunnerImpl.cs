@@ -1,13 +1,14 @@
-﻿using PKHeX.Core;
+using PKHeX.Core;
+using SysBot.Pokemon.Bilibili;
 using SysBot.Pokemon.Discord;
+using SysBot.Pokemon.Dodo;
+using SysBot.Pokemon.Kook;
+using SysBot.Pokemon.QQ;
 using SysBot.Pokemon.Twitch;
 using SysBot.Pokemon.WinForms;
 using SysBot.Pokemon.YouTube;
 using System.Threading;
 using System.Threading.Tasks;
-using SysBot.Pokemon.Bilibili;
-using SysBot.Pokemon.Dodo;
-using SysBot.Pokemon.QQ;
 
 namespace SysBot.Pokemon;
 
@@ -33,6 +34,7 @@ public class PokeBotRunnerImpl<T> : PokeBotRunner<T> where T : PKM, new()
         AddQQBot(Hub.Config.QQ);
         AddBilibiliBot(Hub.Config.Bilibili);
         AddDodoBot(Hub.Config.Dodo);
+        AddKookBot(Hub.Config.Kook.Token);
     }
 
     private void AddTwitchBot(TwitchSettings config)
@@ -102,5 +104,12 @@ public class PokeBotRunnerImpl<T> : PokeBotRunner<T> where T : PKM, new()
         if (string.IsNullOrWhiteSpace(config.BaseApi) || string.IsNullOrWhiteSpace(config.ClientId) || string.IsNullOrWhiteSpace(config.Token)) return;
         if (Dodo != null) return;
         Dodo = new DodoBot<T>(config, Hub);
+    }
+    private void AddKookBot(string apiToken)
+    {
+        if (string.IsNullOrWhiteSpace(apiToken))
+            return;
+        var bot = new KookBot<T>(this);
+        Task.Run(() => bot.MainAsync(apiToken, CancellationToken.None), CancellationToken.None);
     }
 }

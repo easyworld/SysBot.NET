@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SysBot.Pokemon.Bilibili", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SysBot.Pokemon.Dodo", "SysBot.Pokemon.Dodo\SysBot.Pokemon.Dodo.csproj", "{BE43311D-4571-466E-B3CB-3FD658EFC159}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SysBot.Pokemon.Kook", "SysBot.Pokemon.Kook\SysBot.Pokemon.Kook.csproj", "{6F77F72F-9700-4CEE-9C41-46539C176269}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{BE43311D-4571-466E-B3CB-3FD658EFC159}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE43311D-4571-466E-B3CB-3FD658EFC159}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE43311D-4571-466E-B3CB-3FD658EFC159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F77F72F-9700-4CEE-9C41-46539C176269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F77F72F-9700-4CEE-9C41-46539C176269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F77F72F-9700-4CEE-9C41-46539C176269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F77F72F-9700-4CEE-9C41-46539C176269}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
