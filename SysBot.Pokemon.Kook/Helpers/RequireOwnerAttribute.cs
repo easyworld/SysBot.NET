@@ -9,14 +9,13 @@ namespace SysBot.Pokemon.Kook;
 
 public class RequireOwnerAttribute : PreconditionAttribute
 {
-    public override async Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command, IServiceProvider services)
+    public override Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command, IServiceProvider services)
     {
-        // 你的Bot主人ID（可配置到配置文件）
-        ulong ownerId = KookBotSettings.Manager.Owner; // 替换为你的 KOOK 用户ID
+        ulong ownerId = KookBotSettings.Manager.Owner;
 
         if (context.User.Id == ownerId)
-            return PreconditionResult.FromSuccess();
+            return Task.FromResult(PreconditionResult.FromSuccess());
         else
-            return PreconditionResult.FromError("只有Bot主人可以使用此命令。");
+            return Task.FromResult(PreconditionResult.FromError("只有Bot主人可以使用此命令。"));
     }
 }
