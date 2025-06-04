@@ -108,7 +108,7 @@ public class OwnerModule<T> : SudoModule<T> where T : PKM, new()
     // ReSharper disable once UnusedParameter.Global
     public async Task ExitProgram()
     {
-        await Context.Channel.EchoAndReply("Shutting down... goodbye! **Bot services are going offline.**").ConfigureAwait(false);
+        await Context.Channel.EchoAndReply($"Shutting down... goodbye! {Format.Bold("Bot services are going offline.")}").ConfigureAwait(false);
         Environment.Exit(0);
     }
 

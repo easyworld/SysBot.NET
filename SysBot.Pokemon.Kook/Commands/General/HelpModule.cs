@@ -48,7 +48,7 @@ public class HelpModule(CommandService Service) : ModuleBase<SocketCommandContex
             if (gen != -1)
                 moduleName = moduleName[..gen];
 
-            builder.AddModule(new SectionModuleBuilder().WithText($"**{moduleName}**\n{description}"));
+            builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder($"**{moduleName}**\n{description}")));
         }
 
         await ReplyCardAsync(builder.Build()).ConfigureAwait(false);
@@ -62,19 +62,19 @@ public class HelpModule(CommandService Service) : ModuleBase<SocketCommandContex
 
         if (!result.IsSuccess)
         {
-            await ReplyTextAsync($"Sorry, I couldn't find a command like **{command}**.").ConfigureAwait(false);
+            await ReplyTextAsync($"Sorry, I couldn't find a command like {Format.Bold($"{command}")}.").ConfigureAwait(false);
             return;
         }
 
         var builder = new CardBuilder()
             .AddModule(new SectionModuleBuilder().WithText("Help has arrived!"))
-            .AddModule(new SectionModuleBuilder().WithText($"Here are some commands like **{command}**:"));
+            .AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder($"Here are some commands like **{command}**:")));
 
         foreach (var match in result.Commands)
         {
             var cmd = match.Command;
 
-            builder.AddModule(new SectionModuleBuilder().WithText($"**{string.Join(", ", cmd.Aliases)}**\n{GetCommandSummary(cmd)}"));
+            builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder($"**{string.Join(", ", cmd.Aliases)}**\n{GetCommandSummary(cmd)}")));
         }
 
         await ReplyCardAsync(builder.Build()).ConfigureAwait(false);

@@ -28,7 +28,7 @@ public class InfoModule : ModuleBase<SocketCommandContext>
             .AddModule(new SectionModuleBuilder().WithText("Here's some information about me!"))
             .AddModule(new SectionModuleBuilder().WithText(detail));
 
-        builder.AddModule(new SectionModuleBuilder().WithText("**Info**"))
+        builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**Info**")))
             .AddModule(new SectionModuleBuilder().WithText(
             $"- [Source Code]({repo})\n" +
             //$"- {Format.Bold("Owner")}: {app.Owner} ({app.Owner.Id})\n" +
@@ -41,7 +41,7 @@ public class InfoModule : ModuleBase<SocketCommandContext>
             $"- {Format.Bold("AutoLegality Version")}: {GetVersionInfo("PKHeX.Core.AutoMod")}\n"
         ));
 
-        builder.AddModule(new SectionModuleBuilder().WithText("**Stats**"))
+        builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**Stats**")))
             .AddModule(new SectionModuleBuilder().WithText(
             $"- {Format.Bold("Heap Size")}: {GetHeapSize()}MiB\n" +
             $"- {Format.Bold("Guilds")}: {Context.Client.Guilds.Count}\n" +

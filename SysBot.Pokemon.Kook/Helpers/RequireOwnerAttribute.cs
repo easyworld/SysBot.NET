@@ -16,6 +16,6 @@ public class RequireOwnerAttribute : PreconditionAttribute
         if (context.User.Id == ownerId)
             return Task.FromResult(PreconditionResult.FromSuccess());
         else
-            return Task.FromResult(PreconditionResult.FromError("只有Bot主人可以使用此命令。"));
+            return Task.FromResult(PreconditionResult.FromError("Only the Bot owner can use this command."));
     }
 }

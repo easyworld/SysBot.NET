@@ -25,7 +25,7 @@ public class HubModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new(
         var allBots = runner.Bots.ConvertAll(z => z.Bot);
         var botCount = allBots.Count;
         builder.AddModule(new SectionModuleBuilder().WithText("Bot Status"))
-            .AddModule(new SectionModuleBuilder().WithText("**Summary**"))
+            .AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**Summary**")))
             .AddModule(new SectionModuleBuilder().WithText($"Bot Count: {botCount}\n" +
                 $"Bot State: {SummarizeBots(allBots)}\n" +
                 $"Pool Count: {hub.Ledy.Pool.Count}\n"));
@@ -35,7 +35,7 @@ public class HubModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new(
         var msg = string.Join("\n", lines);
         if (string.IsNullOrWhiteSpace(msg))
             msg = "Nothing counted yet!";
-        builder.AddModule(new SectionModuleBuilder().WithText("**Counts**"))
+        builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**Counts**")))
             .AddModule(new SectionModuleBuilder().WithText(msg));
 
         var queues = hub.Queues.AllQueues;
@@ -47,7 +47,7 @@ public class HubModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new(
                 continue;
 
             var nextMsg = GetNextName(q);
-            builder.AddModule(new SectionModuleBuilder().WithText($"**{q.Type} Queue**"))
+            builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder($"**{q.Type} Queue**")))
                 .AddModule(new SectionModuleBuilder().WithText($"Next: {nextMsg}\n" +
                     $"Count: {c}"));
             count += c;
@@ -55,7 +55,7 @@ public class HubModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new(
 
         if (count == 0)
         {
-            builder.AddModule(new SectionModuleBuilder().WithText("**Queues are empty.**"))
+            builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**Queues are empty.**")))
                 .AddModule(new SectionModuleBuilder().WithText("Nobody in line!"));
         }
 

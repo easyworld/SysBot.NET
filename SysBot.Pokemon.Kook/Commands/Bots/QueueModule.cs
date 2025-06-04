@@ -86,7 +86,7 @@ public class QueueModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
         var state = Info.ToggleQueue();
         var msg = state
             ? "Users are now able to join the trade queue."
-            : "Changed queue settings: **Users CANNOT join the queue until it is turned back on.**";
+            : $"Changed queue settings: {Format.Bold($"Users CANNOT join the queue until it is turned back on.")}";
 
         return Context.Channel.EchoAndReply(msg);
     }

@@ -21,14 +21,14 @@ public class KookTradeNotifier<T>(T Data, PokeTradeTrainerInfo Info, int Code, S
     public void TradeInitialize(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info)
     {
         var receive = Data.Species == 0 ? string.Empty : $" ({Data.Nickname})";
-        Trader.SendTextAsync($"Initializing trade{receive}. Please be ready. Your code is **{Code:0000 0000}**.").ConfigureAwait(false);
+        Trader.SendTextAsync($"Initializing trade{receive}. Please be ready. Your code is {Format.Bold($"{Code: 0000 0000}")}.").ConfigureAwait(false);
     }
 
     public void TradeSearching(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info)
     {
         var name = Info.TrainerName;
         var trainer = string.IsNullOrEmpty(name) ? string.Empty : $", {name}";
-        Trader.SendTextAsync($"I'm waiting for you{trainer}! Your code is **{Code:0000 0000}**. My IGN is **{routine.InGameName}**.").ConfigureAwait(false);
+        Trader.SendTextAsync($"I'm waiting for you{trainer}! Your code is {Format.Bold($"{Code:0000 0000}")}. My IGN is {Format.Bold($"{routine.InGameName}")}.").ConfigureAwait(false);
     }
 
     public void TradeCanceled(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, PokeTradeResult msg)
