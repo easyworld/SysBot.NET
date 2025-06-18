@@ -53,10 +53,7 @@ public class KookTradeNotifier<T> : IPokeTradeNotifier<T> where T : PKM, new()
     public void TradeFinished(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, T result)
     {
         OnFinish?.Invoke(routine);
-        var tradedToUser = Data.Species;
-        var message = $"@{info.Trainer.TrainerName}: " + (tradedToUser != 0
-            ? $"交换宝可梦：{ShowdownTranslator<T>.GameStringsZh.Species[tradedToUser]}"
-            : "交换成功");
+        var message = $"{Context.User.KMarkdownMention} 交换成功";
         LogUtil.LogText(message);
         Context.Channel.SendTextAsync(message);
     }
