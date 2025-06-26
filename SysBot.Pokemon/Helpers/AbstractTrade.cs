@@ -399,6 +399,7 @@ public abstract class AbstractTrade<T> where T : PKM, new()
 
         pk.CurrentHandler = 0;
         pk.OriginalTrainerFriendship = 1;
+        pk.HandlingTrainerTrash.Clear();
         pk.HandlingTrainerName = "";
         pk.HandlingTrainerFriendship = 0;
         pk.ClearMemories();
