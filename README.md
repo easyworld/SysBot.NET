@@ -52,7 +52,8 @@ Uses [Mirai.Net](https://github.com/SinoAHpx/Mirai.Net) as a dependency via Nuge
 
 Document: [搭建指南](https://github.com/easyworld/SysBot.NET/tree/master/SysBot.Pokemon.QQ), [命令指南](https://docs.qq.com/doc/DSVlldkxMSW92VXZF)
 
-## SysBot.Pokemon.Dodo:
+## SysBot.Pokemon.Dodo (Dead):
+**Notice: The Dodo platform was discontinued in June 15th 2025. All related features of this project are no longer functional. This repository is now archived for code reference only—none of the bot functionalities or commands are available anymore.**
 - Support [ALM-Showdown-Sets](https://github.com/architdate/PKHeX-Plugins/wiki/ALM-Showdown-Sets)
 - Support PK8 PB8 PA8 PK9 file upload
 - Support Customized Chinese to ALM-Showdown-Sets translation
@@ -62,6 +63,14 @@ Most codes are based on [SysBot.Pokemon.Twitch](https://github.com/kwsch/SysBot.
 Uses [dodo-open-net](https://github.com/dodo-open/dodo-open-net) as a dependency via Nuget.
 
 Document: [搭建指南](https://docs.qq.com/doc/DSVVZZk9saUNTeHNn), [命令指南](https://docs.qq.com/doc/DSVlldkxMSW92VXZF)
+
+## SysBot.Pokemon.Kook:
+**SysBot.Pokemon.Kook** is a complete port of the `SysBot.Pokemon.Discord` project, fully compatible with the [Kook](https://www.kookapp.cn/) (formerly known as Kaiheila) platform.
+
+- 100% feature parity with SysBot.Pokemon.Discord.
+- Seamless integration with the Kook chat platform, supporting all bot commands and functionalities available on Discord.
+- Allows Pokémon trading, file uploads (PK8, PB8, etc.), and advanced automation features.
+- Easily configurable and extensible for the Kook ecosystem.
 
 ## Other Dependencies
 Pokémon API logic is provided by [PKHeX](https://github.com/kwsch/PKHeX/), and template generation is provided by [Auto-Legality Mod](https://github.com/architdate/PKHeX-Plugins/). Current template generation uses [@santacrab2](https://www.github.com/santacrab2)'s [Auto-Legality Mod fork](https://github.com/santacrab2/PKHeX-Plugins).
