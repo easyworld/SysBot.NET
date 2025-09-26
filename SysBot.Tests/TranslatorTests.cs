@@ -29,6 +29,10 @@ public class TranslatorTests
     [InlineData("千面避役")]
     [InlineData("泪眼蜥")]
     [InlineData("布里卡隆")]
+    [InlineData("异色烈空坐")]
+    [InlineData("等级球呆火鳄")]
+    [InlineData("异色古剑豹")]
+    [InlineData("异色故勒顿")]
     public void TestLegal(string input)
     {
         var setstring = ShowdownTranslator<PK9>.Chinese2Showdown(input);
