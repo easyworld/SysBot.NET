@@ -20,7 +20,7 @@ public class KookTradeNotifier<T> : IPokeTradeNotifier<T> where T : PKM, new()
     private SocketCommandContext Context = default!;
     public KookTradeNotifier(T data, PokeTradeTrainerInfo info, int code, SocketCommandContext context)
     {
-        Data = data;
+        this.Data = data;
         Info = info;
         Code = code;
         Context = context;
