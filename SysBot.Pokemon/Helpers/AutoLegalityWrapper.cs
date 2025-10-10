@@ -1,9 +1,9 @@
 using PKHeX.Core;
 using PKHeX.Core.AutoMod;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 
 namespace SysBot.Pokemon;
 
@@ -21,7 +21,6 @@ public static class AutoLegalityWrapper
 
     private static void InitializeAutoLegality(LegalitySettings cfg)
     {
-        InitializeCoreStrings();
         EncounterEvent.RefreshMGDB(cfg.MGDBPath);
         InitializeTrainerDatabase(cfg);
         InitializeSettings(cfg);
@@ -39,8 +38,8 @@ public static class AutoLegalityWrapper
         Legalizer.EnableEasterEggs = cfg.EnableEasterEggs;
         APILegality.AllowTrainerOverride = cfg.AllowTrainerDataOverride;
         APILegality.AllowBatchCommands = cfg.AllowBatchCommands;
-        APILegality.PrioritizeGame = cfg.PrioritizeGame;
-        APILegality.PriorityOrder = cfg.PriorityOrder;
+        APILegality.GameVersionPriority = cfg.GameVersionPriority;
+        cfg.PriorityOrder = APILegality.PriorityOrder = SanitizePriorityOrder(cfg.PriorityOrder); // Clean this up because user can add duplicate or invalid entries.
         APILegality.SetBattleVersion = cfg.SetBattleVersion;
         APILegality.Timeout = cfg.Timeout;
 
@@ -58,6 +57,20 @@ public static class AutoLegalityWrapper
         cfg.PrioritizeEncounters.AddRange(missing);
         cfg.PrioritizeEncounters = cfg.PrioritizeEncounters.Distinct().ToList(); // Don't allow duplicates.
         EncounterMovesetGenerator.PriorityList = cfg.PrioritizeEncounters;
+    }
+
+    private static List<GameVersion> SanitizePriorityOrder(List<GameVersion> versionList)
+    {
+        var validVersions = Enum.GetValues<GameVersion>().Where(GameUtil.IsValidSavedVersion).Reverse().ToList();
+
+        foreach (var ver in validVersions)
+        {
+            if (!versionList.Contains(ver))
+                versionList.Add(ver); // Add any missing versions.
+        }
+
+        // Remove any versions in versionList that are not in validVersions and clean up duplicates in the process.
+        return [.. versionList.Intersect(validVersions)];
     }
 
     private static void InitializeTrainerDatabase(LegalitySettings cfg)
@@ -107,15 +120,6 @@ public static class AutoLegalityWrapper
             TrainerSettings.Register(fallback);
     }
 
-    private static void InitializeCoreStrings()
-    {
-        var lang = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName[..2];
-        LocalizationUtil.SetLocalization(typeof(LegalityCheckStrings), lang);
-        LocalizationUtil.SetLocalization(typeof(MessageStrings), lang);
-        RibbonStrings.ResetDictionary(GameInfo.Strings.ribbons);
-        ParseSettings.ChangeLocalizationStrings(GameInfo.Strings.movelist, GameInfo.Strings.specieslist);
-    }
-
     public static bool CanBeTraded(this PKM pk)
     {
         if (pk.IsNicknamed)
@@ -155,13 +159,13 @@ public static class AutoLegalityWrapper
     public static ITrainerInfo GetTrainerInfo<T>() where T : PKM, new()
     {
         if (typeof(T) == typeof(PK8))
-            return TrainerSettings.GetSavedTrainerData(8, GameVersion.SWSH);
+            return TrainerSettings.GetSavedTrainerData(GameVersion.SWSH);
         if (typeof(T) == typeof(PB8))
-            return TrainerSettings.GetSavedTrainerData(8, GameVersion.BDSP);
+            return TrainerSettings.GetSavedTrainerData(GameVersion.BDSP);
         if (typeof(T) == typeof(PA8))
-            return TrainerSettings.GetSavedTrainerData(8, GameVersion.PLA);
+            return TrainerSettings.GetSavedTrainerData(GameVersion.PLA);
         if (typeof(T) == typeof(PK9))
-            return TrainerSettings.GetSavedTrainerData(9, GameVersion.SV);
+            return TrainerSettings.GetSavedTrainerData(GameVersion.SV);
 
         throw new ArgumentException("Type does not have a recognized trainer fetch.", typeof(T).Name);
     }

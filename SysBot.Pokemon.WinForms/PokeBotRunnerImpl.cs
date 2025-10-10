@@ -1,5 +1,8 @@
 using PKHeX.Core;
 using SysBot.Pokemon.Discord;
+using SysBot.Pokemon.Dodo;
+using SysBot.Pokemon.Kook;
+using SysBot.Pokemon.QQ;
 using SysBot.Pokemon.Twitch;
 using SysBot.Pokemon.WinForms;
 using SysBot.Pokemon.YouTube;
