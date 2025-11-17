@@ -768,7 +768,7 @@ public class PokeTradeBotLA(PokeTradeHub<PA8> Hub, PokeBotState Config) : PokeRo
         {
             Log($"Processing remaining Pokémon {index + 1} of {pkms.Count()} in batch trade.");
             // Watch their status to indicate they have offered a Pokémon as well.
-            var offering = await ReadUntilChanged(TradePartnerOfferedOffset, [0x3], 25_000, 1_000, true, true, token).ConfigureAwait(false);
+            var offering = await ReadUntilChanged(TradePartnerStatusOffset, [0x3], 25_000, 1_000, true, true, token).ConfigureAwait(false);
             if (!offering)
             {
                 await ExitTrade(false, token).ConfigureAwait(false);
