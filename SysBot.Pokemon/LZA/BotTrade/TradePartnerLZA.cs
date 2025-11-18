@@ -11,7 +11,13 @@ public sealed class TradePartnerLZA
     public string SID7 { get; }
     public string TrainerName { get; }
 
-    public TradePartnerLZA(ulong ID, byte[] TIDSID, byte[] trainerNameObject)
+    public int Game => (int)GameVersion.ZA;
+
+    public int Gender { get; }
+
+    public int Language { get; }
+
+    public TradePartnerLZA(ulong ID, byte[] TIDSID, byte[] trainerNameObject, int gender, int language)
     {
         NID = ID;
 
@@ -21,6 +27,9 @@ public sealed class TradePartnerLZA
         SID7 = $"{tidsid / 1_000_000:0000}";
 
         TrainerName = StringConverter8.GetString(trainerNameObject);
+
+        Gender = gender;
+        Language = language;
     }
 
     public const int MaxByteLengthStringObject = 26;

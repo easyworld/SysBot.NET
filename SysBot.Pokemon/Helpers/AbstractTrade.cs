@@ -92,8 +92,8 @@ public abstract class AbstractTrade<T> where T : PKM, new()
     {
         if (!JudgeMultiNum(rawPkms.Count)) return;
 
-        List<T> pkms = new();
-        List<bool> skipAutoOTList = new();
+        List<T> pkms = [];
+        List<bool> skipAutoOTList = [];
         int invalidCount = 0;
         for (var i = 0; i < rawPkms.Count; i++)
         {
@@ -128,8 +128,8 @@ public abstract class AbstractTrade<T> where T : PKM, new()
     /// <returns></returns>
     private List<T> GetPKMsFromPsList(List<string> psList, bool isChinesePS, out int invalidCount, out List<bool> skipAutoOTList)
     {
-        List<T> pkms = new();
-        skipAutoOTList = new List<bool>();
+        List<T> pkms = [];
+        skipAutoOTList = [];
         invalidCount = 0;
         for (var i = 0; i < psList.Count; i++)
         {
@@ -306,7 +306,7 @@ public abstract class AbstractTrade<T> where T : PKM, new()
             return (List<bool>)value;
         }
         int count = GetPKMsFromPokeTradeDetail(detail).Count;
-        return Enumerable.Repeat(false, count).ToList();
+        return [.. Enumerable.Repeat(false, count)];
     }
 
     private bool AddToTradeQueue(T pk, int code, bool skipAutoOT,

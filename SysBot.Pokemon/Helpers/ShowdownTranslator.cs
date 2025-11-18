@@ -105,7 +105,7 @@ public class ShowdownTranslator<T> where T : PKM
         }
 
         // 添加头目
-        if (typeof(T) == typeof(PA8) && zh.Contains("头目"))
+        if ((typeof(T) == typeof(PA8) || typeof(T) == typeof(PA9)) && zh.Contains("头目"))
         {
             result += "\nAlpha: Yes";
             zh = zh.Replace("头目", "");
