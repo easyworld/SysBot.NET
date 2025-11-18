@@ -131,7 +131,7 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
     [Alias("t")]
     [Summary("Makes the bot trade you the attached file.")]
     [RequireQueueRole(nameof(KookManager.RolesTrade))]
-    public Task TradeAsyncAttach()
+    public Task TradeAsyncAttach(Uri file)
     {
         var code = Info.GetRandomTradeCode();
         return TradeAsyncAttach(code);
