@@ -87,7 +87,7 @@ public abstract class PokeRoutineExecutor<T>(IConsoleBotManaged<IConsoleConnecti
     public async Task VerifyBotbaseVersion(CancellationToken token)
     {
         var data = await SwitchConnection.GetBotbaseVersion(token).ConfigureAwait(false);
-        var version = decimal.TryParse(data, CultureInfo.InvariantCulture, out var v) ? v : 0;
+        var version = System.Version.TryParse(data, out var v) ? v : null;
         if (version < BotbaseVersion)
         {
             var protocol = Config.Connection.Protocol;
@@ -110,10 +110,10 @@ public abstract class PokeRoutineExecutor<T>(IConsoleBotManaged<IConsoleConnecti
         Log("Trainer data is not valid.");
 
         bool found = false;
-        var msg = "";
+        var msg = "Found ";
         if (await SwitchConnection.IsProgramRunning(ovlloaderID, token).ConfigureAwait(false))
         {
-            msg += "Found Tesla Menu";
+            msg += "Tesla Menu";
             found = true;
         }
 
@@ -124,6 +124,7 @@ public abstract class PokeRoutineExecutor<T>(IConsoleBotManaged<IConsoleConnecti
             msg += "dmnt (cheat codes?)";
             found = true;
         }
+
         if (found)
         {
             msg += ".";
