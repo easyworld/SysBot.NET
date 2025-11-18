@@ -51,23 +51,6 @@ public class MiraiQQBot<T> where T : PKM, new()
                     await Task.Delay(1_000).ConfigureAwait(false);
                 }
 
-                if (typeof(T) == typeof(PK8))
-                {
-                    await MessageManager.SendGroupMessageAsync(GroupId, "当前版本为剑盾");
-                }
-                else if (typeof(T) == typeof(PB8))
-                {
-                    await MessageManager.SendGroupMessageAsync(GroupId, "当前版本为晶灿钻石明亮珍珠");
-                }
-                else if (typeof(T) == typeof(PA8))
-                {
-                    await MessageManager.SendGroupMessageAsync(GroupId, "当前版本为阿尔宙斯");
-                }
-                else if (typeof(T) == typeof(PK9))
-                {
-                    await MessageManager.SendGroupMessageAsync(GroupId, "当前版本为朱紫");
-                }
-
                 await Task.Delay(1_000).ConfigureAwait(false);
             }
 #pragma warning disable CA1031 // Do not catch general exception types

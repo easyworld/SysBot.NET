@@ -52,22 +52,6 @@ public class DodoBot<T> where T : PKM, new()
         if (string.IsNullOrWhiteSpace(channelId)) return;
         SendChannelMessage("开始派送", channelId);
         Task.Delay(1_000).ConfigureAwait(false);
-        if (typeof(T) == typeof(PK8))
-        {
-            SendChannelMessage("当前版本为剑盾", channelId);
-        }
-        else if (typeof(T) == typeof(PB8))
-        {
-            SendChannelMessage("当前版本为晶灿钻石明亮珍珠", channelId);
-        }
-        else if (typeof(T) == typeof(PA8))
-        {
-            SendChannelMessage("当前版本为阿尔宙斯", channelId);
-        }
-        else if (typeof(T) == typeof(PK9))
-        {
-            SendChannelMessage("当前版本为朱紫", channelId);
-        }
     }
 
     public static void SendChannelMessage(string message, string channelId)

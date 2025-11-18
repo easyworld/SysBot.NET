@@ -60,6 +60,7 @@ public class FileTradeHelper<T> where T : PKM, new()
         Type t when t == typeof(PB8) => new PB8(ba),
         Type t when t == typeof(PA8) => new PA8(ba),
         Type t when t == typeof(PK9) => new PK9(ba),
+        Type t when t == typeof(PA9) => new PA9(ba),
         _ => null
     };
     static readonly Dictionary<Type, int> pkmSize = new() 
@@ -67,7 +68,8 @@ public class FileTradeHelper<T> where T : PKM, new()
         { typeof(PK8), 344 },
         { typeof(PB8), 344 },
         { typeof(PA8), 376 },
-        { typeof(PK9), 344 }
+        { typeof(PK9), 344 },
+        { typeof(PA9), 344 }
     };
 
     static readonly Dictionary<Type, int> pkmSizeInBin = new()
@@ -75,7 +77,8 @@ public class FileTradeHelper<T> where T : PKM, new()
         { typeof(PK8), 344 },
         { typeof(PB8), 344 },
         { typeof(PA8), 360 },
-        { typeof(PK9), 344 }
+        { typeof(PK9), 344 },
+        { typeof(PA9), 408 }
     };
 
     static readonly Dictionary<Type, int> maxCountInBin = new()
@@ -83,7 +86,8 @@ public class FileTradeHelper<T> where T : PKM, new()
         { typeof(PK8), 960 },
         { typeof(PB8), 1200 },
         { typeof(PA8), 960 },
-        { typeof(PK9), 960 }
+        { typeof(PK9), 960 },
+        { typeof(PA9), 960 }
     };
 
 }
