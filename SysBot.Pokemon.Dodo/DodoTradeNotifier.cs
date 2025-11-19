@@ -34,7 +34,7 @@ public class DodoTradeNotifier<T> : IPokeTradeNotifier<T> where T : PKM, new()
     public void SendNotification(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, string message)
     {
         LogUtil.LogText(message);
-        if (message.Contains("Found Trading Partner:"))
+        if (message.Contains("Found Link Trade partner:"))
         {
             Regex regex = new Regex("TID: (\\d+)");
             string tid = regex.Match(message).Groups[1].ToString();

@@ -330,7 +330,7 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
             await SetBoxPkmWithSwappedIDDetailsLZA(toSend, tradePartner, sav, token);
         }
 
-        poke.SendNotification(this, $"Found Link Trade partner: {tradePartner.TrainerName}. Waiting for a Pokémon...");
+        poke.SendNotification(this, $"Found Link Trade partner: {tradePartner.TrainerName} TID: {tradePartner.TID7} SID: {tradePartner.SID7}. Waiting for a Pokémon...");
 
         if (poke.Type == PokeTradeType.Dump)
         {
