@@ -43,7 +43,6 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
     // Cached offsets that stay the same after connecting online.
     private ulong TradePartnerNIDOffset;
     private ulong TradePartnerTIDOffset;
-    private ulong TradePartnerOTOffset;
 
     // Cached offsets that stay the same per trade.
     private ulong TradePartnerStatusOffset;
@@ -68,6 +67,10 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
 
             Log($"Starting main {nameof(PokeTradeBotLZA)} loop.");
             await InnerLoop(sav, token).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException)
+        {
+            // Normal shutdown; no-op.
         }
         catch (Exception e)
         {
@@ -183,6 +186,11 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
             result = await PerformLinkCodeTrade(sav, detail, token).ConfigureAwait(false);
             if (result == PokeTradeResult.Success)
                 return;
+        }
+        catch (OperationCanceledException)
+        {
+            // Let cancellation bubble so outer loop can exit promptly.
+            throw;
         }
         catch (SocketException socket)
         {
@@ -489,16 +497,17 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
     protected virtual async Task<bool> WaitForTradePartner(CancellationToken token)
     {
         Log("Waiting for trainer...");
-        int ctr = (Hub.Config.Trade.TradeWaitTime * 1_000) - 2_000;
+        int remainMs = (Hub.Config.Trade.TradeWaitTime * 1_000) - 2_000;
         await Task.Delay(2_000, token).ConfigureAwait(false);
-        while (ctr > 0)
+        while (remainMs > 0)
         {
             if (!await IsOnMenu(MenuState.InBox, token).ConfigureAwait(false))
             {
                 await Task.Delay(0_100, token).ConfigureAwait(false);
-                ctr -= 0_100;
+                remainMs -= 0_100;
                 continue;
             }
+            remainMs -= 0_500;
             await Task.Delay(0_500, token).ConfigureAwait(false);
 
             // If we made it to here, then we're in the box. Set the offset for their status.
@@ -519,10 +528,10 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
 
         Log("Resetting to the overworld...");
         // If we're in the Box or searching for a Link Trade, we need to use the BAB approach, otherwise we can just mash B.
-        var ctr = 120_000;
+        var remainMs = 120_000;
         while (await GetMenuState(token).ConfigureAwait(false) >= MenuState.LinkTrade)
         {
-            if (ctr < 0)
+            if (remainMs < 0)
             {
                 // Failed to exist somehow.
                 await RestartGameLZA(token).ConfigureAwait(false);
@@ -541,7 +550,7 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
             await Click(B, 1_000, token).ConfigureAwait(false);
             if (await GetMenuState(token).ConfigureAwait(false) < MenuState.LinkTrade)
                 break;
-            ctr -= 3_000;
+            remainMs -= 3_000;
         }
 
         // From here, we should be able to press B.
@@ -568,10 +577,10 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
 
         Log("Resetting to the Link Play menu...");
         // If we're in the Box or searching for a Link Trade, we need to use the BAB approach, otherwise we can just mash B.
-        var ctr = 120_000;
+        var remainMs = 120_000;
         while (await GetMenuState(token).ConfigureAwait(false) >= MenuState.LinkPlay)
         {
-            if (ctr < 0)
+            if (remainMs < 0)
             {
                 // Failed to exist somehow.
                 await RestartGameLZA(token).ConfigureAwait(false);
@@ -600,7 +609,7 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
                 StartFromOverworld = false;
                 return;
             }
-            ctr -= 3_000;
+            remainMs -= 3_000;
         }
     }
 
@@ -649,7 +658,6 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
         var baseOffset = await SwitchConnection.PointerAll(Offsets.LinkTradePartnerDataPointer, token).ConfigureAwait(false);
         TradePartnerNIDOffset = baseOffset + TradePartnerNIDShift;
         TradePartnerTIDOffset = baseOffset + TradePartnerTIDShift;
-        TradePartnerOTOffset = baseOffset + TradePartnerOTShift;
     }
 
     // todo: future
@@ -667,22 +675,22 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
 
     private async Task<PokeTradeResult> ProcessDumpTradeAsync(PokeTradeDetail<PA9> detail, CancellationToken token)
     {
-        int ctr = 0;
+        int dumped = 0;
         var time = TimeSpan.FromSeconds(Hub.Config.Trade.MaxDumpTradeTime);
         var start = DateTime.Now;
 
         var pkprev = new PA9();
-        var bctr = 0;
-        while (ctr < Hub.Config.Trade.MaxDumpsPerTrade && DateTime.Now - start < time)
+        var pressB = 0;
+        while (dumped < Hub.Config.Trade.MaxDumpsPerTrade && DateTime.Now - start < time)
         {
             if (!await IsOnMenu(MenuState.InBox, token).ConfigureAwait(false))
                 break;
-            if (bctr++ % 3 == 0)
+            if (pressB++ % 3 == 0)
                 await Click(B, 0_100, token).ConfigureAwait(false);
 
             // Wait for user input... Needs to be different from the previously offered Pokémon.
             var pk = await ReadUntilPresentPointer(Offsets.LinkTradePartnerPokemonPointer, 3_000, 0_050, BoxFormatSlotSize, token).ConfigureAwait(false);
-            if (pk == null || pk.Species < 1 || !pk.ChecksumValid || SearchUtil.HashByDetails(pk) == SearchUtil.HashByDetails(pkprev))
+            if (pk == null || pk.Species == 0 || !pk.ChecksumValid || SearchUtil.HashByDetails(pk) == SearchUtil.HashByDetails(pkprev))
                 continue;
             pk.Heal();
             pk.RefreshChecksum();
@@ -701,8 +709,8 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
             var verbose = $"```{la.Report(true)}```";
             Log($"Shown Pokémon is: {(la.Valid ? "Valid" : "Invalid")}.");
 
-            ctr++;
-            var msg = Hub.Config.Trade.DumpTradeLegalityCheck ? verbose : $"File {ctr}";
+            dumped++;
+            var msg = Hub.Config.Trade.DumpTradeLegalityCheck ? verbose : $"File {dumped}";
 
             // Extra information about trainer data for people requesting with their own trainer data.
             var ot = pk.OriginalTrainerName;
@@ -715,12 +723,12 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
             detail.SendNotification(this, pk, msg);
         }
 
-        Log($"Ended Dump loop after processing {ctr} Pokémon.");
-        if (ctr == 0)
+        Log($"Ended Dump loop after processing {dumped} Pokémon.");
+        if (dumped == 0)
             return PokeTradeResult.TrainerTooSlow;
 
         TradeSettings.AddCompletedDumps();
-        detail.Notifier.SendNotification(this, detail, $"Dumped {ctr} Pokémon.");
+        detail.Notifier.SendNotification(this, detail, $"Dumped {dumped} Pokémon.");
         detail.Notifier.TradeFinished(this, detail, detail.TradeData); // blank PA9
         return PokeTradeResult.Success;
     }
@@ -776,7 +784,7 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
         var la = new LegalityAnalysis(offered);
         if (!la.Valid)
         {
-            Log($"Clone request (from {poke.Trainer.TrainerName}) has detected an invalid Pokémon: {GameInfo.GetStrings("en").Species[offered.Species]}.");
+            Log($"Clone request (from {poke.Trainer.TrainerName}) has detected an invalid Pokémon: {GetSpeciesName(offered.Species)}.");
             if (DumpSetting.Dump)
                 DumpPokemon(DumpSetting.DumpFolder, "hacked", offered);
 
@@ -792,8 +800,9 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
         if (Hub.Config.Legality.ResetHOMETracker)
             clone.Tracker = 0;
 
-        poke.SendNotification(this, $"**Cloned your {GameInfo.GetStrings("en").Species[clone.Species]}!**\nNow press B to cancel your offer and trade me a Pokémon you don't want.");
-        Log($"Cloned a {(Species)clone.Species}. Waiting for user to change their Pokémon...");
+        var cloneSpecies = GetSpeciesName(clone.Species);
+        poke.SendNotification(this, $"**Cloned your {cloneSpecies}!**\nNow press B to cancel your offer and trade me a Pokémon you don't want.");
+        Log($"Cloned a {cloneSpecies}. Waiting for user to change their Pokémon...");
 
         if (!await CheckCloneChangedOffer(token).ConfigureAwait(false))
         {
@@ -866,7 +875,7 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
         else if (config.LedyQuitIfNoMatch)
         {
             var nickname = offered.IsNicknamed ? $" (Nickname: \"{offered.Nickname}\")" : string.Empty;
-            poke.SendNotification(this, $"No match found for the offered {GameInfo.GetStrings("en").Species[offered.Species]}{nickname}.");
+            poke.SendNotification(this, $"No match found for the offered {GetSpeciesName(offered.Species)}{nickname}.");
             return (toSend, PokeTradeResult.TrainerRequestBad);
         }
 
