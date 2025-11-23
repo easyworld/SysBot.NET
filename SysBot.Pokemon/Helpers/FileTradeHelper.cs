@@ -20,11 +20,11 @@ public class FileTradeHelper<T> where T : PKM, new()
         if (pkmSize[typeof(T)] == bb.Length)
         {
             var tp = GetPKM(bb);
-            if (tp != null && tp.Species > 0 && tp.Valid && tp is T pkm) return new List<T>() { pkm };
+            if (tp != null && tp.Species > 0 && tp.Valid && tp is T pkm) return [pkm];
         }
         int size = pkmSizeInBin[typeof(T)];
         int times = bb.Length % size == 0 ? (bb.Length / size) : (bb.Length / size + 1);
-        List<T> pkmBytes = new();
+        List<T> pkmBytes = [];
         for (var i = 0; i < times; i++)
         {
             int start = i * size;

@@ -304,7 +304,9 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
         await Task.Delay(5_500 + hub.Config.Timings.ExtraTimeOpenBox, token).ConfigureAwait(false); // necessary delay to get to the box properly
 
         var trainerName = await GetTradePartnerName(TradeMethod.LinkTrade, token).ConfigureAwait(false);
-        var trainerTID = await GetTradePartnerTID7(TradeMethod.LinkTrade, token).ConfigureAwait(false);
+        var trainerTIDSID = await GetTradePartnerTIDSID7(TradeMethod.LinkTrade, token).ConfigureAwait(false);
+        var trainerTID = trainerTIDSID.Item1;
+        var trainerSID = trainerTIDSID.Item2;
         var trainerNID = await GetTradePartnerNID(token).ConfigureAwait(false);
         RecordUtil<PokeTradeBotSWSH>.Record($"Initiating\t{trainerNID:X16}\t{trainerName}\t{poke.Trainer.TrainerName}\t{poke.Trainer.ID}\t{poke.ID}\t{toSend.EncryptionConstant:X8}");
         Log($"Found Link Trade partner: {trainerName}-{trainerTID} (ID: {trainerNID})");
@@ -334,7 +336,7 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
                 await Click(A, 0_500, token).ConfigureAwait(false);
         }
 
-        poke.SendNotification(this, $"Found Link Trade partner: {trainerName}. Waiting for a Pokémon...");
+        poke.SendNotification(this, $"Found Link Trade partner: {trainerName} TID: {trainerTID} SID: {trainerSID}. Waiting for a Pokémon...");
 
         if (poke.Type == PokeTradeType.Dump)
             return await ProcessDumpTradeAsync(poke, token).ConfigureAwait(false);
@@ -484,7 +486,7 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
         var la = new LegalityAnalysis(offered);
         if (!la.Valid)
         {
-            Log($"Clone request (from {poke.Trainer.TrainerName}) has detected an invalid Pokémon: {GameInfo.GetStrings("en").Species[offered.Species]}.");
+            Log($"Clone request (from {poke.Trainer.TrainerName}) has detected an invalid Pokémon: {GetSpeciesName(offered.Species)}.");
             if (DumpSetting.Dump)
                 DumpPokemon(DumpSetting.DumpFolder, "hacked", offered);
 
@@ -500,8 +502,9 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
         if (hub.Config.Legality.ResetHOMETracker)
             clone.Tracker = 0;
 
-        poke.SendNotification(this, $"**Cloned your {GameInfo.GetStrings("en").Species[clone.Species]}!**\nNow press B to cancel your offer and trade me a Pokémon you don't want.");
-        Log($"Cloned a {(Species)clone.Species}. Waiting for user to change their Pokémon...");
+        var cloneSpecies = GetSpeciesName(clone.Species);
+        poke.SendNotification(this, $"**Cloned your {cloneSpecies}!**\nNow press B to cancel your offer and trade me a Pokémon you don't want.");
+        Log($"Cloned a {cloneSpecies}. Waiting for user to change their Pokémon...");
 
         // Separate this out from WaitForPokemonChanged since we compare to old EC from original read.
         var partnerFound = await ReadUntilChanged(LinkTradePartnerPokemonOffset, oldEC, 15_000, 0_200, false, token).ConfigureAwait(false);
@@ -559,7 +562,7 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
         else if (config.LedyQuitIfNoMatch)
         {
             var nickname = offered.IsNicknamed ? $" (Nickname: \"{offered.Nickname}\")" : string.Empty;
-            poke.SendNotification(this, $"No match found for the offered {GameInfo.GetStrings("en").Species[offered.Species]}{nickname}.");
+            poke.SendNotification(this, $"No match found for the offered {GetSpeciesName(offered.Species)}{nickname}.");
             return (toSend, PokeTradeResult.TrainerRequestBad);
         }
 
@@ -742,10 +745,12 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
         await Task.Delay(7_000, token).ConfigureAwait(false);
 
         var TrainerName = await GetTradePartnerName(TradeMethod.SurpriseTrade, token).ConfigureAwait(false);
-        var TrainerTID = await GetTradePartnerTID7(TradeMethod.SurpriseTrade, token).ConfigureAwait(false);
+        var TrainerTIDSID = await GetTradePartnerTIDSID7(TradeMethod.SurpriseTrade, token).ConfigureAwait(false);
+        var TrainerTID = TrainerTIDSID.Item1;
+        var TrainerSID = TrainerTIDSID.Item2;
         var SurprisePoke = await ReadSurpriseTradePokemon(token).ConfigureAwait(false);
 
-        Log($"Found Surprise Trade partner: {TrainerName}-{TrainerTID}, Pokémon: {(Species)SurprisePoke.Species}");
+        Log($"Found Surprise Trade partner: {TrainerName}-{TrainerTID}-{TrainerSID}, Pokémon: {(Species)SurprisePoke.Species}");
 
         // Clear out the received trade data; we want to skip the trade animation.
         // The box slot locks have been removed prior to searching.
@@ -964,14 +969,15 @@ public class PokeTradeBotSWSH(PokeTradeHub<PK8> hub, PokeBotState Config) : Poke
         return StringConverter8.GetString(data);
     }
 
-    private async Task<string> GetTradePartnerTID7(TradeMethod tradeMethod, CancellationToken token)
+    private async Task<(string,string)> GetTradePartnerTIDSID7(TradeMethod tradeMethod, CancellationToken token)
     {
         var ofs = GetTrainerTIDSIDOffset(tradeMethod);
         var data = await Connection.ReadBytesAsync(ofs, 8, token).ConfigureAwait(false);
 
         var tidsid = BitConverter.ToUInt32(data, 0);
         var tid7 = $"{tidsid % 1_000_000:000000}";
-        return tid7;
+        var sid7 = $"{tidsid / 1_000_000:000000}";
+        return (tid7,sid7);
     }
 
     public async Task<ulong> GetTradePartnerNID(CancellationToken token)
