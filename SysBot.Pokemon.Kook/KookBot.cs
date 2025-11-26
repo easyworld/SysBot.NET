@@ -98,6 +98,10 @@ public class KookBot<T> where T : PKM, new()
             {
                 await textChannel.SendTextAsync("当前版本为朱紫");
             }
+            else if (typeof(T) == typeof(PA9))
+            {
+                await textChannel.SendTextAsync("当前版本为Z-A");
+            }
             await Task.Delay(1_000, token).ConfigureAwait(false);
         }
         
