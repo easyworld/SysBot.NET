@@ -103,29 +103,27 @@ public class BilibiliLiveBot<T> where T : PKM, new()
             var sav = AutoLegalityWrapper.GetTrainerInfo<T>();
             var pkm = sav.GetLegal(template, out var result);
 
-            if (!pkm.CanBeTraded())
+            if (pkm == null)
+            {
+                msg = $"Skipping trade, @{username}: Unkown Pokemon data.";
+                return false;
+            }
+            var la = new LegalityAnalysis(pkm);
+            if (!la.Valid)
+            {
+                msg = $"Skipping trade, @{username}: Unable to legalize the Pokemon.";
+                return false;
+            }
+            if (!pkm.CanBeTraded(la.EncounterOriginal))
             {
                 msg = $"Skipping trade, @{username}: Provided Pokemon content is blocked from trading!";
                 return false;
             }
 
-            if (pkm is T pk)
-            {
-                var valid = new LegalityAnalysis(pkm).Valid;
-                if (valid)
-                {
-                    outPkm = pk;
+            outPkm = (T)pkm;
 
-                    msg =
-                        $"@{username} - added to the waiting list. Your request from the waiting list will be removed if you are too slow!";
-                    return true;
-                }
-            }
-
-            var reason = result == "Timeout"
-                ? "Set took too long to generate."
-                : "Unable to legalize the Pokemon.";
-            msg = $"Skipping trade, @{username}: {reason}";
+            msg = $"@{username} - added to the waiting list. Your request from the waiting list will be removed if you are too slow!";
+            return true;
         }
 #pragma warning disable CA1031 // Do not catch general exception types
         catch (Exception ex)

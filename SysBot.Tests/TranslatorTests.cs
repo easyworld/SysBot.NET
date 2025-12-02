@@ -3,6 +3,7 @@ using PKHeX.Core;
 using SysBot.Pokemon;
 using SysBot.Pokemon.Helpers;
 using System.Diagnostics;
+using System.IO;
 using Xunit;
 
 namespace SysBot.Tests;
@@ -46,12 +47,52 @@ public class TranslatorTests
 
         if (pkm.Nickname.ToLower() == "egg" && Breeding.CanHatchAsEgg(pkm.Species)) AbstractTrade<PK9>.EggTrade(pkm, template);
 
-        pkm.CanBeTraded().Should().BeTrue();
+        
         (pkm is PK9).Should().BeTrue();
         var la = new LegalityAnalysis(pkm);
         if (!la.Valid)
             Trace.WriteLine(la.Report());
+        pkm.CanBeTraded(la.EncounterOriginal).Should().BeTrue();
         la.Valid.Should().BeTrue();
     }
 
+    [Theory]
+    [InlineData("梦境球皮卡丘")]
+    public void TestLegalZA(string input)
+    {
+        var setstring = ShowdownTranslator<PA9>.Chinese2Showdown(input);
+        var set = ShowdownUtil.ConvertToShowdown(setstring);
+        set.Should().NotBeNull();
+        var template = AutoLegalityWrapper.GetTemplate(set);
+        template.Species.Should().BeGreaterThan(0);
+        var sav = AutoLegalityWrapper.GetTrainerInfo<PA9>();
+        var pkm = sav.GetLegal(template, out var result);
+        Trace.WriteLine(result.ToString());
+
+        if (pkm.Nickname.ToLower() == "egg" && Breeding.CanHatchAsEgg(pkm.Species)) AbstractTrade<PA9>.EggTrade(pkm, template);
+
+        (pkm is PA9).Should().BeTrue();
+        var la = new LegalityAnalysis(pkm);
+        if (!la.Valid)
+            Trace.WriteLine(la.Report());
+        pkm.CanBeTraded(la.EncounterOriginal).Should().BeTrue();
+        la.Valid.Should().BeTrue();
+    }
+
+    [Theory]
+    [InlineData("C:\\Users\\easyworld\\Downloads\\boxdata Box 2.bin")]
+    public void TestLegalZAFile(string file)
+    {
+        var bytes = File.ReadAllBytes(file);
+        FileTradeHelper<PA9>.Bin2List(bytes).ForEach(pkm =>
+        {
+            pkm.Should().NotBeNull();
+            (pkm is PA9).Should().BeTrue();
+            var la = new LegalityAnalysis(pkm);
+            if (!la.Valid)
+                Trace.WriteLine(la.Report());
+            pkm.CanBeTraded(la.EncounterOriginal).Should().BeTrue();
+            la.Valid.Should().BeTrue();
+        });
+    }
 }

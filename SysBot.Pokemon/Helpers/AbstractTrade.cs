@@ -209,25 +209,28 @@ public abstract class AbstractTrade<T> where T : PKM, new()
     {
         try
         {
-            if (!pkm.CanBeTraded())
+            if (pkm is null)
+            {
+                msg = $"取消派送, 宝可梦数据有误!";
+                return false;
+            }
+            var la = new LegalityAnalysis(pkm);
+            var valid = la.Valid;
+            if (!valid)
+            {
+                LogUtil.LogInfo($"非法原因:\n{la.Report()}", nameof(AbstractTrade<T>));
+                msg = $"取消派送, 宝可梦不合法!\n原因:\n{la.Report()}";
+                return false;
+            }
+            var enc = la.EncounterOriginal;
+            if (!pkm.CanBeTraded(enc))
             {
                 msg = $"取消派送, 官方禁止该宝可梦交易!";
                 return false;
             }
-            if (pkm is T pk)
-            {
-                var la = new LegalityAnalysis(pkm);
-                var valid = la.Valid;
-                if (valid)
-                {
-                    msg = $"已加入等待队列. 如果你选宝可梦的速度太慢，你的派送请求将被取消!";
-                    return true;
-                }
-                LogUtil.LogInfo($"非法原因:\n{la.Report()}", nameof(AbstractTrade<T>));
-            }
-            LogUtil.LogInfo($"pkm type:{pkm.GetType()}, T:{typeof(T)}", nameof(AbstractTrade<T>));
-            var reason = "我没办法创造非法宝可梦";
-            msg = $"{reason}";
+
+            msg = $"已加入等待队列. 如果你选宝可梦的速度太慢，你的派送请求将被取消!";
+            return true;
         }
         catch (Exception ex)
         {
