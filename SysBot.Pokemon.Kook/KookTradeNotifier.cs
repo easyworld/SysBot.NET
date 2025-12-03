@@ -48,7 +48,7 @@ public class KookTradeNotifier<T> : IPokeTradeNotifier<T> where T : PKM, new()
         OnFinish?.Invoke(routine);
         var line = $"@{info.Trainer.TrainerName}: Trade canceled, {msg}";
         LogUtil.LogText(line);
-        Context.Channel.SendTextAsync($"{Context.User.KMarkdownMention} 取消");
+        Context.Channel.SendTextAsync($"{Context.User.KMarkdownMention} 取消, {msg}");
     }
     public void TradeFinished(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, T result)
     {

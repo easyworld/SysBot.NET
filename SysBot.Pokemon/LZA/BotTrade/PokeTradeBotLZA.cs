@@ -406,6 +406,19 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
                 return PokeTradeResult.TradeEvolveNotAllowed;
             }
 
+            if (i > 0 && toSend.Species != 0)
+            {
+                if (Hub.Config.Legality.UseTradePartnerInfo && !skipAutoOTList[i])
+                {
+                    await SetBoxPkmWithSwappedIDDetailsLZA(toSend, tradePartner, sav, token);
+                }
+                else
+                {
+                    await SetBoxPokemonAbsolute(BoxStartOffset, toSend, token, sav).ConfigureAwait(false);
+                }
+                await Task.Delay(1_000, token).ConfigureAwait(false); // give some time for the game to process the new Pokémon
+            }
+
             Log("Confirming trade.");
             var tradeResult = await ConfirmAndStartTrading(poke, token).ConfigureAwait(false);
             if (tradeResult != PokeTradeResult.Success)

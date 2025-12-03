@@ -58,6 +58,7 @@ public class TranslatorTests
 
     [Theory]
     [InlineData("梦境球皮卡丘")]
+    [InlineData("超梦")]
     public void TestLegalZA(string input)
     {
         var setstring = ShowdownTranslator<PA9>.Chinese2Showdown(input);
