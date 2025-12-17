@@ -38,7 +38,7 @@ public class TradeSettings : IBotStateSettings, ICountSettings
     [Category(TradeConfig), Description("When enabled, the screen will be turned off during normal bot loop operation to save power.")]
     public bool ScreenOff { get; set; }
 
-    [Category(TradeCode), Description("Maximum pokemons of single trade. Batch mode will be closed if this configuration is less than 1")]
+    [Category(TradeConfig), Description("Maximum pokemons of single trade. Batch mode will be closed if this configuration is less than 1")]
     public int MaxPkmsPerTrade { get; set; } = 1;
     
     [Category(TradeConfig), Description("When enabled, disallows requesting Pokémon from outside of their original context.")]
