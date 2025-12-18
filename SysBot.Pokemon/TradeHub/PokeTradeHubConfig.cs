@@ -6,9 +6,9 @@ namespace SysBot.Pokemon;
 
 public sealed class PokeTradeHubConfig : BaseConfig
 {
-    private const string BotTrade = nameof(BotTrade);
-    private const string BotEncounter = nameof(BotEncounter);
-    private const string Integration = nameof(Integration);
+    private const string BotTrade = "交易机器人";
+    private const string BotEncounter = "遭遇机器人";
+    private const string Integration = "集成设置";
 
     [Browsable(false)]
     public override bool Shuffled => Distribution.Shuffled;
@@ -17,7 +17,7 @@ public sealed class PokeTradeHubConfig : BaseConfig
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public QueueSettings Queues { get; set; } = new();
 
-    [Category(Operation), Description("Add extra time for slower Switches.")]
+    [Category(Operation), Description("为较慢的Switch增加额外时间。")]
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public TimingSettings Timings { get; set; } = new();
 
@@ -27,7 +27,7 @@ public sealed class PokeTradeHubConfig : BaseConfig
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public TradeSettings Trade { get; set; } = new();
 
-    [Category(BotTrade), Description("Settings for idle distribution trades.")]
+    [Category(BotTrade), Description("空闲分发交易的设置。")]
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public DistributionSettings Distribution { get; set; } = new();
 
@@ -49,7 +49,7 @@ public sealed class PokeTradeHubConfig : BaseConfig
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public RaidSettings RaidSWSH { get; set; } = new();
 
-    [Category(BotEncounter), Description("Stop conditions for EncounterBot.")]
+    [Category(BotEncounter), Description("遭遇机器人的停止条件。")]
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public StopConditionSettings StopConditions { get; set; } = new();
 
@@ -67,11 +67,11 @@ public sealed class PokeTradeHubConfig : BaseConfig
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public YouTubeSettings YouTube { get; set; } = new();
 
-    [Category(Integration), Description("Configure generation of assets for streaming.")]
+    [Category(Integration), Description("配置流媒体资源的生成。")]
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public StreamSettings Stream { get; set; } = new();
 
-    [Category(Integration), Description("Allows favored users to join the queue with a more favorable position than unfavored users.")]
+    [Category(Integration), Description("允许受青睐的用户以比普通用户更有利的位置加入队列。")]
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public FavoredPrioritySettings Favoritism { get; set; } = new();
 

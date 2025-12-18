@@ -14,31 +14,40 @@ public partial class BotController : UserControl
     public EventHandler? Remove;
 
     public BotController()
-    {
-        InitializeComponent();
-        var opt = Enum.GetValues<BotControlCommand>();
-
-        for (int i = 1; i < opt.Length; i++)
         {
-            var cmd = opt[i];
-            var item = new ToolStripMenuItem(cmd.ToString());
-            item.Click += (_, __) => SendCommand(cmd);
+            InitializeComponent();
+            var opt = Enum.GetValues<BotControlCommand>();
 
-            RCMenu.Items.Add(item);
+            for (int i = 1; i < opt.Length; i++)
+            {
+                var cmd = opt[i];
+                string text = cmd switch
+                {
+                    BotControlCommand.Start => "启动",
+                    BotControlCommand.Stop => "停止",
+                    BotControlCommand.Idle => "空闲",
+                    BotControlCommand.Resume => "恢复",
+                    BotControlCommand.Restart => "重启",
+                    _ => cmd.ToString()
+                };
+                var item = new ToolStripMenuItem(text);
+                item.Click += (_, __) => SendCommand(cmd);
+
+                RCMenu.Items.Add(item);
+            }
+
+            var remove = new ToolStripMenuItem("移除");
+            remove.Click += (_, __) => TryRemove();
+            RCMenu.Items.Add(remove);
+            RCMenu.Opening += RcMenuOnOpening;
+
+            var controls = Controls;
+            foreach (var c in controls.OfType<Control>())
+            {
+                c.MouseEnter += BotController_MouseEnter;
+                c.MouseLeave += BotController_MouseLeave;
+            }
         }
-
-        var remove = new ToolStripMenuItem("Remove");
-        remove.Click += (_, __) => TryRemove();
-        RCMenu.Items.Add(remove);
-        RCMenu.Opening += RcMenuOnOpening;
-
-        var controls = Controls;
-        foreach (var c in controls.OfType<Control>())
-        {
-            c.MouseEnter += BotController_MouseEnter;
-            c.MouseLeave += BotController_MouseLeave;
-        }
-    }
 
     private void RcMenuOnOpening(object? sender, CancelEventArgs? e)
     {
@@ -49,7 +58,16 @@ public partial class BotController : UserControl
         foreach (var tsi in RCMenu.Items.OfType<ToolStripMenuItem>())
         {
             var text = tsi.Text;
-            tsi.Enabled = Enum.TryParse(text, out BotControlCommand cmd)
+            BotControlCommand cmd = text switch
+            {
+                "启动" => BotControlCommand.Start,
+                "停止" => BotControlCommand.Stop,
+                "空闲" => BotControlCommand.Idle,
+                "恢复" => BotControlCommand.Resume,
+                "重启" => BotControlCommand.Restart,
+                _ => BotControlCommand.None
+            };
+            tsi.Enabled = cmd != BotControlCommand.None
                 ? cmd.IsUsable(bot.IsRunning, bot.IsPaused)
                 : !bot.IsRunning;
         }
@@ -66,7 +84,7 @@ public partial class BotController : UserControl
     public void ReloadStatus()
     {
         var bot = GetBot().Bot;
-        L_Left.Text = $"{bot.Connection.Name}{Environment.NewLine}{State.InitialRoutine}";
+        L_Left.Text = $"{bot.Connection.Name}{Environment.NewLine}{State.InitialRoutine.ToChinese()}";
     }
 
     private DateTime LastUpdateStatus = DateTime.Now;
@@ -76,7 +94,7 @@ public partial class BotController : UserControl
         ReloadStatus();
         var bot = b.Bot;
         L_Description.Text = $"[{bot.LastTime:hh:mm:ss}] {bot.Connection.Label}: {bot.LastLogged}";
-        L_Left.Text = $"{bot.Connection.Name}{Environment.NewLine}{State.InitialRoutine}";
+        L_Left.Text = $"{bot.Connection.Name}{Environment.NewLine}{State.InitialRoutine.ToChinese()}";
 
         var lastTime = bot.LastTime;
         if (!b.IsRunning)
@@ -146,7 +164,7 @@ public partial class BotController : UserControl
     {
         if (Runner?.Config.SkipConsoleBotCreation != false)
         {
-            LogUtil.LogError("No bots were created because SkipConsoleBotCreation is on!", "Hub");
+            LogUtil.LogError("由于SkipConsoleBotCreation已开启，未创建任何机器人！", "Hub");
             return;
         }
         var bot = GetBot();
@@ -160,7 +178,7 @@ public partial class BotController : UserControl
             case BotControlCommand.Resume: bot.Resume(); break;
             case BotControlCommand.Restart:
             {
-                var prompt = WinFormsUtil.Prompt(MessageBoxButtons.YesNo, "Are you sure you want to restart the connection?");
+                var prompt = WinFormsUtil.Prompt(MessageBoxButtons.YesNo, "您确定要重启连接吗？");
                 if (prompt != DialogResult.Yes)
                     return;
 
@@ -169,11 +187,11 @@ public partial class BotController : UserControl
                 break;
             }
             default:
-                WinFormsUtil.Alert($"{cmd} is not a command that can be sent to the Bot.");
+                WinFormsUtil.Alert($"{cmd}不是可以发送给机器人的命令。");
                 return;
         }
         if (echo)
-            EchoUtil.Echo($"{bot.Bot.Connection.Name} ({bot.Bot.Config.InitialRoutine}) has been issued a command to {cmd}.");
+            EchoUtil.Echo($"{bot.Bot.Connection.Name} ({bot.Bot.Config.InitialRoutine.ToChinese()})已收到{cmd}命令。");
     }
 
     private BotSource<PokeBotState> GetBot()

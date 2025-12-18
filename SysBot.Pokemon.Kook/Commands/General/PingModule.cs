@@ -6,9 +6,9 @@ namespace SysBot.Pokemon.Kook;
 public class PingModule : ModuleBase<SocketCommandContext>
 {
     [Command("ping")]
-    [Summary("Makes the bot respond, indicating that it is running.")]
+    [Summary("让机器人响应，表明它正在运行。")]
     public async Task PingAsync()
     {
-        await ReplyTextAsync("Pong!").ConfigureAwait(false);
+        await ReplyTextAsync("乒！").ConfigureAwait(false);
     }
 }

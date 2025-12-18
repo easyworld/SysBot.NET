@@ -32,7 +32,7 @@ public class TradeStartModule<T> : ModuleBase<SocketCommandContext> where T : PK
                 AddLogChannel(c, ch.ID);
         }
 
-        LogUtil.LogInfo("Added Trade Start Notification to Kook channel(s) on Bot startup.", "Kook");
+        LogUtil.LogInfo("机器人启动时已将交易开始通知添加到Kook频道。", "Kook");
     }
 
     public static bool IsStartChannel(ulong cid)
@@ -42,7 +42,7 @@ public class TradeStartModule<T> : ModuleBase<SocketCommandContext> where T : PK
     }
 
     [Command("startHere")]
-    [Summary("Makes the bot log trade starts to the channel.")]
+    [Summary("让机器人在此频道记录交易开始信息。")]
     [RequireSudo]
     public async Task AddLogAsync()
     {
@@ -50,7 +50,7 @@ public class TradeStartModule<T> : ModuleBase<SocketCommandContext> where T : PK
         var cid = c.Id;
         if (Channels.TryGetValue(cid, out _))
         {
-            await ReplyTextAsync("Already logging here.").ConfigureAwait(false);
+            await ReplyTextAsync("已经在此记录了。").ConfigureAwait(false);
             return;
         }
 
@@ -58,7 +58,7 @@ public class TradeStartModule<T> : ModuleBase<SocketCommandContext> where T : PK
 
         // Add to Kook global loggers (saves on program close)
         KookBotSettings.Settings.TradeStartingChannels.AddIfNew([GetReference(Context.Channel)]);
-        await ReplyTextAsync("Added Start Notification output to this channel!").ConfigureAwait(false);
+        await ReplyTextAsync("已将交易开始通知输出添加到此频道！").ConfigureAwait(false);
     }
 
     private static void AddLogChannel(ISocketMessageChannel c, ulong cid)
@@ -72,14 +72,14 @@ public class TradeStartModule<T> : ModuleBase<SocketCommandContext> where T : PK
 
         Action<PokeRoutineExecutorBase, PokeTradeDetail<T>> l = Logger;
         KookBot<T>.Runner.Hub.Queues.Forwarders.Add(l);
-        static string GetMessage(PokeRoutineExecutorBase bot, PokeTradeDetail<T> detail) => $"> [{DateTime.Now:hh:mm:ss}] - {bot.Connection.Label} is now trading (ID {detail.ID}) {detail.Trainer.TrainerName}";
+        static string GetMessage(PokeRoutineExecutorBase bot, PokeTradeDetail<T> detail) => $"> [{DateTime.Now:hh:mm:ss}] - {bot.Connection.Label} 正在与 (ID {detail.ID}) {detail.Trainer.TrainerName} 进行交易";
 
         var entry = new TradeStartAction(cid, l, c.Name);
         Channels.Add(cid, entry);
     }
 
     [Command("startInfo")]
-    [Summary("Dumps the Start Notification settings.")]
+    [Summary("显示交易开始通知的设置。")]
     [RequireSudo]
     public async Task DumpLogInfoAsync()
     {
@@ -88,7 +88,7 @@ public class TradeStartModule<T> : ModuleBase<SocketCommandContext> where T : PK
     }
 
     [Command("startClear")]
-    [Summary("Clears the Start Notification settings in that specific channel.")]
+    [Summary("清除该特定频道的交易开始通知设置。")]
     [RequireSudo]
     public async Task ClearLogsAsync()
     {
@@ -96,23 +96,23 @@ public class TradeStartModule<T> : ModuleBase<SocketCommandContext> where T : PK
         if (Channels.TryGetValue(Context.Channel.Id, out var entry))
             Remove(entry);
         cfg.TradeStartingChannels.RemoveAll(z => z.ID == Context.Channel.Id);
-        await ReplyTextAsync($"Start Notifications cleared from channel: {Context.Channel.Name}").ConfigureAwait(false);
+        await ReplyTextAsync($"已从频道 {Context.Channel.Name} 清除交易开始通知！").ConfigureAwait(false);
     }
 
     [Command("startClearAll")]
-    [Summary("Clears all the Start Notification settings.")]
+    [Summary("清除所有交易开始通知设置。")]
     [RequireSudo]
     public async Task ClearLogsAllAsync()
     {
         foreach (var l in Channels)
         {
             var entry = l.Value;
-            await ReplyTextAsync($"Logging cleared from {entry.ChannelName} ({entry.ChannelID}!").ConfigureAwait(false);
+            await ReplyTextAsync($"已从频道 {entry.ChannelName} ({entry.ChannelID}) 清除记录！").ConfigureAwait(false);
             KookBot<T>.Runner.Hub.Queues.Forwarders.Remove(entry.Action);
         }
         Channels.Clear();
         KookBotSettings.Settings.TradeStartingChannels.Clear();
-        await ReplyTextAsync("Start Notifications cleared from all channels!").ConfigureAwait(false);
+        await ReplyTextAsync("已从所有频道清除交易开始通知！").ConfigureAwait(false);
     }
 
     private RemoteControlAccess GetReference(IChannel channel) => new()

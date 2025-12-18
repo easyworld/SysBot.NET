@@ -8,7 +8,7 @@ public class HelloModule : ModuleBase<SocketCommandContext>
 {
     [Command("hello")]
     [Alias("hi")]
-    [Summary("Say hello to the bot and get a response.")]
+    [Summary("向机器人打招呼并获得响应。")]
     public async Task PingAsync()
     {
         var str = KookBotSettings.Settings.HelloResponse;

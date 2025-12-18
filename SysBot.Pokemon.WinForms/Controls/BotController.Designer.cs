@@ -45,7 +45,7 @@ namespace SysBot.Pokemon.WinForms
             L_Description.Name = "L_Description";
             L_Description.Size = new System.Drawing.Size(305, 42);
             L_Description.TabIndex = 2;
-            L_Description.Text = "Status";
+            L_Description.Text = "状态";
             L_Description.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // L_Left

@@ -28,11 +28,11 @@ public class EchoModule : ModuleBase<SocketCommandContext>
                 AddEchoChannel(c, ch.ID);
         }
 
-        EchoUtil.Echo("Added echo notification to Kook channel(s) on Bot startup.");
+        EchoUtil.Echo("机器人启动时已将回声通知添加到Kook频道。");
     }
 
     [Command("echoHere")]
-    [Summary("Makes the echo special messages to the channel.")]
+    [Summary("让机器人将特殊消息回声到该频道。")]
     [RequireSudo]
     public async Task AddEchoAsync()
     {
@@ -40,7 +40,7 @@ public class EchoModule : ModuleBase<SocketCommandContext>
         var cid = c.Id;
         if (Channels.TryGetValue(cid, out _))
         {
-            await ReplyTextAsync("Already notifying here.").ConfigureAwait(false);
+            await ReplyTextAsync("已经在此频道通知了。").ConfigureAwait(false);
             return;
         }
 
@@ -48,7 +48,7 @@ public class EchoModule : ModuleBase<SocketCommandContext>
 
         // Add to Kook global loggers (saves on program close)
         KookBotSettings.Settings.EchoChannels.AddIfNew([GetReference(Context.Channel)]);
-        await ReplyTextAsync("Added Echo output to this channel!").ConfigureAwait(false);
+        await ReplyTextAsync("已将回声输出添加到此频道！").ConfigureAwait(false);
     }
 
     private static void AddEchoChannel(ISocketMessageChannel c, ulong cid)
@@ -68,7 +68,7 @@ public class EchoModule : ModuleBase<SocketCommandContext>
     }
 
     [Command("echoInfo")]
-    [Summary("Dumps the special message (Echo) settings.")]
+    [Summary("显示特殊消息（回声）的设置。")]
     [RequireSudo]
     public async Task DumpEchoInfoAsync()
     {
@@ -77,37 +77,37 @@ public class EchoModule : ModuleBase<SocketCommandContext>
     }
 
     [Command("echoClear")]
-    [Summary("Clears the special message echo settings in that specific channel.")]
+    [Summary("清除该特定频道的特殊消息回声设置。")]
     [RequireSudo]
     public async Task ClearEchosAsync()
     {
         var id = Context.Channel.Id;
         if (!Channels.TryGetValue(id, out var echo))
         {
-            await ReplyTextAsync("Not echoing in this channel.").ConfigureAwait(false);
+            await ReplyTextAsync("未在此频道回声。").ConfigureAwait(false);
             return;
         }
         EchoUtil.Forwarders.Remove(echo.Action);
         Channels.Remove(Context.Channel.Id);
         KookBotSettings.Settings.EchoChannels.RemoveAll(z => z.ID == id);
-        await ReplyTextAsync($"Echoes cleared from channel: {Context.Channel.Name}").ConfigureAwait(false);
+        await ReplyTextAsync($"已从频道 {Context.Channel.Name} 清除回声！").ConfigureAwait(false);
     }
 
     [Command("echoClearAll")]
-    [Summary("Clears all the special message Echo channel settings.")]
+    [Summary("清除所有特殊消息回声频道设置。")]
     [RequireSudo]
     public async Task ClearEchosAllAsync()
     {
         foreach (var l in Channels)
         {
             var entry = l.Value;
-            await ReplyTextAsync($"Echoing cleared from {entry.ChannelName} ({entry.ChannelID}!").ConfigureAwait(false);
+            await ReplyTextAsync($"已从频道 {entry.ChannelName} ({entry.ChannelID}) 清除回声！").ConfigureAwait(false);
             EchoUtil.Forwarders.Remove(entry.Action);
         }
         EchoUtil.Forwarders.RemoveAll(y => Channels.Select(x => x.Value.Action).Contains(y));
         Channels.Clear();
         KookBotSettings.Settings.EchoChannels.Clear();
-        await ReplyTextAsync("Echoes cleared from all channels!").ConfigureAwait(false);
+        await ReplyTextAsync("已从所有频道清除回声！").ConfigureAwait(false);
     }
 
     private RemoteControlAccess GetReference(IChannel channel) => new()

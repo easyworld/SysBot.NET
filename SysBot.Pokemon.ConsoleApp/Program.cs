@@ -13,9 +13,9 @@ public static class Program
 
     private static void Main(string[] args)
     {
-        Console.WriteLine("Starting up...");
+        Console.WriteLine("正在启动...");
         if (args.Length > 1)
-            Console.WriteLine("This program does not support command line arguments.");
+            Console.WriteLine("该程序不支持命令行参数。");
 
         if (!File.Exists(ConfigPath))
         {
@@ -32,7 +32,7 @@ public static class Program
         }
         catch (Exception)
         {
-            Console.WriteLine("Unable to start bots with saved config file. Please copy your config from the WinForms project or delete it and reconfigure.");
+            Console.WriteLine("无法使用保存的配置文件启动机器人。请从WinForms项目复制配置或删除它并重新配置。");
             Console.ReadKey();
         }
     }
@@ -43,9 +43,9 @@ public static class Program
         var cfg = new ProgramConfig { Bots = [bot] };
         var created = JsonSerializer.Serialize(cfg, ProgramConfigContext.Default.ProgramConfig);
         File.WriteAllText(ConfigPath, created);
-        Console.WriteLine("Created new config file since none was found in the program's path. Please configure it and restart the program.");
-        Console.WriteLine("It is suggested to configure this config file using the GUI project if possible, as it will help you assign values correctly.");
-        Console.WriteLine("Press any key to exit.");
+        Console.WriteLine("由于程序路径中未找到配置文件，已创建新的配置文件。请配置它并重新启动程序。");
+        Console.WriteLine("建议尽可能使用GUI项目（WinForms）来配置此配置文件，因为它将帮助您正确分配值。");
+        Console.WriteLine("按任意键退出。");
         Console.ReadKey();
     }
 }
@@ -63,12 +63,12 @@ public static class BotContainer
         {
             bot.Initialize();
             if (!AddBot(env, bot, prog.Mode))
-                Console.WriteLine($"Failed to add bot: {bot}");
+                Console.WriteLine($"添加机器人失败: {bot}");
         }
 
         LogUtil.Forwarders.Add(ConsoleForwarder.Instance);
         env.StartAll();
-        Console.WriteLine($"Started all bots (Count: {prog.Bots.Length}).");
+        Console.WriteLine($"所有机器人启动完成（数量: {prog.Bots.Length}）。");
 
         Environment = env;
         WaitForExit();
@@ -77,8 +77,8 @@ public static class BotContainer
     private static void WaitForExit()
     {
         var msg = Console.IsInputRedirected
-            ? "Running without console input. Waiting for exit signal."
-            : "Press CTRL-C to stop execution. Feel free to minimize this window.";
+            ? "在没有控制台输入的情况下运行。等待退出信号。"
+            : "按CTRL-C停止执行。可以最小化此窗口。";
         Console.WriteLine(msg);
 
         AppDomain.CurrentDomain.ProcessExit += (_, _) =>
@@ -86,14 +86,14 @@ public static class BotContainer
             if (IsStopping)
                 return; // Already stopping, don't double stop.
             // Try as best we can to shut down.
-            StopProcess("Process exit detected. Stopping all bots.");
+            StopProcess("检测到进程退出。正在停止所有机器人。");
         };
         Console.CancelKeyPress += (_, e) =>
         {
             if (IsStopping)
                 return; // Already stopping, don't double stop.
             e.Cancel = true; // Gracefully exit after stopping all bots.
-            StopProcess("Cancel key detected. Stopping all bots.");
+            StopProcess("检测到取消键。正在停止所有机器人。");
         };
 
         while (IsRunning)
@@ -122,7 +122,7 @@ public static class BotContainer
     {
         if (!cfg.IsValid())
         {
-            Console.WriteLine($"{cfg}'s config is not valid.");
+            Console.WriteLine($"{cfg}的配置无效。");
             return false;
         }
 
@@ -133,7 +133,7 @@ public static class BotContainer
         }
         catch
         {
-            Console.WriteLine($"Current Mode ({mode}) does not support this type of bot ({cfg.CurrentRoutineType}).");
+            Console.WriteLine($"当前模式 ({mode}) 不支持这种类型的机器人 ({cfg.CurrentRoutineType}).");
             return false;
         }
         try
@@ -146,7 +146,7 @@ public static class BotContainer
             return false;
         }
 
-        Console.WriteLine($"Added: {cfg}: {cfg.InitialRoutine}");
+        Console.WriteLine($"已添加: {cfg}: {cfg.InitialRoutine}");
         return true;
     }
 }

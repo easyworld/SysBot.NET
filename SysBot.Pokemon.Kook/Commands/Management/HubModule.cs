@@ -13,7 +13,7 @@ public class HubModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new(
 {
     [Command("status")]
     [Alias("stats")]
-    [Summary("Gets the status of the bot environment.")]
+    [Summary("获取机器人环境状态。")]
     public async Task GetStatusAsync()
     {
         var me = KookBot<T>.Runner;
@@ -24,18 +24,18 @@ public class HubModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new(
         var runner = KookBot<T>.Runner;
         var allBots = runner.Bots.ConvertAll(z => z.Bot);
         var botCount = allBots.Count;
-        builder.AddModule(new SectionModuleBuilder().WithText("Bot Status"))
-            .AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**Summary**")))
-            .AddModule(new SectionModuleBuilder().WithText($"Bot Count: {botCount}\n" +
-                $"Bot State: {SummarizeBots(allBots)}\n" +
-                $"Pool Count: {hub.Ledy.Pool.Count}\n"));
+        builder.AddModule(new SectionModuleBuilder().WithText("机器人状态"))
+            .AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**摘要**")))
+            .AddModule(new SectionModuleBuilder().WithText($"机器人数量: {botCount}\n" +
+                $"机器人状态: {SummarizeBots(allBots)}\n" +
+                $"池数量: {hub.Ledy.Pool.Count}\n"));
 
         var bots = allBots.OfType<ICountBot>();
         var lines = bots.SelectMany(z => z.Counts.GetNonZeroCounts()).Distinct();
         var msg = string.Join("\n", lines);
         if (string.IsNullOrWhiteSpace(msg))
-            msg = "Nothing counted yet!";
-        builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**Counts**")))
+            msg = "还没有统计到任何东西！";
+        builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**统计**")))
             .AddModule(new SectionModuleBuilder().WithText(msg));
 
         var queues = hub.Queues.AllQueues;
@@ -47,16 +47,16 @@ public class HubModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new(
                 continue;
 
             var nextMsg = GetNextName(q);
-            builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder($"**{q.Type} Queue**")))
-                .AddModule(new SectionModuleBuilder().WithText($"Next: {nextMsg}\n" +
-                    $"Count: {c}"));
+            builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder($"**{q.Type} 队列**")))
+                .AddModule(new SectionModuleBuilder().WithText($"下一个: {nextMsg}\n" +
+                    $"数量: {c}"));
             count += c;
         }
 
         if (count == 0)
         {
-            builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**Queues are empty.**")))
-                .AddModule(new SectionModuleBuilder().WithText("Nobody in line!"));
+            builder.AddModule(new SectionModuleBuilder().WithText(new KMarkdownElementBuilder("**队列为空。**")))
+                .AddModule(new SectionModuleBuilder().WithText("没有排队的人！"));
         }
 
         await ReplyCardAsync(builder.Build()).ConfigureAwait(false);
@@ -66,7 +66,7 @@ public class HubModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new(
     {
         var next = q.TryPeek(out var detail, out _);
         if (!next)
-            return "None!";
+            return "没有！";
 
         var name = detail.Trainer.TrainerName;
 
@@ -80,7 +80,7 @@ public class HubModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new(
     private static string SummarizeBots(IReadOnlyCollection<RoutineExecutor<PokeBotState>> bots)
     {
         if (bots.Count == 0)
-            return "No bots configured.";
+            return "没有配置机器人。";
         var summaries = bots.Select(z => $"- {z.GetSummary()}");
         return Environment.NewLine + string.Join(Environment.NewLine, summaries);
     }

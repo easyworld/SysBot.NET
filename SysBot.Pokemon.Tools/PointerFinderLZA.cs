@@ -156,8 +156,41 @@ public class PointerFinderLZA
     public async Task<List<long>?> FindMyStatusPointerAsync()
     {
         Console.WriteLine("正在搜索玩家状态指针...");
-        // TODO: 实现玩家状态的搜索逻辑
-        return null;
+        
+        // 玩家状态数据特征：通常包含玩家ID、性别等信息
+        var signature = new byte[8];
+        signature[0] = 0x01; // 玩家ID示例
+        signature[1] = 0x00;
+        signature[2] = 0x00;
+        signature[3] = 0x00;
+        signature[4] = 0x01; // 性别示例：男
+        
+        // 搜索内存中的玩家状态数据
+        var statusAddresses = await SearchMemoryAsync(signature, 5).ConfigureAwait(false);
+        
+        if (statusAddresses.Count == 0)
+        {
+            Console.WriteLine("未找到玩家状态数据");
+            return null;
+        }
+        
+        Console.WriteLine($"找到 {statusAddresses.Count} 个潜在的玩家状态地址:");
+        foreach (var addr in statusAddresses)
+            Console.WriteLine($"  0x{addr:X16}");
+        
+        // 选择第一个地址进行指针追踪
+        var targetAddress = statusAddresses[0];
+        Console.WriteLine($"\n正在追踪指针路径: 0x{targetAddress:X16}");
+        
+        // 追踪指针路径
+        var pointerPath = await TracePointerPathAsync(targetAddress).ConfigureAwait(false);
+        
+        if (pointerPath != null)
+        {
+            Console.WriteLine($"找到玩家状态指针路径: [{string.Join(", ", pointerPath.Select(p => $"0x{p:X}"))}]");
+        }
+        
+        return pointerPath;
     }
     
     /// <summary>
@@ -167,8 +200,100 @@ public class PointerFinderLZA
     public async Task<Dictionary<string, List<long>>?> FindTradePointersAsync()
     {
         Console.WriteLine("正在搜索链接交换相关指针...");
-        // TODO: 实现交换相关指针的搜索逻辑
-        return null;
+        var results = new Dictionary<string, List<long>>();
+        
+        try
+        {
+            // 搜索交换伙伴宝可梦数据指针
+            Console.WriteLine("\n搜索交换伙伴宝可梦数据指针...");
+            var partnerPokemonAddr = await SearchTradePartnerPokemonAsync().ConfigureAwait(false);
+            if (partnerPokemonAddr != 0)
+            {
+                var pointerPath = await TracePointerPathAsync(partnerPokemonAddr).ConfigureAwait(false);
+                if (pointerPath != null)
+                {
+                    results["LinkTradePartnerPokemonPointer"] = pointerPath;
+                }
+            }
+            
+            // 搜索交换伙伴状态指针
+            Console.WriteLine("\n搜索交换伙伴状态指针...");
+            var partnerStatusAddr = await SearchTradePartnerStatusAsync().ConfigureAwait(false);
+            if (partnerStatusAddr != 0)
+            {
+                var pointerPath = await TracePointerPathAsync(partnerStatusAddr).ConfigureAwait(false);
+                if (pointerPath != null)
+                {
+                    results["TradePartnerStatusPointer"] = pointerPath;
+                }
+            }
+            
+            // 搜索链接交换代码指针
+            Console.WriteLine("\n搜索链接交换代码指针...");
+            var tradeCodeAddr = await SearchTradeCodeAsync().ConfigureAwait(false);
+            if (tradeCodeAddr != 0)
+            {
+                var pointerPath = await TracePointerPathAsync(tradeCodeAddr).ConfigureAwait(false);
+                if (pointerPath != null)
+                {
+                    results["LinkTradeCodePointer"] = pointerPath;
+                }
+            }
+            
+        } catch (Exception ex)
+        {
+            Console.WriteLine($"搜索交换指针时发生错误: {ex.Message}");
+        }
+        
+        return results.Count > 0 ? results : null;
+    }
+    
+    /// <summary>
+    /// 搜索交换伙伴宝可梦数据地址
+    /// </summary>
+    /// <returns>交换伙伴宝可梦数据地址，如果未找到则返回0</returns>
+    private async Task<ulong> SearchTradePartnerPokemonAsync()
+    {
+        // 交换伙伴宝可梦数据特征：与普通宝可梦数据类似
+        var signature = GeneratePokemonSignature();
+        var addresses = await SearchMemoryAsync(signature, 10).ConfigureAwait(false);
+        
+        // 返回第一个可能的交换伙伴宝可梦地址
+        return addresses.FirstOrDefault();
+    }
+    
+    /// <summary>
+    /// 搜索交换伙伴状态地址
+    /// </summary>
+    /// <returns>交换伙伴状态地址，如果未找到则返回0</returns>
+    private async Task<ulong> SearchTradePartnerStatusAsync()
+    {
+        // 交换伙伴状态特征：通常包含在线状态、准备状态等
+        var signature = new byte[4];
+        signature[0] = 0x01; // 在线状态示例
+        
+        var addresses = await SearchMemoryAsync(signature, 5).ConfigureAwait(false);
+        return addresses.FirstOrDefault();
+    }
+    
+    /// <summary>
+    /// 搜索交换代码地址
+    /// </summary>
+    /// <returns>交换代码地址，如果未找到则返回0</returns>
+    private async Task<ulong> SearchTradeCodeAsync()
+    {
+        // 交换代码特征：6位数字，以特定格式存储
+        var signature = new byte[6];
+        // 设置6位数字的示例（如000001）
+        signature[0] = 0x01;
+        signature[1] = 0x00;
+        signature[2] = 0x00;
+        signature[3] = 0x00;
+        signature[4] = 0x00;
+        signature[5] = 0x00;
+        
+        var addresses = await SearchMemoryAsync(signature, 5).ConfigureAwait(false);
+        return addresses.FirstOrDefault();
     }
     
     /// <summary>

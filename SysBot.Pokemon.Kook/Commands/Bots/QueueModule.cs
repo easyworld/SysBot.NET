@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace SysBot.Pokemon.Kook;
 
-[Summary("Clears and toggles Queue features.")]
+[Summary("清除和切换队列功能。")]
 public class QueueModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new()
 {
     private static TradeQueueInfo<T> Info => KookBot<T>.Runner.Hub.Queues.Info;
 
     [Command("queueStatus")]
     [Alias("qs", "ts")]
-    [Summary("Checks the user's position in the queue.")]
+    [Summary("查看用户在队列中的位置。")]
     public async Task GetTradePositionAsync()
     {
         var msg = $"{Context.User.KMarkdownMention}" + " - " + Info.GetPositionString(Context.User.Id);
@@ -21,7 +21,7 @@ public class QueueModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
 
     [Command("queueClear")]
     [Alias("qc", "tc")]
-    [Summary("Clears the user from the trade queues. Will not remove a user if they are being processed.")]
+    [Summary("将用户从交易队列中清除。如果用户正在被处理，将不会被移除。")]
     public async Task ClearTradeAsync()
     {
         string msg = ClearTrade();
@@ -30,9 +30,9 @@ public class QueueModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
 
     [Command("queueClearUser")]
     [Alias("qcu", "tcu")]
-    [Summary("Clears the user from the trade queues. Will not remove a user if they are being processed.")]
+    [Summary("将指定用户从交易队列中清除。如果用户正在被处理，将不会被移除。")]
     [RequireSudo]
-    public async Task ClearTradeUserAsync([Summary("Kook user ID")] ulong id)
+    public async Task ClearTradeUserAsync([Summary("Kook用户ID")] ulong id)
     {
         string msg = ClearTrade(id);
         await ReplyTextAsync(msg).ConfigureAwait(false);
@@ -40,9 +40,9 @@ public class QueueModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
 
     [Command("queueClearUser")]
     [Alias("qcu", "tcu")]
-    [Summary("Clears the user from the trade queues. Will not remove a user if they are being processed.")]
+    [Summary("将提及的用户从交易队列中清除。如果用户正在被处理，将不会被移除。")]
     [RequireSudo]
-    public async Task ClearTradeUserAsync([Summary("Username of the person to clear")] string _)
+    public async Task ClearTradeUserAsync([Summary("要清除的用户名")] string _)
     {
         foreach (var user in Context.Message.MentionedUsers)
         {
@@ -53,14 +53,14 @@ public class QueueModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
 
     [Command("queueClearUser")]
     [Alias("qcu", "tcu")]
-    [Summary("Clears the user from the trade queues. Will not remove a user if they are being processed.")]
+    [Summary("将提及的用户从交易队列中清除。如果用户正在被处理，将不会被移除。")]
     [RequireSudo]
     public async Task ClearTradeUserAsync()
     {
         var users = Context.Message.MentionedUsers;
         if (users.Count == 0)
         {
-            await ReplyTextAsync("No users mentioned").ConfigureAwait(false);
+            await ReplyTextAsync("没有提及任何用户").ConfigureAwait(false);
             return;
         }
         foreach (var u in users)
@@ -69,48 +69,48 @@ public class QueueModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
 
     [Command("queueClearAll")]
     [Alias("qca", "tca")]
-    [Summary("Clears all users from the trade queues.")]
+    [Summary("清除所有用户的交易队列。")]
     [RequireSudo]
     public async Task ClearAllTradesAsync()
     {
         Info.ClearAllQueues();
-        await ReplyTextAsync("Cleared all in the queue.").ConfigureAwait(false);
+        await ReplyTextAsync("已清除队列中的所有用户。").ConfigureAwait(false);
     }
 
     [Command("queueToggle")]
     [Alias("qt", "tt")]
-    [Summary("Toggles on/off the ability to join the trade queue.")]
+    [Summary("切换是否允许用户加入交易队列。")]
     [RequireSudo]
     public Task ToggleQueueTradeAsync()
     {
         var state = Info.ToggleQueue();
         var msg = state
-            ? "Users are now able to join the trade queue."
-            : $"Changed queue settings: {Format.Bold($"Users CANNOT join the queue until it is turned back on.")}";
+            ? "现在用户可以加入交易队列。"
+            : $"队列设置已更改：{Format.Bold($"在重新开启之前，用户无法加入队列。")}";
 
         return Context.Channel.EchoAndReply(msg);
     }
 
     [Command("queueMode")]
     [Alias("qm")]
-    [Summary("Changes how queueing is controlled (manual/threshold/interval).")]
+    [Summary("更改队列控制方式（手动/阈值/间隔）。")]
     [RequireSudo]
-    public async Task ChangeQueueModeAsync([Summary("Queue mode")] QueueOpening mode)
+    public async Task ChangeQueueModeAsync([Summary("队列模式")] QueueOpening mode)
     {
         KookBot<T>.Runner.Hub.Config.Queues.QueueToggleMode = mode;
-        await ReplyTextAsync($"Changed queue mode to {mode}.").ConfigureAwait(false);
+        await ReplyTextAsync($"已将队列模式更改为 {mode}。").ConfigureAwait(false);
     }
 
     [Command("queueList")]
     [Alias("ql")]
-    [Summary("Private messages the list of users in the queue.")]
+    [Summary("私信发送队列中的用户列表。")]
     [RequireSudo]
     public async Task ListUserQueue()
     {
-        var lines = KookBot<T>.Runner.Hub.Queues.Info.GetUserList("(ID {0}) - Code: {1} - {2} - {3}");
+        var lines = KookBot<T>.Runner.Hub.Queues.Info.GetUserList("(ID {0}) - 代码: {1} - {2} - {3}");
         var msg = string.Join("\n", lines);
         if (msg.Length < 3)
-            await ReplyTextAsync("Queue list is empty.").ConfigureAwait(false);
+            await ReplyTextAsync("队列为空。").ConfigureAwait(false);
         else
             await Context.User.SendTextAsync(msg).ConfigureAwait(false);
     }
@@ -137,10 +137,10 @@ public class QueueModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
     {
         return result switch
         {
-            QueueResultRemove.CurrentlyProcessing => "Looks like you're currently being processed! Did not remove from all queues.",
-            QueueResultRemove.CurrentlyProcessingRemoved => "Looks like you're currently being processed!",
-            QueueResultRemove.Removed => "Removed you from the queue.",
-            _ => "Sorry, you are not currently in the queue.",
+            QueueResultRemove.CurrentlyProcessing => "看起来您正在被处理中！没有从所有队列中移除。",
+            QueueResultRemove.CurrentlyProcessingRemoved => "看起来您正在被处理中！",
+            QueueResultRemove.Removed => "已将您从队列中移除。",
+            _ => "抱歉，您当前不在队列中。",
         };
     }
 }

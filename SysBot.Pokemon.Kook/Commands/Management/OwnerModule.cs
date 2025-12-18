@@ -10,7 +10,7 @@ namespace SysBot.Pokemon.Kook;
 public class OwnerModule<T> : SudoModule<T> where T : PKM, new()
 {
     [Command("addSudo")]
-    [Summary("Adds mentioned user to global sudo")]
+    [Summary("将@提到的用户添加到全局管理员列表")]
     [RequireOwner]
     // ReSharper disable once UnusedParameter.Global
     public async Task SudoUsers([Remainder] string _)
@@ -18,11 +18,11 @@ public class OwnerModule<T> : SudoModule<T> where T : PKM, new()
         var users = Context.Message.MentionedUsers;
         var objects = users.Select(GetReference);
         KookBotSettings.Settings.GlobalSudoList.AddIfNew(objects);
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("removeSudo")]
-    [Summary("Removes mentioned user from global sudo")]
+    [Summary("将@提到的用户从全局管理员列表移除")]
     [RequireOwner]
     // ReSharper disable once UnusedParameter.Global
     public async Task RemoveSudoUsers([Remainder] string _)
@@ -30,85 +30,85 @@ public class OwnerModule<T> : SudoModule<T> where T : PKM, new()
         var users = Context.Message.MentionedUsers;
         var objects = users.Select(GetReference);
         KookBotSettings.Settings.GlobalSudoList.RemoveAll(z => objects.Any(o => o.ID == z.ID));
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("addChannel")]
-    [Summary("Adds a channel to the list of channels that are accepting commands.")]
+    [Summary("将当前频道添加到接受命令的频道列表中。")]
     [RequireOwner]
     // ReSharper disable once UnusedParameter.Global
     public async Task AddChannel()
     {
         var obj = GetReference(Context.Message.Channel);
         KookBotSettings.Settings.ChannelWhitelist.AddIfNew([obj]);
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("removeChannel")]
-    [Summary("Removes a channel from the list of channels that are accepting commands.")]
+    [Summary("将当前频道从接受命令的频道列表中移除。")]
     [RequireOwner]
     // ReSharper disable once UnusedParameter.Global
     public async Task RemoveChannel()
     {
         var obj = GetReference(Context.Message.Channel);
         KookBotSettings.Settings.ChannelWhitelist.RemoveAll(z => z.ID == obj.ID);
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("leave")]
     [Alias("bye")]
-    [Summary("Leaves the current server.")]
+    [Summary("离开当前服务器。")]
     [RequireOwner]
     // ReSharper disable once UnusedParameter.Global
     public async Task Leave()
     {
-        await ReplyTextAsync("Goodbye.").ConfigureAwait(false);
+        await ReplyTextAsync("再见。").ConfigureAwait(false);
         await Context.Guild.LeaveAsync().ConfigureAwait(false);
     }
 
     [Command("leaveguild")]
     [Alias("lg")]
-    [Summary("Leaves guild based on supplied ID.")]
+    [Summary("根据提供的ID离开服务器。")]
     [RequireOwner]
     // ReSharper disable once UnusedParameter.Global
     public async Task LeaveGuild(string userInput)
     {
         if (!ulong.TryParse(userInput, out ulong id))
         {
-            await ReplyTextAsync("Please provide a valid Guild ID.").ConfigureAwait(false);
+            await ReplyTextAsync("请提供有效的服务器ID。").ConfigureAwait(false);
             return;
         }
 
         var guild = Context.Client.Guilds.FirstOrDefault(x => x.Id == id);
         if (guild is null)
         {
-            await ReplyTextAsync($"Provided input ({userInput}) is not a valid guild ID or the bot is not in the specified guild.").ConfigureAwait(false);
+            await ReplyTextAsync($"提供的输入 ({userInput}) 不是有效的服务器ID，或者机器人不在指定的服务器中。").ConfigureAwait(false);
             return;
         }
 
-        await ReplyTextAsync($"Leaving {guild}.").ConfigureAwait(false);
+        await ReplyTextAsync($"正在离开 {guild}。").ConfigureAwait(false);
         await guild.LeaveAsync().ConfigureAwait(false);
     }
 
     [Command("leaveall")]
-    [Summary("Leaves all servers the bot is currently in.")]
+    [Summary("离开机器人当前所在的所有服务器。")]
     [RequireOwner]
     // ReSharper disable once UnusedParameter.Global
     public async Task LeaveAll()
     {
-        await ReplyTextAsync("Leaving all servers.").ConfigureAwait(false);
+        await ReplyTextAsync("正在离开所有服务器。").ConfigureAwait(false);
         foreach (var guild in Context.Client.Guilds)
             await guild.LeaveAsync().ConfigureAwait(false);
     }
 
     [Command("sudoku")]
     [Alias("kill", "shutdown")]
-    [Summary("Causes the entire process to end itself!")]
+    [Summary("关闭整个机器人进程！")]
     [RequireOwner]
     // ReSharper disable once UnusedParameter.Global
     public async Task ExitProgram()
     {
-        await Context.Channel.EchoAndReply($"Shutting down... goodbye! {Format.Bold("Bot services are going offline.")}").ConfigureAwait(false);
+        await Context.Channel.EchoAndReply($"正在关闭... 再见！ {Format.Bold("机器人服务即将离线。")}").ConfigureAwait(false);
         Environment.Exit(0);
     }
 

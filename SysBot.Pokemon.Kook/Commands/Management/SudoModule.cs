@@ -11,7 +11,7 @@ namespace SysBot.Pokemon.Kook;
 public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new()
 {
     [Command("blacklist")]
-    [Summary("Blacklists a mentioned Kook user.")]
+    [Summary("将@提到的Kook用户加入黑名单。")]
     [RequireSudo]
     // ReSharper disable once UnusedParameter.Global
     public async Task BlackListUsers([Remainder] string _)
@@ -19,11 +19,11 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
         var users = Context.Message.MentionedUsers;
         var objects = users.Select(GetReference);
         KookBotSettings.Settings.UserBlacklist.AddIfNew(objects);
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("blacklistComment")]
-    [Summary("Adds a comment for a blacklisted Kook user ID.")]
+    [Summary("为黑名单中的Kook用户ID添加备注。")]
     [RequireSudo]
     // ReSharper disable once UnusedParameter.Global
     public async Task BlackListUsers(ulong id, [Remainder] string comment)
@@ -31,17 +31,17 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
         var obj = KookBotSettings.Settings.UserBlacklist.List.Find(z => z.ID == id);
         if (obj is null)
         {
-            await ReplyTextAsync($"Unable to find a user with that ID ({id}).").ConfigureAwait(false);
+            await ReplyTextAsync($"找不到ID为 {id} 的用户。").ConfigureAwait(false);
             return;
         }
 
         var oldComment = obj.Comment;
         obj.Comment = comment;
-        await ReplyTextAsync($"Done. Changed existing comment ({oldComment}) to ({comment}).").ConfigureAwait(false);
+        await ReplyTextAsync($"完成。已将现有备注 ({oldComment}) 更改为 ({comment})。").ConfigureAwait(false);
     }
 
     [Command("unblacklist")]
-    [Summary("Removes a mentioned Kook user from the blacklist.")]
+    [Summary("将@提到的Kook用户从黑名单移除。")]
     [RequireSudo]
     // ReSharper disable once UnusedParameter.Global
     public async Task UnBlackListUsers([Remainder] string _)
@@ -49,33 +49,33 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
         var users = Context.Message.MentionedUsers;
         var objects = users.Select(GetReference);
         KookBotSettings.Settings.UserBlacklist.RemoveAll(z => objects.Any(o => o.ID == z.ID));
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("blacklistId")]
-    [Summary("Blacklists Kook user IDs. (Useful if user is not in the server).")]
+    [Summary("将Kook用户ID加入黑名单。（当用户不在服务器中时很有用）")]
     [RequireSudo]
     public async Task BlackListIDs([Summary("Comma Separated Kook IDs")][Remainder] string content)
     {
         var IDs = GetIDs(content);
         var objects = IDs.Select(GetReference);
         KookBotSettings.Settings.UserBlacklist.AddIfNew(objects);
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("unBlacklistId")]
-    [Summary("Removes Kook user IDs from the blacklist. (Useful if user is not in the server).")]
+    [Summary("将Kook用户ID从黑名单移除。（当用户不在服务器中时很有用）")]
     [RequireSudo]
     public async Task UnBlackListIDs([Summary("Comma Separated Kook IDs")][Remainder] string content)
     {
         var IDs = GetIDs(content);
         KookBotSettings.Settings.UserBlacklist.RemoveAll(z => IDs.Any(o => o == z.ID));
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("blacklistSummary")]
     [Alias("printBlacklist", "blacklistPrint")]
-    [Summary("Prints the list of blacklisted Kook users.")]
+    [Summary("显示黑名单中的Kook用户列表。")]
     [RequireSudo]
     public async Task PrintBlacklist()
     {
@@ -85,7 +85,7 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
     }
 
     [Command("banID")]
-    [Summary("Bans online user IDs.")]
+    [Summary("封禁在线用户ID。")]
     [RequireSudo]
     public async Task BanOnlineIDs([Summary("Comma Separated Online IDs")][Remainder] string content)
     {
@@ -95,11 +95,11 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
         var me = KookBot<T>.Runner;
         var hub = me.Hub;
         hub.Config.TradeAbuse.BannedIDs.AddIfNew(objects);
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("bannedIDComment")]
-    [Summary("Adds a comment for a banned online user ID.")]
+    [Summary("为封禁的在线用户ID添加备注。")]
     [RequireSudo]
     public async Task BanOnlineIDs(ulong id, [Remainder] string comment)
     {
@@ -108,7 +108,7 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
         var obj = hub.Config.TradeAbuse.BannedIDs.List.Find(z => z.ID == id);
         if (obj is null)
         {
-            await ReplyTextAsync($"Unable to find a user with that online ID ({id}).").ConfigureAwait(false);
+            await ReplyTextAsync($"找不到在线ID为 {id} 的用户。").ConfigureAwait(false);
             return;
         }
 
@@ -126,7 +126,7 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
         var me = KookBot<T>.Runner;
         var hub = me.Hub;
         hub.Config.TradeAbuse.BannedIDs.RemoveAll(z => IDs.Any(o => o == z.ID));
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("bannedIDSummary")]
@@ -144,7 +144,7 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
 
     [Command("forgetUser")]
     [Alias("forget")]
-    [Summary("Forgets users that were previously encountered.")]
+    [Summary("忘记之前遇到过的用户。")]
     [RequireSudo]
     public async Task ForgetPreviousUser([Summary("Comma Separated Online IDs")][Remainder] string content)
     {
@@ -154,12 +154,12 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
             PokeRoutineExecutorBase.PreviousUsers.RemoveAllNID(ID);
             PokeRoutineExecutorBase.PreviousUsersDistribution.RemoveAllNID(ID);
         }
-        await ReplyTextAsync("Done.").ConfigureAwait(false);
+        await ReplyTextAsync("完成。").ConfigureAwait(false);
     }
 
     [Command("previousUserSummary")]
     [Alias("prevUsers")]
-    [Summary("Prints a list of previously encountered users.")]
+    [Summary("显示之前遇到过的用户列表。")]
     [RequireSudo]
     public async Task PrintPreviousUsers()
     {
@@ -168,7 +168,7 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
         if (lines.Count != 0)
         {
             found = true;
-            var msg = "Previous Users:\n" + string.Join("\n", lines);
+            var msg = "之前的用户:\n" + string.Join("\n", lines);
             await ReplyTextAsync(Format.Code(msg)).ConfigureAwait(false);
         }
 
@@ -176,11 +176,11 @@ public class SudoModule<T> : ModuleBase<SocketCommandContext> where T : PKM, new
         if (lines.Count != 0)
         {
             found = true;
-            var msg = "Previous Distribution Users:\n" + string.Join("\n", lines);
+            var msg = "之前的分发用户:\n" + string.Join("\n", lines);
             await ReplyTextAsync(Format.Code(msg)).ConfigureAwait(false);
         }
         if (!found)
-            await ReplyTextAsync("No previous users found.").ConfigureAwait(false);
+            await ReplyTextAsync("未找到之前的用户。").ConfigureAwait(false);
     }
 
     private RemoteControlAccess GetReference(IUser channel) => new()

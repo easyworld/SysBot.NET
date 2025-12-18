@@ -77,7 +77,7 @@ namespace SysBot.Pokemon.WinForms
             Tab_Bots.Name = "Tab_Bots";
             Tab_Bots.Size = new System.Drawing.Size(676, 241);
             Tab_Bots.TabIndex = 0;
-            Tab_Bots.Text = "Bots";
+            Tab_Bots.Text = "机器人";
             Tab_Bots.UseVisualStyleBackColor = true;
             // 
             // FLP_Bots
@@ -116,7 +116,7 @@ namespace SysBot.Pokemon.WinForms
             B_New.Name = "B_New";
             B_New.Size = new System.Drawing.Size(63, 25);
             B_New.TabIndex = 0;
-            B_New.Text = "Add";
+            B_New.Text = "添加";
             B_New.UseVisualStyleBackColor = true;
             B_New.Click += B_New_Click;
             // 
@@ -178,7 +178,7 @@ namespace SysBot.Pokemon.WinForms
             Tab_Hub.Name = "Tab_Hub";
             Tab_Hub.Size = new System.Drawing.Size(676, 241);
             Tab_Hub.TabIndex = 2;
-            Tab_Hub.Text = "Hub";
+            Tab_Hub.Text = "中心配置";
             Tab_Hub.UseVisualStyleBackColor = true;
             // 
             // PG_Hub
@@ -200,7 +200,7 @@ namespace SysBot.Pokemon.WinForms
             Tab_Logs.Name = "Tab_Logs";
             Tab_Logs.Size = new System.Drawing.Size(676, 241);
             Tab_Logs.TabIndex = 1;
-            Tab_Logs.Text = "Logs";
+            Tab_Logs.Text = "日志";
             Tab_Logs.UseVisualStyleBackColor = true;
             // 
             // RTB_Logs
@@ -223,7 +223,7 @@ namespace SysBot.Pokemon.WinForms
             B_Stop.Name = "B_Stop";
             B_Stop.Size = new System.Drawing.Size(80, 32);
             B_Stop.TabIndex = 4;
-            B_Stop.Text = "Stop All";
+            B_Stop.Text = "停止全部";
             B_Stop.UseVisualStyleBackColor = true;
             B_Stop.Click += B_Stop_Click;
             // 
@@ -235,7 +235,7 @@ namespace SysBot.Pokemon.WinForms
             B_Start.Name = "B_Start";
             B_Start.Size = new System.Drawing.Size(80, 32);
             B_Start.TabIndex = 3;
-            B_Start.Text = "Start All";
+            B_Start.Text = "启动全部";
             B_Start.UseVisualStyleBackColor = true;
             B_Start.Click += B_Start_Click;
             // 
@@ -252,7 +252,7 @@ namespace SysBot.Pokemon.WinForms
             MinimumSize = new System.Drawing.Size(520, 320);
             Name = "Main";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "SysBot: Pokémon";
+            Text = "SysBot: 宝可梦";
             FormClosing += Main_FormClosing;
             TC_Main.ResumeLayout(false);
             Tab_Bots.ResumeLayout(false);
