@@ -21,30 +21,30 @@ public class KookTradeNotifier<T>(T Data, PokeTradeTrainerInfo Info, int Code, S
     public void TradeInitialize(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info)
     {
         var receive = Data.Species == 0 ? string.Empty : $" ({Data.Nickname})";
-        Trader.SendTextAsync($"Initializing trade{receive}. Please be ready. Your code is {Format.Bold($"{Code: 0000 0000}")}.").ConfigureAwait(false);
+        Trader.SendTextAsync($"正在初始化交易{receive}。请准备好。您的交换码是 {Format.Bold($"{Code: 0000 0000}")}。").ConfigureAwait(false);
     }
 
     public void TradeSearching(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info)
     {
         var name = Info.TrainerName;
         var trainer = string.IsNullOrEmpty(name) ? string.Empty : $", {name}";
-        Trader.SendTextAsync($"I'm waiting for you{trainer}! Your code is {Format.Bold($"{Code:0000 0000}")}. My IGN is {Format.Bold($"{routine.InGameName}")}.").ConfigureAwait(false);
+        Trader.SendTextAsync($"我正在等你{trainer}！您的交换码是 {Format.Bold($"{Code:0000 0000}")}。我的游戏内名称是 {Format.Bold($"{routine.InGameName}")}。").ConfigureAwait(false);
     }
 
     public void TradeCanceled(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, PokeTradeResult msg)
     {
         OnFinish?.Invoke(routine);
-        Trader.SendTextAsync($"Trade canceled: {msg}").ConfigureAwait(false);
+        Trader.SendTextAsync($"交易已取消：{msg}").ConfigureAwait(false);
     }
 
     public void TradeFinished(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, T result)
     {
         OnFinish?.Invoke(routine);
         var tradedToUser = Data.Species;
-        var message = tradedToUser != 0 ? $"Trade finished. Enjoy your {(Species)tradedToUser}!" : "Trade finished!";
+        var message = tradedToUser != 0 ? $"交易完成。享受您的 {(Species)tradedToUser}！" : "交易完成！";
         Trader.SendTextAsync(message).ConfigureAwait(false);
         if (result.Species != 0 && Hub.Config.Kook.ReturnPKMs)
-            Trader.SendPKMAsync(result, "Here's what you traded me!").ConfigureAwait(false);
+            Trader.SendPKMAsync(result, "这是您交换给我的宝可梦！").ConfigureAwait(false);
     }
 
     public void SendNotification(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, string message)
@@ -77,8 +77,8 @@ public class KookTradeNotifier<T>(T Data, PokeTradeTrainerInfo Info, int Code, S
         var lines = r.ToString();
 
         var card = new CardBuilder()
-            .AddModule(new SectionModuleBuilder().WithText($"Here are the details for `{r.Seed:X16}`:"))
-            .AddModule(new SectionModuleBuilder().WithText($"Seed: {r.Seed:X16}"))
+            .AddModule(new SectionModuleBuilder().WithText($"以下是 `{r.Seed:X16}` 的详细信息："))
+            .AddModule(new SectionModuleBuilder().WithText($"种子值：{r.Seed:X16}"))
             .AddModule(new SectionModuleBuilder().WithText(lines))
             .Build();
         Trader.SendCardAsync(card).ConfigureAwait(false);

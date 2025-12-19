@@ -224,7 +224,7 @@ public sealed class KookBot<T> where T : PKM, new()
         // This does not catch errors from commands with 'RunMode.Async',
         // subscribe a handler for '_commands.CommandExecuted' to see those.
         if (!result.IsSuccess)
-            await msg.Channel.SendTextAsync(result.ErrorReason??"No Error Reason").ConfigureAwait(false);
+            await msg.Channel.SendTextAsync(result.ErrorReason??"无错误原因").ConfigureAwait(false);
         return true;
     }
 

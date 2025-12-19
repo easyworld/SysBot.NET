@@ -1,4 +1,4 @@
-﻿using PKHeX.Core;
+using PKHeX.Core;
 using SysBot.Base;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ public class RaidSettings : IBotStateSettings, ICountSettings
     private const string Hosting = nameof(Hosting);
     private const string Counts = nameof(Counts);
     private const string FeatureToggle = nameof(FeatureToggle);
-    public override string ToString() => "Raid Bot Settings";
+    public override string ToString() => "极巨化战斗机器人设置";
 
     [Category(Hosting), Description("Number of seconds to wait before trying to start a raid. Ranges from 0 to 180 seconds.")]
     public int TimeToWait { get; set; } = 90;

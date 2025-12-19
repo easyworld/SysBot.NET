@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Linq;
 
@@ -9,7 +9,7 @@ public class YouTubeSettings
     private const string Startup = nameof(Startup);
     private const string Operation = nameof(Operation);
     private const string Messages = nameof(Messages);
-    public override string ToString() => "YouTube Integration Settings";
+    public override string ToString() => "YouTube集成设置";
 
     // Startup
 

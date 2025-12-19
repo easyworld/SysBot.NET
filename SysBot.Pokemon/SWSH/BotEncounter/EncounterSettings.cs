@@ -1,4 +1,4 @@
-﻿using SysBot.Base;
+using SysBot.Base;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
@@ -10,7 +10,7 @@ public class EncounterSettings : IBotStateSettings, ICountSettings
     private const string Counts = nameof(Counts);
     private const string Encounter = nameof(Encounter);
     private const string Settings = nameof(Settings);
-    public override string ToString() => "Encounter Bot SWSH Settings";
+    public override string ToString() => "遭遇战机器人SWSH设置";
 
     [Category(Encounter), Description("The method used by the Line and Reset bots to encounter Pokémon.")]
     public EncounterMode EncounteringType { get; set; } = EncounterMode.VerticalLine;

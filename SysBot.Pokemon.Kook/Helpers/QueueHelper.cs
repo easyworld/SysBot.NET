@@ -15,13 +15,13 @@ public static class QueueHelper<T> where T : PKM, new()
     {
         if ((uint)code > MaxTradeCode)
         {
-            await context.Channel.SendTextAsync("Trade code should be 00000000-99999999!").ConfigureAwait(false);
+            await context.Channel.SendTextAsync("交换码应该在00000000-99999999之间！").ConfigureAwait(false);
             return;
         }
 
         try
         {
-            const string helper = "I've added you to the queue! I'll message you here when your trade is starting.";
+            const string helper = "我已将您添加到队列！当交易开始时，我会在此处发送消息通知您。";
             var test = await trader.SendTextAsync(helper).ConfigureAwait(false);
 
             // Try adding
@@ -74,7 +74,7 @@ public static class QueueHelper<T> where T : PKM, new()
 
         if (added == QueueResultAdd.AlreadyInQueue)
         {
-            msg = "Sorry, you are already in the queue.";
+            msg = "抱歉，您已经在队列中了。";
             return false;
         }
 
@@ -86,14 +86,14 @@ public static class QueueHelper<T> where T : PKM, new()
 
         var pokeName = "";
         if (t == PokeTradeType.Specific && pk.Species != 0)
-            pokeName = $" Receiving: {GameInfo.GetStrings("en").Species[pk.Species]}.";
-        msg = $"{user.KMarkdownMention} - Added to the {type} queue{ticketID}. Current Position: {position.Position}.{pokeName}";
+            pokeName = $" 接收: {GameInfo.GetStrings("zh-Hans").Species[pk.Species]}.";
+        msg = $"{user.KMarkdownMention} - 已添加到 {type} 队列{ticketID}。当前位置: {position.Position}.{pokeName}";
 
         var botct = Info.Hub.Bots.Count;
         if (position.Position > botct)
         {
             var eta = Info.Hub.Config.Queues.EstimateDelay(position.Position, botct);
-            msg += $" Estimated: {eta:F1} minutes.";
+            msg += $" 预计等待时间: {eta:F1} 分钟。";
         }
         return true;
     }

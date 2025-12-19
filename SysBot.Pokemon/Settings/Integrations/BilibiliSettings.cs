@@ -7,7 +7,7 @@ public class BilibiliSettings
 {
     private const string Startup = nameof(Startup);
 
-    public override string ToString() => "Bilibili Integration Settings";
+    public override string ToString() => "Bilibili集成设置";
 
     // Startup
 

@@ -137,4 +137,17 @@ public static class EnumTranslations
         TargetHeightType.MinOrMax => "最小或最大高度",
         _ => type.ToString()
     };
+
+    /// <summary>
+    /// 将交易滥用操作枚举转换为中文显示文本
+    /// </summary>
+    /// <param name="action">交易滥用操作枚举值</param>
+    /// <returns>中文显示文本</returns>
+    public static string ToChinese(this TradeAbuseAction action) => action switch
+    {
+        TradeAbuseAction.Ignore => "忽略",
+        TradeAbuseAction.Quit => "退出",
+        TradeAbuseAction.BlockAndQuit => "阻止并退出",
+        _ => action.ToString()
+    };
 }

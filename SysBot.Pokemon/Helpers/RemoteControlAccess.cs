@@ -69,8 +69,8 @@ public class RemoteControlAccessList
     public override string ToString()
     {
         return List.Count == 0
-            ? (AllowIfEmpty ? "Anyone allowed" : "None allowed (none specified).")
-            : $"{List.Count} entries specified.";
+            ? (AllowIfEmpty ? "允许所有人" : "不允许任何人（未指定）")
+            : $"已指定 {List.Count} 个条目";
     }
 
     /// <summary>

@@ -6,7 +6,7 @@ public class DodoSettings
 {
     private const string Startup = nameof(Startup);
 
-    public override string ToString() => "Dodo Integration Settings";
+    public override string ToString() => "Dodo集成设置";
 
     // Startup
 

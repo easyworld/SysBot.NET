@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 
 namespace SysBot.Pokemon;
@@ -7,7 +7,7 @@ public class FavoredPrioritySettings : IFavoredCPQSetting
 {
     private const string Operation = nameof(Operation);
     private const string Configure = nameof(Configure);
-    public override string ToString() => "Favoritism Settings";
+    public override string ToString() => "优先设置";
 
     // We want to allow hosts to give preferential treatment, while still providing service to users without favor.
     // These are the minimum values that we permit. These values yield a fair placement for the favored.

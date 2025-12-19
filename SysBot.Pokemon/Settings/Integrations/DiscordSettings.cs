@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace SysBot.Pokemon;
 
@@ -9,7 +9,7 @@ public class DiscordSettings
     private const string Channels = nameof(Channels);
     private const string Roles = nameof(Roles);
     private const string Users = nameof(Users);
-    public override string ToString() => "Discord Integration Settings";
+    public override string ToString() => "Discord集成设置";
 
     // Startup
 

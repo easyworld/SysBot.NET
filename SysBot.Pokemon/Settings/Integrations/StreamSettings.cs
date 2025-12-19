@@ -1,4 +1,4 @@
-﻿using PKHeX.Core;
+using PKHeX.Core;
 using SysBot.Base;
 using System;
 using System.ComponentModel;
@@ -12,7 +12,7 @@ public class StreamSettings
 {
     private const string Operation = nameof(Operation);
 
-    public override string ToString() => "Stream Settings";
+    public override string ToString() => "流媒体设置";
     public static Action<PKM, string>? CreateSpriteFile { get; set; }
 
     [Category(Operation), Description("Generate stream assets; turning off will prevent generation of assets.")]

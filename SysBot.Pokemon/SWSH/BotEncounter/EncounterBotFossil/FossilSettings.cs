@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace SysBot.Pokemon;
 
@@ -6,7 +6,7 @@ public class FossilSettings
 {
     private const string Fossil = nameof(Fossil);
     private const string Counts = nameof(Counts);
-    public override string ToString() => "Fossil Bot Settings";
+    public override string ToString() => "化石机器人设置";
 
     [Category(Fossil), Description("Species of fossil Pokémon to hunt for.")]
     public FossilSpecies Species { get; set; } = FossilSpecies.Dracozolt;

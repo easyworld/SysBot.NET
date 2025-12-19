@@ -9,7 +9,7 @@ public class QQSettings
     private const string Startup = nameof(Startup);
     private const string Operation = nameof(Operation);
     private const string Messages = nameof(Messages);
-    public override string ToString() => "QQ Integration Settings";
+    public override string ToString() => "QQ集成设置";
 
     // Startup
 
