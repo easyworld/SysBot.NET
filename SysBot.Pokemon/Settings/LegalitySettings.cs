@@ -76,7 +76,7 @@ public class LegalitySettings
     [Category(Generate), Description("如果提供非法配置，机器人将创建彩蛋宝可梦。")]
     public bool EnableEasterEggs { get; set; }
 
-    [Category(Generate), Description("允许用户在Showdown配置中提交自定义OT、TID、SID和OT性别。")]
+    [Category(Generate), Description("允许用户在Showdown Set中提交自定义OT、TID、SID和OT性别。")]
     public bool AllowTrainerDataOverride { get; set; }
 
     [Category(Generate), Description("允许用户使用批量编辑器命令进行进一步自定义。")]

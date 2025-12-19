@@ -43,9 +43,9 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
 
     [Command("trade")]
     [Alias("t")]
-    [Summary("让机器人与您交换从提供的Showdown配置生成的宝可梦。")]
+    [Summary("让机器人与您交换从提供的Showdown Set生成的宝可梦。")]
     [RequireQueueRole(nameof(KookManager.RolesTrade))]
-    public async Task TradeAsync([Summary("交换代码")] int code, [Summary("Showdown配置")][Remainder] string content)
+    public async Task TradeAsync([Summary("交换代码")] int code, [Summary("Showdown Set")][Remainder] string content)
     {
         if (ShowdownTranslator<T>.GameStringsZh.Species.Skip(1).Any(s => content.Contains(s)))
         {
@@ -62,7 +62,7 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
         if (set.InvalidLines.Count != 0 || set.Species is 0)
             {
                 var sb = new StringBuilder(128);
-                sb.AppendLine("无法解析Showdown配置。");
+                sb.AppendLine("无法解析Showdown Set。");
                 var invalidlines = set.InvalidLines;
                 if (invalidlines.Count != 0)
                 {
@@ -112,16 +112,16 @@ public class TradeModule<T> : ModuleBase<SocketCommandContext> where T : PKM, ne
         catch (Exception ex)
         {
             LogUtil.LogSafe(ex, nameof(TradeModule<T>));
-            var msg = $"哎呀！此Showdown配置出现了意外问题：\n```\n{string.Join("\n", set.GetSetLines())}```";
+            var msg = $"哎呀！此Showdown Set出现了意外问题：\n```\n{string.Join("\n", set.GetSetLines())}```";
             await ReplyTextAsync(msg).ConfigureAwait(false);
         }
     }
 
     [Command("trade")]
     [Alias("t")]
-    [Summary("让机器人与您交换从提供的Showdown配置生成的宝可梦。")]
+    [Summary("让机器人与您交换从提供的Showdown Set生成的宝可梦。")]
     [RequireQueueRole(nameof(KookManager.RolesTrade))]
-    public Task TradeAsync([Summary("Showdown配置")][Remainder] string content)
+    public Task TradeAsync([Summary("Showdown Set")][Remainder] string content)
     {
         var code = Info.GetRandomTradeCode();
         return TradeAsync(code, content);
