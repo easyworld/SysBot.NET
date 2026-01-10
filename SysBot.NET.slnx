@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/" />
+  <Project Path="SysBot.Base/SysBot.Base.csproj" />
+  <Project Path="SysBot.Pokemon.ConsoleApp/SysBot.Pokemon.ConsoleApp.csproj" />
+  <Project Path="SysBot.Pokemon.Discord/SysBot.Pokemon.Discord.csproj" />
+  <Project Path="SysBot.Pokemon.Twitch/SysBot.Pokemon.Twitch.csproj" />
+  <Project Path="SysBot.Pokemon.WinForms/SysBot.Pokemon.WinForms.csproj" />
+  <Project Path="SysBot.Pokemon.YouTube/SysBot.Pokemon.YouTube.csproj" />
+  <Project Path="SysBot.Pokemon.Z3/SysBot.Pokemon.Z3.csproj" />
+  <Project Path="SysBot.Pokemon/SysBot.Pokemon.csproj" />
+  <Project Path="SysBot.Tests/SysBot.Tests.csproj" />
+</Solution>
