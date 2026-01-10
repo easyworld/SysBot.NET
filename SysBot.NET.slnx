@@ -6,6 +6,10 @@
   <Project Path="SysBot.Pokemon.Twitch/SysBot.Pokemon.Twitch.csproj" />
   <Project Path="SysBot.Pokemon.WinForms/SysBot.Pokemon.WinForms.csproj" />
   <Project Path="SysBot.Pokemon.YouTube/SysBot.Pokemon.YouTube.csproj" />
+  <Project Path="SysBot.Pokemon.QQ/SysBot.Pokemon.QQ.csproj" />
+  <Project Path="SysBot.Pokemon.Bilibili/SysBot.Pokemon.Bilibili.csproj" />
+  <Project Path="SysBot.Pokemon.Dodo/SysBot.Pokemon.Dodo.csproj" />
+  <Project Path="SysBot.Pokemon.Kook/SysBot.Pokemon.Kook.csproj" />
   <Project Path="SysBot.Pokemon.Z3/SysBot.Pokemon.Z3.csproj" />
   <Project Path="SysBot.Pokemon/SysBot.Pokemon.csproj" />
   <Project Path="SysBot.Tests/SysBot.Tests.csproj" />
