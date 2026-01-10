@@ -47,7 +47,7 @@ public abstract class PokeRoutineExecutorBase(IConsoleBotManaged<IConsoleConnect
         if (!Version.IsValidSavedVersion())
             return false;
 
-        if (Version.GetContext() != Context)
+        if (Version.Context != Context)
             return false;
 
         return GameLang <= (Context switch
