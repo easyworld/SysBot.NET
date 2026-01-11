@@ -55,7 +55,7 @@ Document: [搭建指南](https://github.com/easyworld/SysBot.NET/tree/master/Sys
 ## SysBot.Pokemon.Dodo (Dead):
 **Notice: The Dodo platform was discontinued in June 15th 2025. All related features of this project are no longer functional. This repository is now archived for code reference only—none of the bot functionalities or commands are available anymore.**
 - Support [ALM-Showdown-Sets](https://github.com/architdate/PKHeX-Plugins/wiki/ALM-Showdown-Sets)
-- Support PK8 PB8 PA8 PK9 file upload
+- Support PK8 PB8 PA8 PK9 PA9 file upload
 - Support Customized Chinese to ALM-Showdown-Sets translation
 
 Most codes are based on [SysBot.Pokemon.Twitch](https://github.com/kwsch/SysBot.NET/tree/master/SysBot.Pokemon.Twitch)
@@ -65,10 +65,10 @@ Uses [dodo-open-net](https://github.com/dodo-open/dodo-open-net) as a dependency
 Document: [搭建指南](https://docs.qq.com/doc/DSVVZZk9saUNTeHNn), [命令指南](https://docs.qq.com/doc/DSVlldkxMSW92VXZF)
 
 ## SysBot.Pokemon.Kook:
-**SysBot.Pokemon.Kook** is a complete port of the `SysBot.Pokemon.Discord` project, fully compatible with the [Kook](https://www.kookapp.cn/) (formerly known as Kaiheila) platform.
+**SysBot.Pokemon.Kook** is fully compatible with the [Kook](https://www.kookapp.cn/) (formerly known as Kaiheila) platform.
 
 - Support [ALM-Showdown-Sets](https://github.com/architdate/PKHeX-Plugins/wiki/ALM-Showdown-Sets)
-- Support PK8 PB8 PA8 PK9 file upload
+- Support PK8 PB8 PA8 PK9 PA9 file upload
 - Support [Customized Chinese](https://docs.qq.com/doc/DSVlldkxMSW92VXZF) to ALM-Showdown-Sets translation
 - Easily configurable and extensible for the Kook ecosystem.
 
