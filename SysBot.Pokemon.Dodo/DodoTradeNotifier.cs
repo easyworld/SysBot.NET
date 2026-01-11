@@ -128,8 +128,10 @@ public class DodoTradeNotifier<T> : IPokeTradeNotifier<T> where T : PKM, new()
         LogUtil.LogText(msg);
         if (result.Species != 0 && info.Type == PokeTradeType.Dump)
         {
+            Span<int> ivs = stackalloc int[6];
+            result.GetIVs(ivs);
             var text =
-                $"species:{result.Species}\npid:{result.PID}\nec:{result.EncryptionConstant}\nIVs:{string.Join(",", result.IVs)}\nisShiny:{result.IsShiny}";
+                $"species:{result.Species}\npid:{result.PID}\nec:{result.EncryptionConstant}\nIVs:{string.Join(",", ivs.ToArray())}\nisShiny:{result.IsShiny}";
             DodoBot<T>.SendChannelMessage(text, ChannelId);
         }
     }

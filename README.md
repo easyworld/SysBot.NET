@@ -67,10 +67,12 @@ Document: [搭建指南](https://docs.qq.com/doc/DSVVZZk9saUNTeHNn), [命令指�
 ## SysBot.Pokemon.Kook:
 **SysBot.Pokemon.Kook** is a complete port of the `SysBot.Pokemon.Discord` project, fully compatible with the [Kook](https://www.kookapp.cn/) (formerly known as Kaiheila) platform.
 
-- 100% feature parity with SysBot.Pokemon.Discord.
-- Seamless integration with the Kook chat platform, supporting all bot commands and functionalities available on Discord.
-- Allows Pokémon trading, file uploads (PK8, PB8, etc.), and advanced automation features.
+- Support [ALM-Showdown-Sets](https://github.com/architdate/PKHeX-Plugins/wiki/ALM-Showdown-Sets)
+- Support PK8 PB8 PA8 PK9 file upload
+- Support [Customized Chinese](https://docs.qq.com/doc/DSVlldkxMSW92VXZF) to ALM-Showdown-Sets translation
 - Easily configurable and extensible for the Kook ecosystem.
+
+Document: [搭建指南](https://docs.qq.com/doc/DSWpDQnBwSXRGSGR3), [命令指南](https://docs.qq.com/doc/DSVlldkxMSW92VXZF)
 
 ## Other Dependencies
 Pokémon API logic is provided by [PKHeX](https://github.com/kwsch/PKHeX/), and template generation is provided by [Auto-Legality Mod](https://github.com/architdate/PKHeX-Plugins/). Current template generation uses [@santacrab2](https://www.github.com/santacrab2)'s [Auto-Legality Mod fork](https://github.com/santacrab2/PKHeX-Plugins).
