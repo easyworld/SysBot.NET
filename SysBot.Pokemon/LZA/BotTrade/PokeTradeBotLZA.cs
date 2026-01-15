@@ -504,7 +504,7 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
         {
             if (remainMs < 0)
             {
-                // Failed to exist somehow.
+                // Failed to exit somehow.
                 await RestartGameLZA(token).ConfigureAwait(false);
                 return;
             }
@@ -536,7 +536,10 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
     {
         var current = await GetMenuState(token).ConfigureAwait(false);
         if (current == MenuState.LinkPlay)
+        {
+            StartFromOverworld = false;
             return;
+        }
 
         // Already on an earlier menu than Link Trade. Just go to overworld and start over next trade.
         if (current < MenuState.LinkPlay)
@@ -553,7 +556,7 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
         {
             if (remainMs < 0)
             {
-                // Failed to exist somehow.
+                // Failed to exit somehow.
                 await RestartGameLZA(token).ConfigureAwait(false);
                 StartFromOverworld = true;
                 return;
@@ -561,27 +564,22 @@ public class PokeTradeBotLZA(PokeTradeHub<PA9> Hub, PokeBotState Config) : PokeR
 
             await Click(B, 1_000, token).ConfigureAwait(false);
             if (await GetMenuState(token).ConfigureAwait(false) == MenuState.LinkPlay)
-            {
-                StartFromOverworld = false;
-                return;
-            }
+                break;
 
             var box = await IsOnMenu(MenuState.InBox, token).ConfigureAwait(false);
             await Click(box ? A : B, 1_000, token).ConfigureAwait(false);
             if (await GetMenuState(token).ConfigureAwait(false) == MenuState.LinkPlay)
-            {
-                StartFromOverworld = false;
-                return;
-            }
+                break;
 
             await Click(B, 1_000, token).ConfigureAwait(false);
             if (await GetMenuState(token).ConfigureAwait(false) == MenuState.LinkPlay)
-            {
-                StartFromOverworld = false;
-                return;
-            }
+                break;
             remainMs -= 3_000;
         }
+
+        // Wait a little bit extra in case of slow box closing.
+        await Task.Delay(0_800, token).ConfigureAwait(false);
+        StartFromOverworld = false;
     }
 
     // LZA saves the previous Link Code after the first trade.
