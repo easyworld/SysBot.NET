@@ -20,10 +20,10 @@ public class StopConditionSettings
     [Category(StopConditions), Description("Stop only on Pokémon of the specified nature.")]
     public Nature TargetNature { get; set; } = Nature.Random;
 
-    [Category(StopConditions), Description("Minimum accepted IVs in the format HP/Atk/Def/SpA/SpD/Spe. Use \"x\" for unchecked IVs and \"/\" as a separator.")]
+    [Category(StopConditions), Description("Minimum accepted IVs in the format HP/Atk/Def/SpA/SpD/Spe. Use \"x\" for unchecked IVs, \"s\" to match 0 or 31, and \"/\" as a separator.")]
     public string TargetMinIVs { get; set; } = "";
 
-    [Category(StopConditions), Description("Maximum accepted IVs in the format HP/Atk/Def/SpA/SpD/Spe. Use \"x\" for unchecked IVs and \"/\" as a separator.")]
+    [Category(StopConditions), Description("Maximum accepted IVs in the format HP/Atk/Def/SpA/SpD/Spe. Use \"x\" for unchecked IVs, \"s\" to match 0 or 31 and \"/\" as a separator.")]
     public string TargetMaxIVs { get; set; } = "";
 
     [Category(StopConditions), Description("Selects the shiny type to stop on.")]
