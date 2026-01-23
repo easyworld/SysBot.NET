@@ -107,13 +107,7 @@ public class StopConditionSettings
         Span<int> pkIVList = stackalloc int[6];
         pk.GetIVs(pkIVList);
         (pkIVList[5], pkIVList[3], pkIVList[4]) = (pkIVList[3], pkIVList[4], pkIVList[5]);
-
-        for (int i = 0; i < 6; i++)
-        {
-            if (targetminIVs[i] > pkIVList[i] || targetmaxIVs[i] < pkIVList[i])
-                return false;
-        }
-        return true;
+        return MatchesTargetIVs(pkIVList, targetminIVs, targetmaxIVs);
     }
 
     public static void InitializeTargetIVs(PokeTradeHubConfig config, out int[] min, out int[] max)
@@ -138,15 +132,40 @@ public class StopConditionSettings
             if (i < splitIVs.Length)
             {
                 var str = splitIVs[i];
-                if (int.TryParse(str, out var val))
+                // Special case where we are matching either 0 or 31.
+                if (str.Equals("s", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    targetIVs[i] = 99;
+                    continue;
+                }
+                // Any other numerical IV value.
+                else if (int.TryParse(str, out var val))
                 {
                     targetIVs[i] = val;
                     continue;
                 }
             }
+            // If we get to here, set it to the min or max wild card value.
             targetIVs[i] = min ? 0 : 31;
         }
         return targetIVs;
+    }
+
+    private static bool MatchesTargetIVs(ReadOnlySpan<int> ivs, ReadOnlySpan<int> min, ReadOnlySpan<int> max)
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (!MatchesTargetIVs(ivs[i], min[i], max[i]))
+                return false;
+        }
+        return true;
+    }
+
+    private static bool MatchesTargetIVs(int value, int min, int max)
+    {
+        if (min is 99 || max is 99)
+            return value is 0 or 31;
+        return min <= value && value <= max;
     }
 
     private static bool HasMark(IRibbonIndex pk)
