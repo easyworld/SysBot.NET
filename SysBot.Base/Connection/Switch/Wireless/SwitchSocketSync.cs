@@ -71,7 +71,7 @@ public sealed class SwitchSocketSync(IWirelessConnectionConfig cfg) : SwitchSock
     {
         var result = new byte[length];
         var span = buffer.Span[..^1]; // Last byte is always a terminator
-        Decoder.LoadHexBytesTo(span, result, 2);
+        Decoder.LoadHexBytesTo(span, result);
         return result;
     }
 

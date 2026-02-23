@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,4 +33,6 @@ public interface ISwitchConnectionAsync : IConsoleConnectionAsync
     Task PointerPoke(byte[] data, IEnumerable<long> jumps, CancellationToken token);
     Task<ulong> PointerAll(IEnumerable<long> jumps, CancellationToken token);
     Task<ulong> PointerRelative(IEnumerable<long> jumps, CancellationToken token);
+    Task<(bool Success, T Value)> TryReadMain<T>(ulong offset, CancellationToken token) where T : unmanaged;
+    Task<(bool Success, T Value)> TryReadAbsolute<T>(ulong offset, CancellationToken token) where T : unmanaged;
 }

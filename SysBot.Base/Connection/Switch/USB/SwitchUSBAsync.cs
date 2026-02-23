@@ -142,4 +142,14 @@ public sealed class SwitchUSBAsync(int Port) : SwitchUSB(Port), ISwitchConnectio
             return BitConverter.ToUInt64(baseBytes, 0);
         }, token);
     }
+
+    public Task<(bool Success, T Value)> TryReadMain<T>(ulong offset, CancellationToken token) where T : unmanaged
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<(bool Success, T Value)> TryReadAbsolute<T>(ulong offset, CancellationToken token) where T : unmanaged
+    {
+        throw new NotImplementedException();
+    }
 }
