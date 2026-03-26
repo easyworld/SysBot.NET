@@ -1,5 +1,5 @@
 # SysBot.NET
-![License](https://pfst.cf2.poecdn.net/base/image/373bd76ec7034dbe3c0220acf29365286b74b5dd1c19dbb63781975bf273392a?pmaid=567453342)
+![License](https://img.shields.io/badge/License-AGPLv3-blue.svg)
 
 ## 支持用 Discord（Support Discord）
 
