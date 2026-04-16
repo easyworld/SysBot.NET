@@ -1,4 +1,6 @@
-﻿using PKHeX.Core;
+using PKHeX.Core;
+using System;
+using System.Linq;
 
 namespace SysBot.Pokemon;
 
@@ -29,8 +31,19 @@ public static class ShowdownUtil
                 setstring = setstring.Replace(i, $"\r\n{i}");
         }
 
-        var finalset = restorenick + setstring;
+        var finalset = RemoveEmptyLines(restorenick + setstring);
         return new ShowdownSet(finalset);
+    }
+    private static string RemoveEmptyLines(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return string.Empty;
+
+        // 按行拆分 → 跳过空行/空白行 → 重新拼接
+        var lines = text.Split(["\r\n", "\n"], StringSplitOptions.None)
+                        .Where(line => !string.IsNullOrWhiteSpace(line));
+
+        return string.Join("\r\n", lines);
     }
 
     private static readonly string[] splittables =
