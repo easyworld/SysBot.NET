@@ -77,5 +77,8 @@
 ## 其他依赖（Other Dependencies）
 宝可梦相关的 API 逻辑由 [PKHeX](https://github.com/kwsch/PKHeX/) 提供，模板生成由 [Auto-Legality Mod](https://github.com/architdate/PKHeX-Plugins/) 提供。目前的模板生成使用 [@santacrab2](https://www.github.com/santacrab2) 的 [Auto-Legality Mod 分支（fork）](https://github.com/santacrab2/PKHeX-Plugins)。
 
+# 免责声明（Disclaimer）
+SysBot.NET 以不同于真实人类行为的方式进行在线交易和 RAID 房主托管；没有人会在没有结束的情况下持续不断地进行这些操作。请注意，异常行为随时可能被游戏开发商检测、追踪和惩罚。使用本程序的风险由您自行承担。
+
 # 许可证（License）
 有关许可协议的详细信息，请参阅 `License.md`。
