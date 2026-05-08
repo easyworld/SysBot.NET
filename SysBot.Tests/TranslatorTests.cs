@@ -21,6 +21,35 @@ public class TranslatorTests
     }
 
     [Theory]
+    [InlineData("异色月亮球喷火龙")]
+    public void TestLegalSWSH(string input)
+    {
+        var setstring = input;
+        if (!ShowdownTranslator<PK8>.IsPS(input))
+        {
+            setstring = ShowdownTranslator<PK8>.Chinese2Showdown(input);
+        }
+
+        var set = ShowdownUtil.ConvertToShowdown(setstring);
+        set.Should().NotBeNull();
+        var template = AutoLegalityWrapper.GetTemplate(set);
+        template.Species.Should().BeGreaterThan(0);
+        var sav = AutoLegalityWrapper.GetTrainerInfo<PK8>();
+        var pkm = sav.GetLegal(template, out var result);
+        Trace.WriteLine(result.ToString());
+
+        if (pkm.Nickname.ToLower() == "egg" && Breeding.CanHatchAsEgg(pkm.Species)) AbstractTrade<PK8>.EggTrade(pkm, template);
+
+        (pkm is PK8).Should().BeTrue();
+        var la = new LegalityAnalysis(pkm);
+        if (!la.Valid)
+            Trace.WriteLine(la.Report());
+        pkm.CanBeTraded(la.EncounterOriginal).Should().BeTrue();
+        la.Valid.Should().BeTrue();
+        pkm.IsShiny.Should().BeTrue();
+    }
+
+    [Theory]
     [InlineData("皮卡丘")]
     [InlineData("木木枭")]
     [InlineData("彩粉蝶-冰雪花纹")]
@@ -34,9 +63,16 @@ public class TranslatorTests
     [InlineData("等级球呆火鳄")]
     [InlineData("异色古剑豹")]
     [InlineData("异色故勒顿")]
-    public void TestLegal(string input)
+    [InlineData("皮卡丘 大师球 胆小 全技能")]
+    [InlineData("Sinistcha-Masterpiece @ Master Ball\r\nShiny: Yes\r\nAbility: Hospitality\r\nHardy Nature\r\nEVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe \r\nIVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe \r\nLanguage: ChineseS\r\n")]
+    public void TestSVLegal(string input)
     {
-        var setstring = ShowdownTranslator<PK9>.Chinese2Showdown(input);
+        var setstring = input;
+        if (!ShowdownTranslator<PK9>.IsPS(input))
+        {
+            setstring = ShowdownTranslator<PK9>.Chinese2Showdown(input);
+        }
+        
         var set = ShowdownUtil.ConvertToShowdown(setstring);
         set.Should().NotBeNull();
         var template = AutoLegalityWrapper.GetTemplate(set);
@@ -58,6 +94,7 @@ public class TranslatorTests
 
     [Theory]
     [InlineData("梦境球皮卡丘")]
+    [InlineData("异色波尔凯尼恩")]
     public void TestLegalZA(string input)
     {
         var setstring = ShowdownTranslator<PA9>.Chinese2Showdown(input);
@@ -77,6 +114,8 @@ public class TranslatorTests
             Trace.WriteLine(la.Report());
         pkm.CanBeTraded(la.EncounterOriginal).Should().BeTrue();
         la.Valid.Should().BeTrue();
+        if (input.Contains("异色"))
+            pkm.IsShiny.Should().BeTrue();
     }
 
     [Theory]
